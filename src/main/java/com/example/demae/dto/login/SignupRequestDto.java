@@ -17,13 +17,16 @@ public class SignupRequestDto {
     private String password;
 
     @NotBlank
-    private String gender;
+    private String name;
 
     @NotBlank
     private String phone;
 
     @NotBlank
     private String address;
+
+    @NotBlank
+    private Long point;
 
     private boolean admin = false;
     private String adminToken = "";
