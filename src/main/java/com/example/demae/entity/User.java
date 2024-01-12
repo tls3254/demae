@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.login.SignupRequestDto;
 import com.example.demae.enums.Timestamped;
 import com.example.demae.enums.UserRoleEnum;
 import jakarta.persistence.*;
@@ -38,4 +39,13 @@ public class User extends Timestamped {
     private UserRoleEnum role;
 
 
+    public User(SignupRequestDto requestDto, UserRoleEnum role, String password) {
+        this.email = requestDto.getEmail();
+        this.name = requestDto.getName();
+        this.address = requestDto.getAddress();
+        this.point = requestDto.getPoint();
+        this.role = role;
+        this.phone = requestDto.getPhone();
+        this.password = password;
+    }
 }
