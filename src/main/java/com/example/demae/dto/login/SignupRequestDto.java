@@ -25,9 +25,6 @@ public class SignupRequestDto {
     @NotBlank
     private String address;
 
-    @NotBlank
-    private Long point;
-
     private boolean admin = false;
     private String adminToken = "";
 }

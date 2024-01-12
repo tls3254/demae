@@ -1,6 +1,7 @@
 package com.example.demae.security;
 
 
+import com.example.demae.config.UserConfig;
 import com.example.demae.entity.User;
 import com.example.demae.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserConfig userConfig;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(()->
-                new UsernameNotFoundException(
-                        "not found " + email
-                )
-        );
+        User user = userConfig.getUser(email);
         return new UserDetailsImpl(user);
     }
+
 }

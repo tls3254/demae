@@ -43,7 +43,7 @@ public class User extends Timestamped {
         this.email = requestDto.getEmail();
         this.name = requestDto.getName();
         this.address = requestDto.getAddress();
-        this.point = requestDto.getPoint();
+        this.point = 1000000L;
         this.role = role;
         this.phone = requestDto.getPhone();
         this.password = password;

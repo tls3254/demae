@@ -20,13 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User signup(@RequestBody SignupRequestDto requestDto, BindingResult bindingResult){
-//        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-//        if(fieldErrors.size() > 0){
-//            for (FieldError fieldError : fieldErrors) {
-//                log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
-//            }
-//        }
+    public User signup(@RequestBody SignupRequestDto requestDto){
         return userService.signup(requestDto);
     }
 
