@@ -6,6 +6,7 @@ import com.example.demae.entity.User;
 import com.example.demae.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User signup(@RequestBody SignupRequestDto requestDto){
+    public User signup(@Validated @RequestBody SignupRequestDto requestDto){
         return userService.signup(requestDto);
     }
 
