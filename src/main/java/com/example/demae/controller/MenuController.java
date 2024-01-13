@@ -2,8 +2,10 @@ package com.example.demae.controller;
 
 import com.example.demae.dto.menu.MenuRequestDto;
 import com.example.demae.dto.menu.MenuResponseDto;
+import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.MenuService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,4 +38,6 @@ public class MenuController {
 		model.addAttribute("menuList", allMenu);
 		return "showMenuPage";
 	}
+
+
 }

@@ -3,43 +3,135 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Store Page</title>
+	<!-- Link to Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
 <h1>Store</h1>
 
+<!-- Display store information table if not empty -->
 <div th:if="${not #lists.isEmpty(storeList)}">
 	<table>
 		<thead>
 		<tr>
 			<th>Name</th>
-			<th>Price</th>
+			<th>Address</th>
+			<th>Category</th>
 		</tr>
 		</thead>
 		<tbody>
-		<tr th:each="storeList : ${storeList}">
-			<td th:text="${storeList.name}"></td>
-			<td th:text="${storeList.address}"></td>
-			<td th:text="${storeList.category}"></td>
+		<tr th:each="store : ${storeList}">
+			<td th:text="${store.name}"></td>
+			<td th:text="${store.address}"></td>
+			<td th:text="${store.category}"></td>
 		</tr>
 		</tbody>
 	</table>
 </div>
+
+<!-- Display message if storeList is empty -->
 <div th:if="${#lists.isEmpty(storeList)}">
 	<p>No Store available.</p>
 </div>
 
-<!-- Create Menu 버튼 -->
-<a href ="#" onclick="createStore()" class="btn btn-primary">Create Store</a>
-<script>
-	function createStore() {
-		var form = document.createElement('form');
-		form.method = 'POST';
-		form.action = '/api/createStore';
+<!-- Button to open modal -->
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#textModal">
+	가게정보 수정
+</button>
+<button type="button" class="btn btn-danger btn-sm" onclick="deleteStore()">가게정보 삭제</button>
 
-		document.body.appendChild(form);
-		form.submit();
+<!-- Modal for text input -->
+<div class="modal" id="textModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">가게 정보 수정</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!-- Input fields for text -->
+				<label for="name">가게명 변경:</label>
+				<input type="text" id="name" name="name" class="form-control"/>
+
+				<label for="address">가게주소 변경:</label>
+				<input type="text" id="address" name="address" class="form-control"/>
+
+				<label for="category">가게카테고리 변경:</label>
+				<input type="text" id="category" name="category" class="form-control"/>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				<!-- "수정하기" 버튼 추가 -->
+				<button type="button" class="btn btn-primary" onclick="updateData()">수정하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function updateData() {
+		var name = document.getElementById('name').value;
+		var address = document.getElementById('address').value;
+		var category = document.getElementById('category').value;
+
+		fetch(window.location.href, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				name: name,
+				address: address,
+				category: category
+			}),
+		})
+			.then(response => {
+				if (response.ok) {
+				window.location.reload()
+				} else {
+				}
+			})
+			.catch(error => {
+				console.error('에러:', error);
+			});
+
+		// 데이터 수정 후 모달 닫기
+		$('#textModal').modal('hide');
 	}
 </script>
+
+<script>
+	function deleteStore() {
+		if (confirm("정말로 가게를 삭제하시겠습니까?")) {
+			fetch(window.location.href, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(response => {
+					if (response.ok) {
+			  window.location.href = '/api/stores';
+						// 또는
+						// window.location.href = '/redirect-url'; // 리다이렉션
+					} else {
+						console.error('가게 삭제 중 오류 발생');
+					}
+				})
+				.catch(error => {
+					console.error('에러:', error);
+				});
+		}
+	}
+</script>
+
+<!-- Link to Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

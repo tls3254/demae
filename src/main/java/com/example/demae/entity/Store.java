@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -26,6 +29,10 @@ public class Store {
 
     @Column(nullable = false)
     private String category;
+
+    @OneToMany(mappedBy = "store") // "store"는 Menu 엔터티에 있는 Store 타입 필드의 이름
+    private List<Menu> menus = new ArrayList<>();
+
 
     public Store(StoreRequestDto storeRequestDto) {
         this.name = storeRequestDto.getName();

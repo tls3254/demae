@@ -9,6 +9,7 @@ import com.example.demae.repository.StoreRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,10 +30,26 @@ public class StoreService {
 				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
 	}
 
-	public StoreResponseDto modifyStore(Long storeId) {
+	public List<StoreResponseDto> findByCategory(String category) {
+		return new StoreResponseDto().success(storeRepository.findById(storeId)
+				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
+	}
+
+	@Transactional
+	public String modifyStore(Long storeId, StoreRequestDto storeRequestDto) {
 		Store store = storeRepository.findById(storeId)
 				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId));
-		store.
+		store.setName(storeRequestDto.getName());
+		store.setAddress(storeRequestDto.getAddress());
+		store.setCategory(storeRequestDto.getCategory());
+		return "ok";
+	}
+
+	@Transactional
+	public String deleteStore(Long storeId) {
+		storeRepository.delete(storeRepository.findById(storeId)
+				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
+		return "ok";
 	}
 
 
