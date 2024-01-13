@@ -1,8 +1,6 @@
-#!/bin/bash
-
-BUILD_JAR=$(ls /home/ec2-user/action/build/libs/*.jar)
+BUILD_JAR=$(ls /home/ubuntu/action/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
-DEPLOY_PATH=/home/ec2-user/action/
+DEPLOY_PATH=/home/ubuntu/action/
 
 echo ">>> build 파일명: $JAR_NAME" >> $DEPLOY_PATH/deploy.log
 
