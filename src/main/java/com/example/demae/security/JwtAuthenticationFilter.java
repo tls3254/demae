@@ -27,29 +27,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try{
-            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-
-            return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestDto.getEmail(),
-                            requestDto.getPassword(),
-                            null
-                    )
-            );
-        }catch (IOException e){
-            log.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
+        //            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+        LoginRequestDto requestDto = new LoginRequestDto(request.getParameter("email"), request.getParameter("password"));
+        return getAuthenticationManager().authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        requestDto.getEmail(),
+                        requestDto.getPassword(),
+                        null
+                )
+        );
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth){
-        String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
-        UserRoleEnum role = ((UserDetailsImpl)auth.getPrincipal()).getUser().getRole();
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
 
-        String token = jwtUtil.createToken(username,role);
-        jwtUtil.addJwtToCookie(token,response);
+        String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
+        UserRoleEnum role = ((UserDetailsImpl) auth.getPrincipal()).getUser().getRole();
+
+        String token = jwtUtil.createToken(username, role);
+        jwtUtil.addJwtToCookie(token, response);
+        String redirectUrl = "/api/users/main";
+        response.sendRedirect(redirectUrl);
     }
 
     @Override

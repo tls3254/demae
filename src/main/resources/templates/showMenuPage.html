@@ -20,6 +20,7 @@
         <tr th:each="menu : ${menuList}">
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
+<!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
         </tr>
         </tbody>
     </table>
@@ -29,16 +30,16 @@
 </div>
 
 <!-- Create Menu 버튼 -->
-<a href ="#" onclick="createMenu()" class="btn btn-primary">Create Menu</a>
-<script>
-    function createMenu() {
-        var form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/api/createMenu';
+<a th:href="@{/api}" class="btn btn-primary">Create Menu</a>
 
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
+<!--<script>-->
+<!--    function editMenu(button) {-->
+<!--        // 클릭된 버튼의 data-menu-id 속성으로 menuId 추출-->
+<!--        var menuId = $(button).data('menu-id');-->
+<!--        -->
+<!--        // 추출한 menuId를 이용하여 수정 페이지로 이동-->
+<!--        window.location.href = '/api/patchMenu/' + menuId;-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>

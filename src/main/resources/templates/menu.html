@@ -29,7 +29,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/api/createMenu',
+            url: '/api/${storeId}/createMenu',
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {

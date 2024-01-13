@@ -4,7 +4,6 @@ import com.example.demae.dto.menu.MenuRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Entity
@@ -22,8 +21,18 @@ public class Menu {
     @Column(nullable = false)
     private int price;
 
-    public Menu(MenuRequestDto menuRequestDto) {
+    @ManyToOne
+    @JoinColumn(name ="store_id",nullable = false)
+    private Store store;
+
+    public Menu(MenuRequestDto menuRequestDto,Store store) {
         this.name = menuRequestDto.getName();
         this.price = menuRequestDto.getPrice();
+        this.store = store;
+    }
+
+    public void update(MenuRequestDto menuRequestDto) {
+        this.name =menuRequestDto.getName();
+        this.price =menuRequestDto.getPrice();
     }
 }
