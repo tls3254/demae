@@ -36,8 +36,8 @@ public class StoreController {
 
 	}
 	@GetMapping("/category")
-	public String findByCategory(@RequestParam String cateogry, Model model){
-		model.addAttribute("storeList", storeService.findStore(storeId));
+	public String findByCategory(@RequestParam String category, Model model){
+		model.addAttribute("storeList", storeService.findByCategory(category));
 		return "showStorePage";
 	}
 

@@ -31,8 +31,9 @@ public class StoreService {
 	}
 
 	public List<StoreResponseDto> findByCategory(String category) {
-		return new StoreResponseDto().success(storeRepository.findById(storeId)
-				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
+		return storeRepository.findByCategory(category).stream()
+				.map(store -> new StoreResponseDto().success(store))
+				.toList();
 	}
 
 	@Transactional
