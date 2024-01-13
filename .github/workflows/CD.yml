@@ -47,8 +47,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # script files 복사
-      - name: Copy script
-        run: cp ./scripts/*.sh ./deploy
+#      - name: Copy script
+#        run: cp ./scripts/*.sh ./deploy
 
       # S3에 업로드
       - name: Upload to S3
