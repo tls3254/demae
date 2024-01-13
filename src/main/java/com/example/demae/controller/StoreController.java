@@ -1,6 +1,5 @@
 package com.example.demae.controller;
 
-import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.service.StoreService;

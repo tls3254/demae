@@ -53,7 +53,6 @@ public class StoreService {
 		return "ok";
 	}
 
-
 	public List<StoreResponseDto> findAll() {
 		return storeRepository.findAll().stream()
 				.map(store -> new StoreResponseDto().success(store))
