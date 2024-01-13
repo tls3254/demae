@@ -73,4 +73,3 @@ jobs:
           --deployment-group-name ${{env.CODEDEPLOY_GROUP}} \
           --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=demae-project/$GITHUB_SHA.zip \
           --region ap-northeast-2
-#
