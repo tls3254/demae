@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Menu Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<h1>Menu Form</h1>
+
+<form id="menuForm">
+  <label for="name">Menu Name:</label>
+  <input type="text" id="name" name="name" required><br>
+
+  <label for="price">Menu Price:</label>
+  <input type="number" id="price" name="price" required><br>
+
+  <button type="button" onclick="createMenu()">Create Menu</button>
+</form>
+
+<div id="messageDiv"></div>
+
+<script>
+  function createMenu() {
+    var menuData = {
+      name: $('#name').val(),
+      price: $('#price').val()
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/createMenu',
+      contentType: 'application/json',
+      data: JSON.stringify(menuData),
+      success: function (message) {
+        window.location.href = '/api/menu';
+      },
+      error: function () {
+        $('#messageDiv').text('Failed to create menu.');
+      }
+    });
+  }
+</script>
+<!-- showMenuPage로 이동하는 버튼 -->
+<a th:href="@{/api/menu}" class="btn btn-primary">Show Menu Page</a>
+</body>
+</html>

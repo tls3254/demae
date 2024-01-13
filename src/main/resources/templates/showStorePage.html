@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Store Page</title>
+</head>
+<body>
+
+<h1>Store</h1>
+
+<div th:if="${not #lists.isEmpty(storeList)}">
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="menu : ${storeList}">
+			<td th:text="${storeList.name}"></td>
+			<td th:text="${storeList.address}"></td>
+			<td th:text="${storeList.category}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div th:if="${#lists.isEmpty(storeList)}">
+	<p>No Store available.</p>
+</div>
+
+<!-- Create Menu 버튼 -->
+<a href ="#" onclick="createStore()" class="btn btn-primary">Create Store</a>
+<script>
+	function createStore() {
+		var form = document.createElement('form');
+		form.method = 'POST';
+		form.action = '/api/createStore';
+
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+</body>
+</html>

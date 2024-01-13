@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,4 +26,9 @@ public class Store {
     @Column(nullable = false)
     private String category;
 
+    public Store(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.address = storeRequestDto.getAddress();
+        this.category = storeRequestDto.getCategory();
+    }
 }
