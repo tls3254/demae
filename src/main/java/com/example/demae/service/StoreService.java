@@ -37,20 +37,18 @@ public class StoreService {
 	}
 
 	@Transactional
-	public String modifyStore(Long storeId, StoreRequestDto storeRequestDto) {
+	public void modifyStore(Long storeId, StoreRequestDto storeRequestDto) {
 		Store store = storeRepository.findById(storeId)
 				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId));
 		store.setName(storeRequestDto.getName());
 		store.setAddress(storeRequestDto.getAddress());
 		store.setCategory(storeRequestDto.getCategory());
-		return "ok";
 	}
 
 	@Transactional
-	public String deleteStore(Long storeId) {
+	public void deleteStore(Long storeId) {
 		storeRepository.delete(storeRepository.findById(storeId)
 				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
-		return "ok";
 	}
 
 	public List<StoreResponseDto> findAll() {

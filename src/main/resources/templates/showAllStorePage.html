@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Store Page</title>
+  <!-- Link to Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<h1>Store</h1>
+
+<!-- Display store information table if not empty -->
+<div th:if="${not #lists.isEmpty(storeList)}">
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Category</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="store : ${storeList}">
+      <td th:text="${store.name}"></td>
+      <td th:text="${store.address}"></td>
+      <td th:text="${store.category}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div th:if="${#lists.isEmpty(storeList)}">
+  <p>No Store available.</p>
+</div>
+
+
+</body>
+</html>

@@ -30,10 +30,9 @@ public class StoreController {
 	@PostMapping
 	public String createStore(@RequestBody StoreRequestDto storeRequestDto) {
 		storeService.createStores(storeRequestDto);
-		return "showStorePage";
-
-
+		return "showAllStorePage";
 	}
+
 	@GetMapping("/category")
 	public String findByCategory(@RequestParam String category, Model model){
 		model.addAttribute("storeList", storeService.findByCategory(category));
@@ -50,7 +49,7 @@ public class StoreController {
 	public String findAllStore(Model model){
 		List<StoreResponseDto> store = storeService.findAll();
 		model.addAttribute("storeList", store);
-		return "showStorePage";
+		return "showAllStorePage";
 	}
 
 	@PatchMapping("/{storeId}")
