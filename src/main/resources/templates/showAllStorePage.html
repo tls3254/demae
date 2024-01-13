@@ -24,7 +24,10 @@
     <tr th:each="store : ${storeList}">
       <td th:text="${store.name}"></td>
       <td th:text="${store.address}"></td>
-      <td th:text="${store.category}"></td>
+      <td th:text="${store.address}" style="padding-right: 10px;"></td>
+      <td>
+        <a th:href="@{/api/stores/{id}(id=${store.id})}" class="btn btn-info" style="font-weight: bold; background-color: grey; color: white; margin-left: 10px;">가게 정보 보기</a>
+      </td>
     </tr>
     </tbody>
   </table>

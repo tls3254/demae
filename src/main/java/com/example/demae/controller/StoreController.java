@@ -46,9 +46,10 @@ public class StoreController {
 	}
 
 	@GetMapping
-	public String findAllStore(Model model){
-		List<StoreResponseDto> store = storeService.findAll();
-		model.addAttribute("storeList", store);
+	public String findAllStore(@RequestParam(defaultValue = "0") int page,
+							   @RequestParam(defaultValue = "10") int size,
+							   Model model){
+		model.addAttribute("storeList", storeService.findAll(page, size));
 		return "showAllStorePage";
 	}
 

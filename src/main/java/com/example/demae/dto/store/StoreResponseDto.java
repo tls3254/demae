@@ -12,6 +12,7 @@ import java.util.List;
 public class StoreResponseDto {
 	private static final String STORE_CREATE_CODE = "성공";
 
+	private Long id;
 	private String name;
 	private String address;
 	private String category;
@@ -22,6 +23,7 @@ public class StoreResponseDto {
 		this.address = store.getAddress();
 		this.category = store.getCategory();
 		this.message = STORE_CREATE_CODE;
+		this.id = store.getId();
 		return this;
 	}
 

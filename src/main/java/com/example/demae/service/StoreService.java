@@ -8,6 +8,9 @@ import com.example.demae.entity.Store;
 import com.example.demae.repository.StoreRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +54,8 @@ public class StoreService {
 				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
 	}
 
-	public List<StoreResponseDto> findAll() {
-		return storeRepository.findAll().stream()
+	public List<StoreResponseDto> findAll(int page, int size) {
+		return storeRepository.findAll(PageRequest.of(page, size)).stream()
 				.map(store -> new StoreResponseDto().success(store))
 				.toList();
 	}
