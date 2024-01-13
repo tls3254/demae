@@ -65,9 +65,9 @@ jobs:
       - name: Deploy
         run:
           aws deploy create-deployment \
-          --application-name $CODEDEPLOY_NAME \
+          --application-name ${{CODEDEPLOY_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name $CODEDEPLOY_GROUP \
+          --deployment-group-name ${{CODEDEPLOY_GROUP}} \
           --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${PROJECT_NAME}/$GITHUB_SHA.zip \
           --region ap-northeast-2
       
