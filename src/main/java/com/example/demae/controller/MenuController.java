@@ -19,6 +19,8 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
+    @GetMapping
+    public String home(){return "menu";}
     @PostMapping("/createMenu")
     public String createMenu(@RequestBody MenuRequestDto menuRequestDto){
         String message = menuService.createMenu(menuRequestDto);

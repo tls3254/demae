@@ -29,11 +29,11 @@
 
         $.ajax({
             type: 'POST',
-            url: '/api/menu',
+            url: '/api/createMenu',
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                $('#messageDiv').text(message);
+                window.location.href = '/api/menu';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
@@ -42,6 +42,6 @@
     }
 </script>
 <!-- showMenuPage로 이동하는 버튼 -->
-<a th:href="@{/api/show-menu}" class="btn btn-primary">Show Menu Page</a>
+<a th:href="@{/api/menu}" class="btn btn-primary">Show Menu Page</a>
 </body>
 </html>
