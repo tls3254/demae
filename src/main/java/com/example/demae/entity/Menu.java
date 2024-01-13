@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.menu.MenuRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ public class Menu {
     private String name;
 
     @Column(nullable = false)
-    private Long price;
+    private int price;
 
+    public Menu(MenuRequestDto menuRequestDto) {
+        this.name = menuRequestDto.getName();
+        this.price = menuRequestDto.getPrice();
+    }
 }
