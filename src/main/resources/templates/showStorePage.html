@@ -17,7 +17,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		<tr th:each="menu : ${storeList}">
+		<tr th:each="storeList : ${storeList}">
 			<td th:text="${storeList.name}"></td>
 			<td th:text="${storeList.address}"></td>
 			<td th:text="${storeList.category}"></td>

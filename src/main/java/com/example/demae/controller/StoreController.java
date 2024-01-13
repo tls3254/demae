@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +29,25 @@ public class StoreController {
 	public String createStore(@RequestBody StoreRequestDto storeRequestDto) {
 		storeService.createStores(storeRequestDto);
 		return "showStorePage";
+
+
+	}
+	@GetMapping("/{storeId}")
+	public String findStore(@PathVariable Long storeId, Model model){
+		model.addAttribute("storeList", storeService.findStore(storeId));
+		return "showStorePage";
 	}
 
 	@GetMapping
-	public String findStore(Model model){
-		List<StoreResponseDto> store = storeService.findALL();
+	public String findAllStore(Model model){
+		List<StoreResponseDto> store = storeService.findAll();
 		model.addAttribute("storeList", store);
+		return "showStorePage";
+	}
+
+	@PatchMapping("/{storeId}")
+	public String modify(@PathVariable Long storeId, Model model){
+		model.addAttribute("storeList", storeService.findStore(storeId));
 		return "showStorePage";
 	}
 }

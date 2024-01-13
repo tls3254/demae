@@ -37,7 +37,7 @@
       contentType: 'application/json',
       data: JSON.stringify(menuData),
       success: function (message) {
-        window.location.href = '/api/store';
+        window.location.href = '/api/stores';
       },
       error: function () {
         $('#messageDiv').text('Failed to create menu.');

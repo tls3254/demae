@@ -6,6 +6,7 @@ import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.entity.Store;
 import com.example.demae.repository.StoreRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,19 @@ public class StoreService {
 		return new StoreResponseDto().success(storeRepository.save(new Store(storeRequestDto)));
 	}
 
-	public List<StoreResponseDto> findALL() {
+	public StoreResponseDto findStore(Long storeId) {
+		return new StoreResponseDto().success(storeRepository.findById(storeId)
+				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId)));
+	}
+
+	public StoreResponseDto modifyStore(Long storeId) {
+		Store store = storeRepository.findById(storeId)
+				.orElseThrow(() -> new EntityNotFoundException("Store not found with ID: " + storeId));
+		store.
+	}
+
+
+	public List<StoreResponseDto> findAll() {
 		return storeRepository.findAll().stream()
 				.map(store -> new StoreResponseDto().success(store))
 				.toList();
