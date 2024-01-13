@@ -22,11 +22,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class MenuController {
     private final MenuService menuService;
-    private final JwtUtil jwtUtil;
 
-    @GetMapping
+    @GetMapping("/menu")
     public String home(){return "menu";}
-
     @PostMapping("/createMenu")
     public String createMenu(
                              @RequestBody MenuRequestDto menuRequestDto,
@@ -38,13 +36,19 @@ public class MenuController {
         }
         return "showMenuPage";
     }
-    @GetMapping("/menu")
-    public String AllMenu(Model model){
-        List<MenuResponseDto> allMenu = menuService.AllMenu();
+    @GetMapping("/allMenu/{storeId}")
+    public String AllMenu(Model model,@PathVariable Long storeId){
+        List<MenuResponseDto> allMenu = menuService.AllMenu(storeId);
         model.addAttribute("menuList", allMenu);
         return "showMenuPage";
     }
-    @PatchMapping("/menu/{storeId}/{menuId}")
+    @GetMapping("/selectMenu/{storeId}/{menuId}")
+    public String selectMenu(Model model,@PathVariable Long storeId,@PathVariable Long menuId){
+        MenuResponseDto selectMenu = menuService.selectMenu(storeId,menuId);
+        model.addAttribute("menuOne", selectMenu);
+        return "showSelectMenu";
+    }
+    @PatchMapping("/patchMenu/{storeId}/{menuId}")
     public String patchMemu(@PathVariable Long storeId,
                             @PathVariable Long menuId,
                             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -54,7 +58,7 @@ public class MenuController {
 
         return "showMenuPage";
     }
-    @DeleteMapping("/menu/{storeId}/{menuId}")
+    @DeleteMapping("/deleteMenu/{storeId}/{menuId}")
     public String deleteMenu(@PathVariable Long storeId,
                              @PathVariable Long menuId,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){

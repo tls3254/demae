@@ -31,10 +31,22 @@ public class MenuService {
         return "성공";
     }
 
-    public List<MenuResponseDto> AllMenu() {
+    public List<MenuResponseDto> AllMenu(Long storeId) {
+        List<Menu> storeCheck = menuRepository.findByStoreId(storeId);
+        if(storeCheck.isEmpty()){
+            throw new IllegalArgumentException("가게가 일치하지 않습니다.");
+        }
         List<Menu> MenuList = menuRepository.findAll();
         List<Menu> newList = new ArrayList<>(MenuList);
         return  newList.stream().map(MenuResponseDto::new).toList();
+    }
+    public MenuResponseDto selectMenu(Long storeId,Long MenuId) {
+        List<Menu> storeCheck = menuRepository.findByStoreId(storeId);
+        if(storeCheck.isEmpty()){
+            throw new IllegalArgumentException("가게가 일치하지 않습니다.");
+        }
+        Menu checkMenu = menuRepository.findById(MenuId).orElseThrow(()->new IllegalArgumentException("메뉴가 없습니다."));
+        return new MenuResponseDto(checkMenu);
     }
 
     public void patchMenu(Long storeId,Long menuId,MenuRequestDto menuRequestDto,String email) {
@@ -54,4 +66,6 @@ public class MenuService {
         }
         menuRepository.delete(findMenu);
     }
+
+
 }
