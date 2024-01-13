@@ -39,6 +39,9 @@ jobs:
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
 
+        # $GITHUB_SHA : Github Actions에서 제공하는 여러 기본 환경 변수중 하나
+        # 현재 workflow를 실행시키는 커밋의 해쉬값을 나타낸다
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -55,13 +58,13 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       # Deploy
-      - name: Deploy
-        run: |
-          set -x
-          aws deploy create-deployment \
-          --application-name ${{env.PROJECT_NAME}} \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name demae-prod \
-          --file-exists-behavior OVERWRITE \
-          --s3-location bucket=${{env.S3_BUCKET_NAME}},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
-          --region ap-northeast-2
+#      - name: Deploy
+#        run: |
+#          set -x
+#          aws deploy create-deployment \
+#          --application-name ${{env.PROJECT_NAME}} \
+#          --deployment-config-name CodeDeployDefault.AllAtOnce \
+#          --deployment-group-name demae-prod \
+#          --file-exists-behavior OVERWRITE \
+#          --s3-location bucket=${{env.S3_BUCKET_NAME}},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
+#          --region ap-northeast-2
