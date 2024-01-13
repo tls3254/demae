@@ -21,7 +21,7 @@ public class MenuService {
         return "성공";
     }
 
-    public List<MenuResponseDto> AllMenu(List<MenuRequestDto> menuRequestdto) {
+    public List<MenuResponseDto> AllMenu() {
         List<Menu> MenuList = menuRepository.findAll();
         List<Menu> newList = new ArrayList<>(MenuList);
         return  newList.stream().map(MenuResponseDto::new).toList();

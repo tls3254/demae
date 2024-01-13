@@ -30,17 +30,13 @@ public class MenuController {
         return "showMenuPage";
     }
     @GetMapping("/menu")
-    public String AllMenu(Model model, @RequestParam(required = false) List<MenuRequestDto> menuRequestDtoList){
-        List<MenuResponseDto> allMenu = menuService.AllMenu(menuRequestDtoList);
+    public String AllMenu(Model model){
+        List<MenuResponseDto> allMenu = menuService.AllMenu();
         model.addAttribute("menuList", allMenu);
         return "showMenuPage";
     }
 //    @PatchMapping
 //    @DeleteMapping
 }
-//    @GetMapping("/show-menu")
-//    public String showPage(){return "showMenuPage";}
-//
-//    @GetMapping("/create-menu")
-//    public String createMenu(){return "menu";}
+
 
