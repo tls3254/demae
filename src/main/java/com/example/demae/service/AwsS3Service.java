@@ -2,7 +2,10 @@ package com.example.demae.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.demae.entity.Menu;
 import com.example.demae.entity.Picture;
+import com.example.demae.repository.MenuRepository;
+import com.example.demae.repository.PictureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,22 +28,22 @@ public class AwsS3Service {
 	private String bucketName;
 	private final AmazonS3 s3Client;
 	private final PictureRepository pictureRepository;
-	private final ItemRepository itemRepository;
+	private final MenuRepository menuRepository;
 
 	@Transactional
-	public void uploadFiles(List<MultipartFile> files, Long itemId) throws IOException {
-		Item item = itemRepository.findById(itemId).orElseThrow();
+	public void uploadFiles(List<MultipartFile> files, Long menuId) throws IOException {
+		Menu menu = menuRepository.findById(menuId).orElseThrow();
 		for (MultipartFile file : files) {
 			File fileObj = convertMultiPartFileToFile(file);
 			String fileName = UUID.randomUUID() + "." + extractExtension(file);
-			pictureRepository.save(new Picture(item, fileName));
+			pictureRepository.save(new Picture(menu, fileName));
 			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
 			fileObj.delete();
 		}
 	}
 
 	public List<String> getObjectUrlsForItem(Long itemId) {
-		List<Picture> pictures = pictureRepository.findByItemId(itemId);
+		List<Picture> pictures = pictureRepository.findByMenuId(itemId);
 		List<String> objectUrls = new ArrayList<>();
 		for (Picture picture : pictures) {
 			String objectUrl = s3Client.getUrl(bucketName, picture.getUuid()).toString();
