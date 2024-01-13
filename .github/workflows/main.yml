@@ -4,7 +4,7 @@ name: github-actions-test
 # 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
 on:
   push:
-    branches: [main] # main branch로 push 될 때 실행됩니다.
+    branches: [main] # main branch로 push 될 때 실행됩니다.ㅌ
   pull_request:
     branches: [main]  # main branch로 pull request될 때 실행됩니다.
 
@@ -59,7 +59,8 @@ jobs:
 
       # S3에 업로드
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 sync --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+#        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       # 여기까지는 성공
       # 하지만 code deploy를 사용해야 자동화 배포가 가능해진다
