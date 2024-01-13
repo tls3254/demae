@@ -59,8 +59,8 @@ jobs:
 
       # S3에 업로드
       - name: Upload to S3
-        run: aws s3 sync --region ap-northeast-2 . s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
-#        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+#        run: aws s3 sync --region ap-northeast-2 . s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       # 여기까지는 성공
       # 하지만 code deploy를 사용해야 자동화 배포가 가능해진다
@@ -71,5 +71,5 @@ jobs:
           --application-name ${{env.CODEDEPLOY_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{env.CODEDEPLOY_GROUP}} \
-          --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${PROJECT_NAME}/$GITHUB_SHA.zip \
+          --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=demae-project/$GITHUB_SHA.zip \
           --region ap-northeast-2
