@@ -20,10 +20,9 @@ import java.util.List;
 public class MenuService {
      private final MenuRepository menuRepository;
      private final StoreRepository storeRepository;
-     private final UserRepository userRepository;
 
-    public String createMenu(Long storeId,MenuRequestDto menuRequestDto,String email) {
-        Store store = storeRepository.findById(storeId).orElseThrow(()->new IllegalArgumentException("본인 가게가 아닙니다."));
+    public String createMenu(MenuRequestDto menuRequestDto,String email) {
+        Store store = storeRepository.findById(menuRequestDto.getStoreId()).orElseThrow(()->new IllegalArgumentException("본인 가게가 아닙니다."));
         Menu menu = new Menu(menuRequestDto,store);
         menuRepository.save(menu);
         return "성공";
@@ -36,15 +35,20 @@ public class MenuService {
     }
 
     public void patchMenu(Long storeId,Long menuId,MenuRequestDto menuRequestDto,String email) {
-        Store findMenu = storeRepository.findByMenuListId(menuId);
-        storeRepository.findById(storeId).orElseThrow(()->new IllegalArgumentException("본인 가게가 아닙니다."));
-        Menu menu = menuRepository.findById(menuId).orElseThrow();
-        if(!findMenu.getUser().getEmail().equals(email)){
+        Store findStore = storeRepository.findByMenuListId(menuId);
+        Menu menu = menuRepository.findById(menuId).orElseThrow(()->new IllegalArgumentException("메뉴가 없습니다."));
+        if(!findStore.getUser().getEmail().equals(email)){
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");
         }
         menu.update(menuRequestDto);
     }
 
-    public void deleteMenu(MenuRequestDto menuRequestDto) {
+    public void deleteMenu(Long storeId,Long menuId,String email) {
+        Store FindStore = storeRepository.findById(storeId).orElseThrow(()->new IllegalArgumentException("가게 정보가 없습니다"));
+        Menu findMenu = menuRepository.findById(menuId).orElseThrow(()->new IllegalArgumentException("본인의 메뉴가 아닙니다."));
+        if(!FindStore.getUser().getEmail().equals(email)){
+            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+        }
+        menuRepository.delete(findMenu);
     }
 }

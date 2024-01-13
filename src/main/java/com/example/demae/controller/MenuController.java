@@ -27,12 +27,12 @@ public class MenuController {
     @GetMapping
     public String home(){return "menu";}
 
-    @PostMapping("/{storeId}/createMenu")
-    public String createMenu(@PathVariable Long storeId,
+    @PostMapping("/createMenu")
+    public String createMenu(
                              @RequestBody MenuRequestDto menuRequestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
-        String message = menuService.createMenu(storeId,menuRequestDto,email);
+        String message = menuService.createMenu(menuRequestDto,email);
         if(!message.equals("성공")){
             throw new IllegalArgumentException("실패했습니다.");
         }
@@ -57,9 +57,9 @@ public class MenuController {
     @DeleteMapping("/menu/{storeId}/{menuId}")
     public String deleteMenu(@PathVariable Long storeId,
                              @PathVariable Long menuId,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails,
-                             @RequestBody MenuRequestDto menuRequestDto){
-        menuService.deleteMenu(menuRequestDto);
+                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String email = userDetails.getUser().getEmail();
+        menuService.deleteMenu(storeId,menuId,email);
         return "showMenuPage";
     }
 }
