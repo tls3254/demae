@@ -59,7 +59,7 @@ jobs:
 
       # S3에 업로드
       - name: Upload to S3
-        run: aws s3 sync --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 sync --region ap-northeast-2 . s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 #        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       # 여기까지는 성공
