@@ -49,9 +49,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # script files 복사
-      # - name: Copy script
-      #   run: cp ./scripts/*.sh ./deploy
+       # script files 복사
+#       - name: Copy Scripts
+#         run: cp ./scripts/*.sh ./deploy
 
       # S3에 업로드
       - name: Upload to S3
@@ -59,8 +59,14 @@ jobs:
 
       # 여기까지는 성공
       # 하지만 code deploy를 사용해야 자동화 배포가 가능해진다
-      - name: Code Deploy
-        run: aws deploy create-deployment --application-name $CODEDEPLOY_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+      - name: Deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name $CODEDEPLOY_NAME \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name $CODEDEPLOY_GROUP \
+            --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+      
 
       # Deploy
 #      - name: Deploy
