@@ -23,6 +23,9 @@ public class MenuService {
 
     public String createMenu(MenuRequestDto menuRequestDto,String email) {
         Store store = storeRepository.findById(menuRequestDto.getStoreId()).orElseThrow(()->new IllegalArgumentException("본인 가게가 아닙니다."));
+        if(!store.getUser().getEmail().equals(email)){
+            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+        }
         Menu menu = new Menu(menuRequestDto,store);
         menuRepository.save(menu);
         return "성공";
