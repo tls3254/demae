@@ -60,8 +60,8 @@ jobs:
           set -x
           aws deploy create-deployment \
           --application-name ${{env.PROJECT_NAME}} \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name demae-prod \
-          --file-exists-behavior OVERWRITE \
+          # --deployment-config-name CodeDeployDefault.AllAtOnce \
+          # --deployment-group-name demae-prod \
+          # --file-exists-behavior OVERWRITE \
           --s3-location bucket=${{env.S3_BUCKET_NAME}},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
           --region ap-northeast-2
