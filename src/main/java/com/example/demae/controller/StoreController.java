@@ -5,6 +5,7 @@ import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.StoreService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,9 +37,10 @@ public class StoreController {
 	public String home(){return "store";}
 
 	@PostMapping
-	public String createStore(@RequestBody StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+	@ResponseBody
+	public String createStore(@RequestBody @Validated StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		storeService.createStores(storeRequestDto, userDetails.getUser());
-		return "showAllStorePage";
+		return "showStorePage";
 	}
 
 	@GetMapping("/category")

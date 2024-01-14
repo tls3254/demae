@@ -33,11 +33,12 @@ public class MenuService {
 
     public List<MenuResponseDto> AllMenu(Long storeId) {
         List<Menu> storeCheck = menuRepository.findByStoreId(storeId);
-        if(storeCheck.isEmpty()){
-            throw new IllegalArgumentException("가게가 일치하지 않습니다.");
-        }
-        List<Menu> MenuList = menuRepository.findAll();
-        List<Menu> newList = new ArrayList<>(MenuList);
+//        if(storeCheck.isEmpty()){
+//            throw new IllegalArgumentException("가게가 일치하지 않습니다.");
+//        }
+//        List<Menu> MenuList = menuRepository.findAll();
+
+        List<Menu> newList = new ArrayList<>(storeCheck);
         return  newList.stream().map(MenuResponseDto::new).toList();
     }
     public MenuResponseDto selectMenu(Long storeId,Long MenuId) {

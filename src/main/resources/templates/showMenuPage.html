@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Show Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        table {
+            border-spacing: 0;
+            width: 80%;
+            margin: 20px 0; /* 위아래 여백을 조절하세요 */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
+        }
+
+        .table-container {
+            overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
+        }
+    </style>
 </head>
 <body>
 
@@ -14,6 +35,7 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -21,8 +43,7 @@
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
             <td>
-            <td>
-                <a th:href="@{/api/store/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">가게 정보 보기</a>
+                <a class="btn btn-info store-link" th:href="@{/api/stores/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">메뉴 정보 보기</a>
             </td>
         </tr>
         </tbody>
@@ -33,6 +54,6 @@
 </div>
 
 <!-- Create Menu 버튼 -->
-<a th:href="@{/api/store/1/menu}" class="btn btn-primary">Create Menu</a>
+<a th:href="@{/api/stores/1/menu}" class="btn btn-primary">Create Menu</a>
 </body>
 </html>
