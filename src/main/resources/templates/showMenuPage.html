@@ -26,7 +26,7 @@
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
             <td>
-                <a th:href="@{/api/store/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">가게 정보 보기</a>
+                <a th:href="@{/api/stores/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">가게 정보 보기</a>
             </td>
         </tr>
         </tbody>
@@ -37,6 +37,6 @@
 </div>
 
 <!-- Create Menu 버튼 -->
-<a th:href="@{'/api/store/' + ${storeId} + '/menu'}" class="btn btn-primary">Create Menu</a>
+<a th:href="@{'/api/stores/' + ${storeId} + '/menu'}" class="btn btn-primary">Create Menu</a>
 </body>
 </html>
