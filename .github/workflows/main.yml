@@ -48,8 +48,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: springboot-developer
-          environment_name: springboot-developer-env
+          application_name: demae-eb-springboot
+          environment_name: demae-eb-springboot-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: ./build/libs/${{ env.artifact }}
