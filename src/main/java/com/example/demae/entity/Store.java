@@ -37,9 +37,10 @@ public class Store {
     @JoinColumn(name ="user_id")
     private User user;
 
-    public Store(StoreRequestDto storeRequestDto) {
+    public Store(StoreRequestDto storeRequestDto, User user) {
         this.name = storeRequestDto.getName();
         this.address = storeRequestDto.getAddress();
         this.category = storeRequestDto.getCategory();
+        this.user = user;
     }
 }

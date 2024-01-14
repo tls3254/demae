@@ -2,11 +2,14 @@ package com.example.demae.controller;
 
 import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.dto.store.StoreResponseDto;
+import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.StoreService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,8 +34,8 @@ public class StoreController {
 	public String home(){return "store";}
 
 	@PostMapping
-	public String createStore(@RequestBody StoreRequestDto storeRequestDto) {
-		storeService.createStores(storeRequestDto);
+	public String createStore(@RequestBody StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+		storeService.createStores(storeRequestDto, userDetails.getUser());
 		return "showAllStorePage";
 	}
 
@@ -58,9 +61,11 @@ public class StoreController {
 
 	@PatchMapping("/{storeId}")
 	@ResponseBody
-	public ResponseEntity<String> modifyStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto){
+	public ResponseEntity<String> modifyStore(@PathVariable Long storeId,
+											  @RequestBody StoreRequestDto storeRequestDto,
+											  @AuthenticationPrincipal UserDetails userDetails){
 		try {
-			storeService.modifyStore(storeId, storeRequestDto);
+			storeService.modifyStore(storeId, storeRequestDto, userDetails.getUsername());
 			return ResponseEntity.ok("ok");
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.badRequest().body("fail");
@@ -69,9 +74,9 @@ public class StoreController {
 
 	@DeleteMapping("/{storeId}")
 	@ResponseBody
-	public ResponseEntity<String> deleteStore(@PathVariable Long storeId){
+	public ResponseEntity<String> deleteStore(@PathVariable Long storeId, @AuthenticationPrincipal UserDetails userDetails){
 		try {
-			storeService.deleteStore(storeId);
+			storeService.deleteStore(storeId, userDetails.getUsername());
 			return ResponseEntity.ok("ok");
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.badRequest().body("fail");
