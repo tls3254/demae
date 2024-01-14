@@ -1,7 +1,5 @@
 package com.example.demae.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.entity.Store;
@@ -9,8 +7,6 @@ import com.example.demae.repository.StoreRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

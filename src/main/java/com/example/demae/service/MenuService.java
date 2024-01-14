@@ -7,13 +7,7 @@ import com.example.demae.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.demae.entity.Store;
-import com.example.demae.entity.User;
-import com.example.demae.repository.MenuRepository;
 import com.example.demae.repository.StoreRepository;
-import com.example.demae.repository.UserRepository;
-import com.example.demae.security.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -56,7 +50,7 @@ public class MenuService {
 
     @Transactional
     public void patchMenu(Long storeId,Long menuId,MenuRequestDto menuRequestDto,String email) {
-        Store findStore = storeRepository.findByMenuListId(menuId);
+        Store findStore = storeRepository.findByMenusId(menuId);
         Menu menu = menuRepository.findById(menuId).orElseThrow(()->new IllegalArgumentException("메뉴가 없습니다."));
         if(!findStore.getUser().getEmail().equals(email)){
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");
