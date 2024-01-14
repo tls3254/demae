@@ -34,6 +34,11 @@ jobs:
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
         shell: bash
 
+      - name: Show artifact
+        run: echo "Artifact is ${{ env.artifact }}"
+        shell: bash
+
+
 
       # 4 빈스토크 배포
       - name: Beanstalk Deploy
