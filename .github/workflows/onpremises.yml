@@ -25,7 +25,7 @@ jobs:
           echo "---
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-          iam_user_arn: arn:aws:iam::${AWS_ACCOUNT_ID}:user/${IAM_USERNAME}
+          iam_user_arn: arn:aws:iam::637423423379:role/githubactions
           region: $AWS_REGION" > codedeploy.onpremises.yml 
 
       - name: Move configuration file to the correct directory
