@@ -12,6 +12,5 @@ import java.util.List;
 public class MenuRequestDto {
     private String name;
     private int price;
-    private Long storeId;
-    private List<MultipartFile> files;
+//    private List<MultipartFile> files;
 }

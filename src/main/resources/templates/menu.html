@@ -15,29 +15,30 @@
     <label for="price">Menu Price:</label>
     <input type="number" id="price" name="price" required><br>
 
-    <label for="storeId">StoreId:</label>
-    <input type="number" id="storeId" name="storeId" required><br>
-
     <button type="button" onclick="createMenu()">Create Menu</button>
 </form>
 
 <div id="messageDiv"></div>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var storeId = /*[[${storeId}]]*/ null; // 동적으로 설정하려는 가게 ID
+    /*]]>*/
+</script>
 <script>
     function createMenu() {
         var menuData = {
             name: $('#name').val(),
             price: $('#price').val(),
-            storeId: $('#storeId').val()
         };
 
         $.ajax({
             type: 'POST',
-            url: '/api/createMenu',
+            url: '/api/store/'+storeId+'/createMenu',
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/allMenu/'+menuData.storeId;
+                window.location.href = '/api/store/'+storeId+'/allMenu/';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
@@ -46,6 +47,6 @@
     }
 </script>
 <!-- showMenuPage로 이동하는 버튼 -->
-<a th:href="@{/api/allMenu/1}" class="btn btn-primary">Show Menu Page</a>
+<a th:href="@{/api/store/storeId/allMenu(storeId=${menu.storeId})}" class="btn btn-primary">Show Menu Page</a>
 </body>
 </html>

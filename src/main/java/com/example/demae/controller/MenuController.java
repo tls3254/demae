@@ -18,29 +18,32 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/store/{storeId}")
+@RequestMapping("/api/store")
 public class MenuController {
 	private final MenuService menuService;
   
-    @GetMapping("/menu")
+    @GetMapping("/{storeId}/menu")
     public String home(){return "menu";}
-    @PostMapping("/createMenu")
+    @PostMapping("/{storeId}/createMenu")
     public String createMenu(@RequestBody MenuRequestDto menuRequestDto,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+                             @AuthenticationPrincipal UserDetailsImpl userDetails,
+                             @PathVariable Long storeId,
+                             Model model){
         String email = userDetails.getUser().getEmail();
-        String message = menuService.createMenu(menuRequestDto,email);
+        String message = menuService.createMenu(storeId,menuRequestDto,email);
         if(!message.equals("성공")){
             throw new IllegalArgumentException("실패했습니다.");
         }
+        model.addAttribute("storeId", storeId);
         return "showMenuPage";
     }
-    @GetMapping("/allMenu/{storeId}")
+    @GetMapping("/{storeId}/allMenu")
     public String AllMenu(Model model,@PathVariable Long storeId){
         List<MenuResponseDto> allMenu = menuService.AllMenu(storeId);
         model.addAttribute("menuList", allMenu);
         return "showMenuPage";
     }
-    @GetMapping("/selectMenu/{storeId}/{menuId}")
+    @GetMapping("/{storeId}/selectMenu/{menuId}")
     public String selectMenu(Model model,@PathVariable Long storeId,@PathVariable Long menuId){
         MenuResponseDto selectMenu = menuService.selectMenu(storeId,menuId);
         model.addAttribute("menuOne", selectMenu);
@@ -48,7 +51,7 @@ public class MenuController {
         model.addAttribute("menuId", menuId);
         return "showSelectMenu";
     }
-    @PatchMapping("/patchMenu/{storeId}/{menuId}")
+    @PatchMapping("/{storeId}/patchMenu/{menuId}")
     public String patchMemu(@PathVariable Long storeId,
                             @PathVariable Long menuId,
                             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -58,7 +61,7 @@ public class MenuController {
 
         return "showMenuPage";
     }
-    @DeleteMapping("/deleteMenu/{storeId}/{menuId}")
+    @DeleteMapping("/{storeId}/deleteMenu/{menuId}")
     public String deleteMenu(@PathVariable Long storeId,
                              @PathVariable Long menuId,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
