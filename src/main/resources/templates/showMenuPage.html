@@ -20,7 +20,10 @@
         <tr th:each="menu : ${menuList}">
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
-<!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
+            <td>
+            <td>
+                <a th:href="@{/api/store/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">가게 정보 보기</a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -30,7 +33,6 @@
 </div>
 
 <!-- Create Menu 버튼 -->
-<a th:href="@{/api/menu}" class="btn btn-primary">Create Menu</a>
-<a th:href="@{/api/selectMenu/1/1}" class="btn btn-primary">Update Menu</a>
+<a th:href="@{/api/store/1/menu}" class="btn btn-primary">Create Menu</a>
 </body>
 </html>
