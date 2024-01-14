@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -25,4 +28,10 @@ public class Store {
     @Column(nullable = false)
     private String category;
 
+    @OneToOne
+    @JoinColumn(name ="user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "store")
+    private List<Menu> menuList = new ArrayList<>();
 }

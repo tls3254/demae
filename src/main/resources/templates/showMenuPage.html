@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Menu</title>
+</head>
+<body>
+
+<h1>Show Menu</h1>
+
+<div th:if="${not #lists.isEmpty(menuList)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menu : ${menuList}">
+            <td th:text="${menu.name}"></td>
+            <td th:text="${menu.price}"></td>
+<!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${#lists.isEmpty(menuList)}">
+    <p>No menus available.</p>
+</div>
+
+<!-- Create Menu 버튼 -->
+<a th:href="@{/api/menu}" class="btn btn-primary">Create Menu</a>
+<a th:href="@{/api/selectMenu/1/1}" class="btn btn-primary">Update Menu</a>
+
+</body>
+</html>
