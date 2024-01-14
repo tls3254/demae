@@ -34,5 +34,5 @@ jobs:
       - name: 구성 파일을 올바른 디렉토리로 이동
         run: sudo mkdir -p /etc/codedeploy-agent/conf/ && sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
 
-      - name: Restart CodeDeploy Agent
-        run: sudo systemctl restart codedeploy-agent
+#      - name: Restart CodeDeploy Agent
+#        run: sudo systemctl restart codedeploy-agent
