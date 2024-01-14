@@ -1,5 +1,5 @@
 version: 0.0
-os: linux
+os: linux # 여기는 window와 linux만 가능 ubuntu도 linux기반이라 linux작성
 files:
   - source:  /
     destination: /home/ubuntu/action
