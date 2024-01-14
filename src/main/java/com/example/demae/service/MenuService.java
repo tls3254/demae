@@ -11,6 +11,7 @@ import com.example.demae.repository.UserRepository;
 import com.example.demae.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +50,14 @@ public class MenuService {
         return new MenuResponseDto(checkMenu);
     }
 
+    @Transactional
     public void patchMenu(Long storeId,Long menuId,MenuRequestDto menuRequestDto,String email) {
         Store findStore = storeRepository.findByMenuListId(menuId);
         Menu menu = menuRepository.findById(menuId).orElseThrow(()->new IllegalArgumentException("메뉴가 없습니다."));
         if(!findStore.getUser().getEmail().equals(email)){
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");
         }
-        menu.update(menuRequestDto);
+        menu.update(menuRequestDto.getName(),menuRequestDto.getPrice());
     }
 
     public void deleteMenu(Long storeId,Long menuId,String email) {

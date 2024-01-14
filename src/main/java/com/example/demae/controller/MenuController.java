@@ -26,8 +26,7 @@ public class MenuController {
     @GetMapping("/menu")
     public String home(){return "menu";}
     @PostMapping("/createMenu")
-    public String createMenu(
-                             @RequestBody MenuRequestDto menuRequestDto,
+    public String createMenu(@RequestBody MenuRequestDto menuRequestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         String message = menuService.createMenu(menuRequestDto,email);

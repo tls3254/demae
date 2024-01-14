@@ -30,9 +30,8 @@ public class Menu {
         this.price = menuRequestDto.getPrice();
         this.store = store;
     }
-
-    public void update(MenuRequestDto menuRequestDto) {
-        this.name =menuRequestDto.getName();
-        this.price =menuRequestDto.getPrice();
+    public void update(String name, int price) {
+        this.name = name;
+        this.price = price;
     }
 }

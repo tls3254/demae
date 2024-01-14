@@ -8,7 +8,7 @@
 
 <h1>Show Menu</h1>
 
-<div th:if="${not #lists.isEmpty(menuOne)}">
+<div th:if="${not #lists.isEmpty(menuList)}">
     <table>
         <thead>
         <tr>
@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="menu : ${menuOne}">
+        <tr th:each="menu : ${menuList}">
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
 <!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
@@ -25,7 +25,7 @@
         </tbody>
     </table>
 </div>
-<div th:if="${#lists.isEmpty(menuOne)}">
+<div th:if="${#lists.isEmpty(menuList)}">
     <p>No menus available.</p>
 </div>
 
