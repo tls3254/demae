@@ -81,11 +81,11 @@
 
         $.ajax({
             type: 'PATCH',
-            url: '/api/store/'+storeId+'/patchMenu/'+menuId,
+            url: '/api/stores/'+storeId+'/patchMenu/'+menuId,
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/store/'+storeId+'/allMenu';
+                window.location.href = '/api/stores/'+storeId+'/allMenu';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
@@ -103,11 +103,11 @@
 
         $.ajax({
             type: 'DELETE',
-            url: '/api/store/'+storeId+'/deleteMenu/'+menuId,
+            url: '/api/stores/'+storeId+'/deleteMenu/'+menuId,
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/store/'+storeId+'/allMenu';
+                window.location.href = '/api/stores/'+storeId+'/allMenu';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
