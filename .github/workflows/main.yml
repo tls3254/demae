@@ -1,30 +1,26 @@
-# workflow의 이름
 name: github-actions-test
 
-# 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
 on:
   push:
     branches: [main] # main branch로 push 될 때 실행
   pull_request:
     branches: [main]  # main branch로 pull request될 때 실행
 
-# 해당 yml 내에서 사용할 key - value
 env:
   S3_BUCKET_NAME: demae-bucket
   PROJECT_NAME: demae-project
   CODEDEPLOY_NAME: github-actions  # CodeDeploy 애플리케이션 이름으로 실제 값
   CODEDEPLOY_GROUP: github-actions-group
 
-# workflow는 한개 이상의 job을 가지며, 각 job은 여러 step에 따라 단계를 나눌 수 있다
 jobs:
-  build:
-    name: github-actions-test
-    # 해당 jobs에서 아래의 steps들이 어떠한 환경에서 실행될 것인지를 지정
+  deploy-onpremises:
+    name: Deploy On-Premises
     runs-on: ubuntu-latest
 
     steps:
-      # 작업에서 액세스할 수 있도록 $GITHUB_WORKSPACE에서 저장소를 체크아웃
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Set up JDK 1.7
         uses: actions/setup-java@v2
         with:
@@ -43,9 +39,6 @@ jobs:
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
 
-        # $GITHUB_SHA : Github Actions에서 제공하는 여러 기본 환경 변수중 하나
-        # 현재 workflow를 실행시키는 커밋의 해쉬값을 나타낸다
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -53,12 +46,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # S3에 업로드
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
-      # 자동 배포를 위한 CodeDeploy
-      - name: Deploy
+      - name: Deploy with CodeDeploy
         run: |
           aws deploy create-deployment \
           --application-name ${{env.CODEDEPLOY_NAME}} \
@@ -66,3 +57,26 @@ jobs:
           --deployment-group-name ${{env.CODEDEPLOY_GROUP}} \
           --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
           --region ap-northeast-2
+
+      - name: Create CodeDeploy On-Premises configuration
+        run: |
+          echo "---
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+          iam_user_arn: arn:aws:iam::637423423379:role/githubactions
+          region: $AWS_REGION" > codedeploy.onpremises.yml
+
+      - name: Check configuration file
+        run: cat codedeploy.onpremises.yml
+
+      - name: Move configuration file to the correct directory
+        run: sudo mkdir -p /etc/codedeploy-agent/conf/ && sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
+
+      - name: Restart CodeDeploy Agent
+        run: sudo systemctl restart codedeploy-agent
+
+      # ... 추가적인 작업이 필요하다면 이어서 작성 ...
+
+      - name: Additional steps if needed
+        run: |
+          # Additional steps here
