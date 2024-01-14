@@ -31,8 +31,8 @@ public class AwsS3Service {
 	private final MenuRepository menuRepository;
 
 	@Transactional
-	public void uploadFiles(List<MultipartFile> files, Long menuId) throws IOException {
-		Menu menu = menuRepository.findById(menuId).orElseThrow();
+	public void uploadFiles(List<MultipartFile> files, Long storeId) throws IOException {
+		Menu menu = menuRepository.findById(storeId).orElseThrow();
 		for (MultipartFile file : files) {
 			File fileObj = convertMultiPartFileToFile(file);
 			String fileName = UUID.randomUUID() + "." + extractExtension(file);
@@ -42,8 +42,8 @@ public class AwsS3Service {
 		}
 	}
 
-	public List<String> getObjectUrlsForItem(Long itemId) {
-		List<Picture> pictures = pictureRepository.findByMenuId(itemId);
+	public List<String> getObjectUrlsForMenu(Long menuId) {
+		List<Picture> pictures = pictureRepository.findByMenuId(menuId);
 		List<String> objectUrls = new ArrayList<>();
 		for (Picture picture : pictures) {
 			String objectUrl = s3Client.getUrl(bucketName, picture.getUuid()).toString();

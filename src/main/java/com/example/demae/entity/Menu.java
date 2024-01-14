@@ -24,9 +24,9 @@ public class Menu {
     @JoinColumn(name ="store_id",nullable = false)
     private Store store;
 
-    public Menu(MenuRequestDto menuRequestDto,Store store) {
-        this.name = menuRequestDto.getName();
-        this.price = menuRequestDto.getPrice();
+    public Menu(int price,String name,Store store) {
+        this.name = name;
+        this.price = price;
         this.store = store;
     }
     public void update(String name, int price) {

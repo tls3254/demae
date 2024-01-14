@@ -18,9 +18,13 @@
         </thead>
         <tbody>
         <tr th:each="menu : ${menuList}">
+            <td>
+                <div th:each="url : ${menu.pictureUrls}">
+                    <img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
+                </div>
+            </td>
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
-            <td>
             <td>
                 <a th:href="@{/api/store/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">가게 정보 보기</a>
             </td>
@@ -33,6 +37,6 @@
 </div>
 
 <!-- Create Menu 버튼 -->
-<a th:href="@{/api/store/1/menu}" class="btn btn-primary">Create Menu</a>
+<a th:href="@{'/api/store/' + ${storeId} + '/menu'}" class="btn btn-primary">Create Menu</a>
 </body>
 </html>
