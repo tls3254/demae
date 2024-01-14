@@ -3,7 +3,10 @@ package com.example.demae.controller;
 import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.service.StoreService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,15 +58,23 @@ public class StoreController {
 
 	@PatchMapping("/{storeId}")
 	@ResponseBody
-	public String modify(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto){
-		storeService.modifyStore(storeId, storeRequestDto);
-		return "ok";
+	public ResponseEntity<String> modifyStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto){
+		try {
+			storeService.modifyStore(storeId, storeRequestDto);
+			return ResponseEntity.ok("ok");
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.badRequest().body("fail");
+		}
 	}
 
 	@DeleteMapping("/{storeId}")
 	@ResponseBody
-	public String modify(@PathVariable Long storeId){
-		storeService.deleteStore(storeId);
-		return "ok";
+	public ResponseEntity<String> deleteStore(@PathVariable Long storeId){
+		try {
+			storeService.deleteStore(storeId);
+			return ResponseEntity.ok("ok");
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.badRequest().body("fail");
+		}
 	}
 }
