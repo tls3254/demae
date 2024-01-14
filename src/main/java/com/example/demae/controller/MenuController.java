@@ -23,18 +23,19 @@ public class MenuController {
 	private final MenuService menuService;
   
     @GetMapping("/{storeId}/menu")
-    public String home(){return "menu";}
+    public String home(Model model,@PathVariable Long storeId){
+        model.addAttribute("storeId", storeId);
+        return "menu";
+    }
     @PostMapping("/{storeId}/createMenu")
     public String createMenu(@RequestBody MenuRequestDto menuRequestDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetails,
-                             @PathVariable Long storeId,
-                             Model model){
+                             @PathVariable Long storeId){
         String email = userDetails.getUser().getEmail();
         String message = menuService.createMenu(storeId,menuRequestDto,email);
         if(!message.equals("성공")){
             throw new IllegalArgumentException("실패했습니다.");
         }
-        model.addAttribute("storeId", storeId);
         return "showMenuPage";
     }
     @GetMapping("/{storeId}/allMenu")
