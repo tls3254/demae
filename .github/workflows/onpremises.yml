@@ -1,0 +1,32 @@
+name: deploy-onpremises
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Create CodeDeploy On-Premises configuration
+        run: |
+          echo "---
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+          iam_user_arn: arn:aws:iam::${AWS_ACCOUNT_ID}:user/${IAM_USERNAME}
+          region: $AWS_REGION" > /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
+
+      - name: Restart CodeDeploy Agent
+        run: sudo service codedeploy-agent restart
