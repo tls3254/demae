@@ -26,7 +26,10 @@ jobs:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
           iam_user_arn: arn:aws:iam::${AWS_ACCOUNT_ID}:user/${IAM_USERNAME}
-          region: $AWS_REGION" > /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
+          region: $AWS_REGION" > codedeploy.onpremises.yml 
+
+      - name: Move configuration file to the correct directory
+        run: sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
 
       - name: Restart CodeDeploy Agent
         run: sudo service codedeploy-agent restart
