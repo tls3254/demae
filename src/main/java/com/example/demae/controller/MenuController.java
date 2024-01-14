@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/store/{storeId}")
 public class MenuController {
 	private final MenuService menuService;
   
