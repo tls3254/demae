@@ -9,6 +9,7 @@ import lombok.Setter;
 public class MenuResponseDto {
     private String name;
     private int price;
+  
     public MenuResponseDto(Menu menu){
         this.name =menu.getName();
         this.price = menu.getPrice();

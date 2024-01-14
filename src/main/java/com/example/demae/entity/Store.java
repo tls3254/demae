@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.store.StoreRequestDto;
 import com.example.demae.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "store")
@@ -27,11 +29,17 @@ public class Store {
 
     @Column(nullable = false)
     private String category;
-
+  
+    @OneToMany(mappedBy = "store")
+    private List<Menu> menus = new ArrayList<>();
+    
     @OneToOne
     @JoinColumn(name ="user_id")
     private User user;
 
-    @OneToMany(mappedBy = "store")
-    private List<Menu> menuList = new ArrayList<>();
+    public Store(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.address = storeRequestDto.getAddress();
+        this.category = storeRequestDto.getCategory();
+    }
 }

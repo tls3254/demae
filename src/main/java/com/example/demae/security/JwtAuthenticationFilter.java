@@ -27,25 +27,31 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        //            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-        LoginRequestDto requestDto = new LoginRequestDto(request.getParameter("email"), request.getParameter("password"));
-        return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        requestDto.getEmail(),
-                        requestDto.getPassword(),
-                        null
-                )
-        );
+
+        try{
+//            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+            LoginRequestDto requestDto = new LoginRequestDto(request.getParameter("email"), request.getParameter("password"));
+            return getAuthenticationManager().authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            requestDto.getEmail(),
+                            requestDto.getPassword(),
+                            null
+                    )
+            );
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
-
         String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
         UserRoleEnum role = ((UserDetailsImpl) auth.getPrincipal()).getUser().getRole();
 
-        String token = jwtUtil.createToken(username, role);
-        jwtUtil.addJwtToCookie(token, response);
+        String token = jwtUtil.createToken(username,role);
+        jwtUtil.addJwtToCookie(token,response);
         String redirectUrl = "/api/users/main";
         response.sendRedirect(redirectUrl);
     }

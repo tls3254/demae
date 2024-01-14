@@ -1,12 +1,16 @@
 package com.example.demae.repository;
 
 import com.example.demae.entity.Store;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface StoreRepository extends JpaRepository<Store,Long> {
-    Store findByMenuListId(Long menuId);
+public interface StoreRepository extends JpaRepository<Store, Long> {
+	Optional<Store> findByName(String name);
+	List<Store> findByCategory(String category);
+	Page<Store> findAll(Pageable pageable);
+  Store findByMenusId(Long menuId);
 }

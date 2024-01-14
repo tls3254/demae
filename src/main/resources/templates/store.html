@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Store Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<h1>Store Add Form</h1>
+
+<form id="StoreForm">
+  <label for="name">Store Name:</label>
+  <input type="text" id="name" name="name" required><br>
+
+  <label for="address">Store address:</label>
+  <input type="text" id="address" name="address" required><br>
+
+  <label for="category">Store category:</label>
+  <input type="text" id="category" name="category" required><br>
+
+  <button type="button" onclick="createStore()">Create Store</button>
+</form>
+
+<div id="messageDiv"></div>
+
+<script>
+  function createStore() {
+    var menuData = {
+      name: $('#name').val(),
+      address: $('#address').val(),
+      category: $('#category').val()
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/stores',
+      contentType: 'application/json',
+      data: JSON.stringify(menuData),
+      success: function (message) {
+        window.location.href = '/api/stores';
+      },
+      error: function () {
+        $('#messageDiv').text('Failed to create menu.');
+      }
+    });
+  }
+</script>
+<!-- showMenuPage로 이동하는 버튼 -->
+<a th:href="@{/api/stores}" class="btn btn-primary">Show Store Page</a>
+</body>
+</html>
