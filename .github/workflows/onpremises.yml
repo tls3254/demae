@@ -35,4 +35,4 @@ jobs:
         run: sudo mkdir -p /etc/codedeploy-agent/conf/ && sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
 
       - name: Restart CodeDeploy Agent
-        run: sudo service codedeploy-agent restart
+        run: sudo systemctl restart codedeploy-agent
