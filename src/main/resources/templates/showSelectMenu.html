@@ -66,6 +66,12 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var storeId = /*[[${storeId}]]*/ null; // 동적으로 설정하려는 가게 ID
+    var menuId = /*[[${menuId}]]*/ null;  // 동적으로 설정하려는 메뉴 ID
+    /*]]>*/
+</script>
 <script>
     function updateData() {
         var menuData = {
@@ -75,11 +81,11 @@
 
         $.ajax({
             type: 'PATCH',
-            url: '/api/patchMenu/1/1',
+            url: '/api/patchMenu/'+storeId+'/'+menuId,
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/allMenu/1';
+                window.location.href = '/api/allMenu/'+storeId;
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
@@ -97,11 +103,11 @@
 
         $.ajax({
             type: 'DELETE',
-            url: '/api/deleteMenu/1/1',
+            url: '/api/deleteMenu/'+storeId+'/'+menuId,
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/allMenu/1';
+                window.location.href = '/api/allMenu/'+storeId;
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');

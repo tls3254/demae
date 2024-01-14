@@ -56,7 +56,7 @@ public class MenuService {
 
     @Transactional
     public void patchMenu(Long storeId,Long menuId,MenuRequestDto menuRequestDto,String email) {
-        Store findStore = storeRepository.findByMenuListId(menuId);
+        Store findStore = storeRepository.findByMenusId(menuId);
         Menu menu = menuRepository.findById(menuId).orElseThrow(()->new IllegalArgumentException("메뉴가 없습니다."));
         if(!findStore.getUser().getEmail().equals(email)){
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");

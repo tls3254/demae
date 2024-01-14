@@ -53,6 +53,8 @@ public class MenuController {
     public String selectMenu(Model model,@PathVariable Long storeId,@PathVariable Long menuId){
         MenuResponseDto selectMenu = menuService.selectMenu(storeId,menuId);
         model.addAttribute("menuOne", selectMenu);
+        model.addAttribute("storeId", storeId); // 여기에 동적으로 설정하려는 가게 ID 값을 넣어주세요.
+        model.addAttribute("menuId", menuId);
         return "showSelectMenu";
     }
     @PatchMapping("/patchMenu/{storeId}/{menuId}")
