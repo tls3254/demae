@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class UserController {
-
     private UserService userService;
 
     @GetMapping
@@ -44,5 +44,4 @@ public class UserController {
     public String main(){
         return "main";
     }
-
 }

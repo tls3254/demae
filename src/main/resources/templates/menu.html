@@ -9,40 +9,43 @@
 <h1>Menu Form</h1>
 
 <form id="menuForm">
-  <label for="name">Menu Name:</label>
-  <input type="text" id="name" name="name" required><br>
+    <label for="name">Menu Name:</label>
+    <input type="text" id="name" name="name" required><br>
 
-  <label for="price">Menu Price:</label>
-  <input type="number" id="price" name="price" required><br>
+    <label for="price">Menu Price:</label>
+    <input type="number" id="price" name="price" required><br>
 
-  <button type="button" onclick="createMenu()">Create Menu</button>
+    <label for="storeId">StoreId:</label>
+    <input type="number" id="storeId" name="storeId" required><br>
+
+    <button type="button" onclick="createMenu()">Create Menu</button>
 </form>
 
 <div id="messageDiv"></div>
 
 <script>
-  function createMenu() {
-    var menuData = {
-      name: $('#name').val(),
-      price: $('#price').val()
-    };
+    function createMenu() {
+        var menuData = {
+            name: $('#name').val(),
+            price: $('#price').val(),
+            storeId: $('#storeId').val()
+        };
 
-   // const lastSegment = window.location.href.split('/').pop();
-
-    $.ajax({
-      type: 'POST',
-      url: "/api/createMenu",
-      contentType: 'application/json',
-      data: JSON.stringify(menuData),
-      success: function (message) {
-        window.location.href = '/api/menu';
-      },
-      error: function () {
-      }
-    });
-  }
+        $.ajax({
+            type: 'POST',
+            url: '/api/createMenu',
+            contentType: 'application/json',
+            data: JSON.stringify(menuData),
+            success: function (message) {
+                window.location.href = '/api/allMenu/'+menuData.storeId;
+            },
+            error: function () {
+                $('#messageDiv').text('Failed to create menu.');
+            }
+        });
+    }
 </script>
 <!-- showMenuPage로 이동하는 버튼 -->
-<a th:href="@{/api/menu}" class="btn btn-primary">Show Menu Page</a>
+<a th:href="@{/api/allMenu/1}" class="btn btn-primary">Show Menu Page</a>
 </body>
 </html>

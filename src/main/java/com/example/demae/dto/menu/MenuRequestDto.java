@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MenuRequestDto {
-	private String name;
-	private int price;
+    private String name;
+    private int price;
+    private Long storeId;
 }

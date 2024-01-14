@@ -29,10 +29,13 @@ public class Store {
 
     @Column(nullable = false)
     private String category;
-
-    @OneToMany(mappedBy = "store") // "store"는 Menu 엔터티에 있는 Store 타입 필드의 이름
+  
+    @OneToMany(mappedBy = "store")
     private List<Menu> menus = new ArrayList<>();
-
+    
+    @OneToOne
+    @JoinColumn(name ="user_id")
+    private User user;
 
     public Store(StoreRequestDto storeRequestDto) {
         this.name = storeRequestDto.getName();
