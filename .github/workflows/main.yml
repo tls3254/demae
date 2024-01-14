@@ -18,7 +18,7 @@ env:
 # workflow는 한개 이상의 job을 가지며, 각 job은 여러 step에 따라 단계를 나눌 수 있다
 jobs:
   build:
-    name: github-actions-test
+    name: github-actions
     # 해당 jobs에서 아래의 steps들이 어떠한 환경에서 실행될 것인지를 지정
     runs-on: ubuntu-latest
 
@@ -64,7 +64,6 @@ jobs:
             --application-name ${{env.CODEDEPLOY_NAME}} \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --deployment-group-name ${{env.CODEDEPLOY_GROUP}} \
-            --ignore-application-stop-failures \
             --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
             --region ap-northeast-2
       
