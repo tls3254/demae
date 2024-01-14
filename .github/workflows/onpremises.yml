@@ -28,12 +28,14 @@ jobs:
           iam_user_arn: arn:aws:iam::637423423379:role/githubactions
           region: $AWS_REGION" > codedeploy.onpremises.yml
 
-      - name: 구성 파일 생성 확인
-        run: cat codedeploy.onpremises.yml
+#      - name: 구성 파일 생성 확인
+#        run: cat codedeploy.onpremises.yml
 
-      # 해당 파일은 자동으로 생기는게 아니기 때문에 생성해주기 부터 실행
+          # 해당 파일은 자동으로 생기는게 아니기 때문에 생성해주기 부터 실행
       - name: 구성 파일을 올바른 디렉토리로 이동
-        run: sudo mkdir -p /etc/codedeploy-agent/conf/ && sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
+        run: |
+          sudo mkdir -p /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
+          sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
 
 #      - name: Restart CodeDeploy Agent
 #        run: sudo systemctl restart codedeploy-agent
