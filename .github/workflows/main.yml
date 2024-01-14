@@ -59,11 +59,11 @@ jobs:
 
       # 자동 배포를 위한 CodeDeploy
       - name: Deploy
-        run: |
-          aws deploy create-deployment \
+        run: aws deploy create-deployment \
           --application-name ${{env.CODEDEPLOY_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{env.CODEDEPLOY_GROUP}} \
-          --ignore-application-stop-failures \ 
+          --ignore-application-stop-failures \
           --s3-location bucket=${S3_BUCKET_NAME},bundleType=zip,key=${{env.PROJECT_NAME}}/$GITHUB_SHA.zip \
           --region ap-northeast-2
+
