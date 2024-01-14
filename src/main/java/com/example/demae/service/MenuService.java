@@ -38,19 +38,13 @@ public class MenuService {
 
     public List<MenuResponseDto> AllMenu(Long storeId) {
         List<Menu> storeCheck = menuRepository.findByStoreId(storeId);
-        if(storeCheck.isEmpty()){
-            throw new IllegalArgumentException("가게가 일치하지 않습니다.");
-        }
+        List<Menu> newList = new ArrayList<>(storeCheck);
+
         List<MenuResponseDto> menuResponseDto = new ArrayList<>();;
         for (Menu menu : storeCheck) {
             List<String> pictureUrls = awsS3Service.getObjectUrlsForMenu(menu.getId());
             menuResponseDto.add(new MenuResponseDto(menu, pictureUrls));
         }
-//        List<Menu> newList = new ArrayList<>(storeCheck);
-//        List<Menu> MenuList = menuRepository.findAll();
-//        List<String> picture = awsS3Service.getObjectUrlsForItem(MenuList);
-//        List<Menu> newList = new ArrayList<>(MenuList);
-//        return  newList.stream().map(MenuResponseDto::new).toList();
         return menuResponseDto;
     }
     public MenuResponseDto selectMenu(Long storeId,Long MenuId) {
