@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demae.security.UserDetailsImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -28,14 +30,18 @@ public class MenuController {
         return "menu";
     }
     @PostMapping("/{storeId}/createMenu")
-    public String createMenu(@RequestBody MenuRequestDto menuRequestDto,
+    public String createMenu(@RequestParam("name") String name,
+                             @RequestParam("price") int price,
+                             @RequestParam("files") List<MultipartFile> file,
                              @AuthenticationPrincipal UserDetailsImpl userDetails,
-                             @PathVariable Long storeId){
+                             @PathVariable Long storeId,
+                             Model model) throws IOException {
         String email = userDetails.getUser().getEmail();
-        String message = menuService.createMenu(storeId,menuRequestDto,email);
+        String message = menuService.createMenu(storeId,file,price,name,email);
         if(!message.equals("성공")){
             throw new IllegalArgumentException("실패했습니다.");
         }
+        model.addAttribute("storeId",storeId);
         return "showMenuPage";
     }
     @GetMapping("/{storeId}/allMenu")

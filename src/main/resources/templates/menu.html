@@ -89,12 +89,15 @@
 
 <h1>Menu Form</h1>
 
-<form id="menuForm">
+<form id="menuForm" enctype="multipart/form-data">
     <label for="name">Menu Name:</label>
     <input type="text" id="name" name="name" required><br>
 
     <label for="price">Menu Price:</label>
     <input type="number" id="price" name="price" required><br>
+
+    <label for="files">Select Files:</label>
+    <input type="file" id="files" name="files" multiple><br>
 
     <button type="button" onclick="createMenu()">Create Menu</button>
 </form>
@@ -108,18 +111,19 @@
 </script>
 <script>
     function createMenu() {
-        var menuData = {
-            name: $('#name').val(),
-            price: $('#price').val(),
-        };
+        var formData = new FormData();
+        formData.append('name', $('#name').val());
+        formData.append('price', $('#price').val());
+        formData.append('files', $('#files')[0].files[0]);
 
         $.ajax({
             type: 'POST',
-            url: '/api/stores/'+storeId+'/createMenu',
-            contentType: 'application/json',
-            data: JSON.stringify(menuData),
+            url: '/api/stores/' + storeId + '/createMenu',
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (message) {
-                window.location.href = '/api/stores/'+storeId+'/allMenu';
+                window.location.href = '/api/stores/' + storeId + '/allMenu';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');
