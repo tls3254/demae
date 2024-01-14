@@ -34,8 +34,12 @@ jobs:
           # 해당 파일은 자동으로 생기는게 아니기 때문에 생성해주기 부터 실행
       - name: 구성 파일을 올바른 디렉토리로 이동
         run: |
-          sudo mkdir -p /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
+          sudo mkdir -p /etc/codedeploy-agent/conf/
           sudo mv codedeploy.onpremises.yml /etc/codedeploy-agent/conf/
+
+      # 만든 파일 내용 확인
+      - name: 생성한 파일 확인
+        run: cat /etc/codedeploy-agent/conf/codedeploy.onpremises.yml
 
 #      - name: Restart CodeDeploy Agent
 #        run: sudo systemctl restart codedeploy-agent
