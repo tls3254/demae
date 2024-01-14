@@ -28,16 +28,3 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 120MB
-
-cloud:
-  aws:
-    s3:
-      bucket: lv05s3test # {버킷명}
-    credentials:
-      access-key: AKIAZI2LFR6JQ5CWR7E7 # s3할때 입력한 access-key
-      secret-key: eGEuzTv40OBJEotPi2sT7JKiI9P2Moy9SGnGqI9o # s3할때 입력한 secret-key
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
