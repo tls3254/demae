@@ -38,6 +38,10 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+    @OneToOne
+    @JoinColumn(name ="store_id")
+    private Store store;
+
 
     public User(SignupRequestDto requestDto, UserRoleEnum role, String password) {
         this.email = requestDto.getEmail();

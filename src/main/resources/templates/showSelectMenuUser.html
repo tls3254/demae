@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Show Menu</title>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+      table {
+          border-spacing: 0;
+          width: 80%;
+          margin: 20px 0; /* 위아래 여백을 조절하세요 */
+      }
+
+      th, td {
+          padding: 10px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
+      }
+
+      .table-container {
+          overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
+      }
+	</style>
+</head>
+<body>
+
+<h1>Show Menu</h1>
+
+<div th:if="${not #lists.isEmpty(menuOne)}">
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="menu : ${menuOne}">
+			<td th:text="${menu.name}"></td>
+			<td th:text="${menu.price}"></td>
+			<!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div th:if="${#lists.isEmpty(menuOne)}">
+	<p>No menus available.</p>
+</div>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var storeId = /*[[${storeId}]]*/ null; // 동적으로 설정하려는 가게 ID
+	var menuId = /*[[${menuId}]]*/ null;  // 동적으로 설정하려는 메뉴 ID
+	/*]]>*/
+</script>
+<script>
+	function updateData() {
+		var menuData = {
+			name: $('#name').val(),
+			price: $('#price').val()
+		};
+
+		$.ajax({
+			type: 'PATCH',
+			url: '/api/stores/'+storeId+'/patchMenu/'+menuId,
+			contentType: 'application/json',
+			data: JSON.stringify(menuData),
+			success: function (message) {
+				window.location.href = '/api/stores/'+storeId+'/allMenu';
+			},
+			error: function () {
+				$('#messageDiv').text('Failed to create menu.');
+			}
+		});
+	}
+</script>
+
+<script>
+	function deleteMenu() {
+		var menuData = {
+			name: $('#name').val(),
+			price: $('#price').val()
+		};
+
+		$.ajax({
+			type: 'DELETE',
+			url: '/api/stores/'+storeId+'/deleteMenu/'+menuId,
+			contentType: 'application/json',
+			data: JSON.stringify(menuData),
+			success: function (message) {
+				window.location.href = '/api/stores/'+storeId+'/allMenu';
+			},
+			error: function () {
+				$('#messageDiv').text('Failed to create menu.');
+			}
+		});
+	}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

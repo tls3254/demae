@@ -28,3 +28,20 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 120MB
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA3WU33JLNWDFIWXNV
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: demo-ec2-lv5-item
+
+
+

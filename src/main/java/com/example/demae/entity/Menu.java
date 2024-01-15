@@ -1,24 +1,36 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.menu.MenuRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @Table(name = "menu")
 public class Menu {
-//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
 
     @Column(nullable = false)
-    private Long price;
+    private int price;
 
+    @ManyToOne
+    @JoinColumn(name ="store_id",nullable = false)
+    private Store store;
+
+    public Menu(int price,String name,Store store) {
+        this.name = name;
+        this.price = price;
+        this.store = store;
+    }
+    public void update(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
 }

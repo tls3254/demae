@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Show Menu</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+      table {
+          border-spacing: 0;
+          width: 80%;
+          margin: 20px 0; /* 위아래 여백을 조절하세요 */
+      }
+
+      th, td {
+          padding: 10px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
+      }
+
+      .table-container {
+          overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
+      }
+	</style>
+</head>
+<body>
+
+<h1>Show Menu</h1>
+
+<div th:if="${not #lists.isEmpty(menuList)}">
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Picture</th>
+			<th>Info</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="menu : ${menuList}">
+			<td th:text="${menu.name}"></td>
+			<td th:text="${menu.price}"></td>
+			<td>
+				<div th:each="url : ${menu.pictureUrls}">
+					<img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
+				</div>
+			</td>
+			<td>
+				<a class="btn btn-info store-link" th:href="@{/api/stores/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">메뉴 정보 보기</a>
+
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div th:if="${#lists.isEmpty(menuList)}">
+	<p>No menus available.</p>
+</div>
+
+</body>
+</html>

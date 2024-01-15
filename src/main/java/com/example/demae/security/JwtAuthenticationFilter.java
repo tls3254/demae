@@ -26,9 +26,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try{
-            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
 
+        try{
+//            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+            LoginRequestDto requestDto = new LoginRequestDto(request.getParameter("email"), request.getParameter("password"));
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getEmail(),
@@ -36,15 +37,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             null
                     )
             );
-        }catch (IOException e){
+        }catch (Exception e){
+
             throw new RuntimeException(e.getMessage());
         }
+
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
         String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
-        UserRoleEnum role = ((UserDetailsImpl)auth.getPrincipal()).getUser().getRole();
+        UserRoleEnum role = ((UserDetailsImpl) auth.getPrincipal()).getUser().getRole();
 
         String token = jwtUtil.createToken(username,role);
         jwtUtil.addJwtToCookie(token,response);
