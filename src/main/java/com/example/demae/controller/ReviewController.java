@@ -60,6 +60,12 @@ public class ReviewController {
         reviewService.patchReview(orderId,reviewId,reviewRequestDto,email);
         return "showSingleReview";
     }
-//    @DeleteMapping("/{orderId}/patchReview/{reviewId}")
-//    public
+    @DeleteMapping("/{orderId}/deleteReview/{reviewId}")
+    public String deleteReview(@PathVariable Long orderId,
+                               @PathVariable Long reviewId,
+                               @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String email = userDetails.getUser().getEmail();
+        reviewService.deleteReview(orderId,reviewId,email);
+        return "showSingleReview";
+    }
 }

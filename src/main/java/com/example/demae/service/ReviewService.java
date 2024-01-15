@@ -11,6 +11,7 @@ import com.example.demae.repository.OrderRepository;
 import com.example.demae.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ReviewService {
         return new ReviewResponseDto(checkReview);
     }
 
+    @Transactional
     public void patchReview(Long orderId, Long reviewId,ReviewRequestDto reviewRequestDto,String email) {
         Order findOder = orderRepository.findByReviewsId(reviewId);
         Review review = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
@@ -52,5 +54,14 @@ public class ReviewService {
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");
         }
         review.update(reviewRequestDto.getPoint(),reviewRequestDto.getContent());
+    }
+    @Transactional
+    public void deleteReview(Long orderId, Long reviewId, String email) {
+        Order FindOrder = orderRepository.findById(orderId).orElseThrow(()->new IllegalArgumentException("가게 정보가 없습니다"));
+        Review findReview = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("본인의 메뉴가 아닙니다."));
+        if(!FindOrder.getUser().getEmail().equals(email)){
+            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+        }
+        reviewRepository.delete(findReview);
     }
 }
