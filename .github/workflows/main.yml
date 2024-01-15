@@ -7,8 +7,8 @@ on:
 
 env:
   RESOURCE_PATH: ./src/main/resources/application.yml, # application.yml 설정 파일
-#  APPLICATION_NAME: eb-demae-springboot,
-#  ENVIRONMENT_NAME: eb-demae-springboot-env
+  APPLICATION_NAME: eb-demae-springboot,
+  ENVIRONMENT_NAME: eb-demae-springboot-env
 
 jobs:
    build:
@@ -71,8 +71,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: eb-demae-springboot
-          environment_name: eb-demae-springboot-env
+          application_name: ${{ env.APPLICATION_NAME }}
+          environment_name: ${{ env.ENVIRONMENT_NAME }}
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: ./build/libs/${{ env.artifact }}
