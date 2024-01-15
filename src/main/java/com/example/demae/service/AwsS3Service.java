@@ -51,6 +51,18 @@ public class AwsS3Service {
 		}
 		return objectUrls;
 	}
+	@Transactional
+	public void deleteFilesByMenuId(Long menuId) {
+		// 데이터베이스에서 해당 menuId에 속한 모든 파일 정보 조회
+		List<Picture> pictures = pictureRepository.findByMenuId(menuId);
+		// 각 파일에 대해 S3에서 삭제하고 데이터베이스에서도 삭제
+		for (Picture picture : pictures) {
+			String uuid = picture.getUuid();
+			s3Client.deleteObject(bucketName, uuid);
+			pictureRepository.delete(picture);
+		}
+	}
+
 
 	private File convertMultiPartFileToFile(MultipartFile file) throws IOException {
 		File convertedFile = new File(file.getOriginalFilename());
