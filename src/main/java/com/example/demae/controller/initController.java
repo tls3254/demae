@@ -12,4 +12,5 @@ public class initController {
     @GetMapping("/menu")
     public String menu(){return "menu";}
 
+
 }
