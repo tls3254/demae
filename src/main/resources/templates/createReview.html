@@ -9,7 +9,7 @@
         .rating {
             display: inline-block;
             unicode-bidi: bidi-override;
-            direction: rtl;
+            direction: ltr; /* Changed direction to left-to-right */
         }
         .rating > span {
             display: inline-block;
@@ -22,6 +22,7 @@
             position: absolute;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
@@ -46,6 +47,13 @@
     </div>
 </form>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var orderId = /*[[${orderId}]]*/ null; // 동적으로 설정하려는 가게 ID
+    /*]]>*/
+</script>
+
+
 <script>
     // 별점을 설정하는 함수
     function setRating(event) {
@@ -69,6 +77,9 @@
         }
     }
 
+    // 클라이언트 스크립트
+    // ...
+
     // 평가 제출 이벤트 처리
     document.getElementById('ratingForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -77,34 +88,29 @@
         const ratingValue = document.getElementById('ratingValue').value;
         const message = document.getElementById('message').value;
 
-        // 주문 ID를 가져오는 코드 추가
-        var orderId = /* 여기에 주문 ID를 가져오는 코드 추가 */null;
-
         // JSON 데이터 생성
         var reviewData = {
             point: ratingValue,
             content: message
         };
 
-        console.log(ratingValue)
         // AJAX 요청을 이용하여 서버로 데이터 전송
-        fetch(`/api/${orderId}/review`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        $.ajax({
+            type: 'POST',
+            url: '/api/stores/' + orderId + '/review',
+            contentType: 'application/json',
+            data: JSON.stringify(reviewData),
+            success: function (data) {
+                window.location.href = '/api/stores/'+orderId+'/review';
             },
-            body: JSON.stringify(reviewData),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('평가가 성공적으로 전송되었습니다.', data);
-                // 성공적으로 처리된 후의 동작을 추가하세요.
-            })
-            .catch(error => {
+            error: function (error) {
                 console.error('평가 전송 중 오류가 발생했습니다.', error);
                 // 오류 발생 시의 동작을 추가하세요.
-            });
+            }
+        });
+
     });
+
 </script>
 
 </body>

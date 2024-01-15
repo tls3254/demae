@@ -1,6 +1,7 @@
 package com.example.demae.controller;
 
 import com.example.demae.dto.review.ReviewRequestDto;
+import com.example.demae.entity.Review;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/stores")
@@ -16,7 +19,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     @GetMapping("/{orderId}/createreview")
     public String showCreateReviewPage(Model model,@PathVariable Long orderId){
-        model.addAttribute("oderId",orderId);
+        model.addAttribute("orderId",orderId);
         return "createReview";
     }
     @PostMapping("/{orderId}/review")
@@ -28,7 +31,13 @@ public class ReviewController {
         return "showMenuPage";
     }
 
-//    @GetMapping
+    @GetMapping("/{orderId}/review")
+    public String getReview(@PathVariable Long orderId,
+                            Model model){
+        List<Review> review = reviewService.getReview(orderId);
+        model.addAttribute("reviewList", review);
+        return "showReview";
+    }
 //
 //    @PathVariable
 //    @DeleteMapping

@@ -17,7 +17,7 @@ public class Review {
     private Long id;
 
     @Column
-    private Long point;
+    private int point;
 
     @Column
     private String content;
