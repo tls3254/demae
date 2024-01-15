@@ -6,7 +6,10 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class initController {
-    @GetMapping("/")
-    public String home(){return "store";}
+    @GetMapping("/main")
+    public String main(){return "main";}
+
+    @GetMapping("/menu")
+    public String menu(){return "menu";}
 
 }
