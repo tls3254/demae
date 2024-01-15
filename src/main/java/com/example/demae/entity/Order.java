@@ -11,7 +11,7 @@ import org.hibernate.mapping.ToOne;
 @Entity
 @NoArgsConstructor
 @Table(name = "orders")
-public class Order extends Timestamped {
+public class   Order extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
