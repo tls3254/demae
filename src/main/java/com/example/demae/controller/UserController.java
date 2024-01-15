@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping
     public String signUpAdrees(){
-        return "singUp";
+        return "signUp";
     }
 
     @PostMapping
