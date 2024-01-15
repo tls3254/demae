@@ -3,6 +3,7 @@ package com.example.demae.controller;
 import com.example.demae.dto.menu.MenuRequestDto;
 import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.service.MenuService;
+import com.example.demae.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,6 +86,23 @@ public class MenuController {
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         menuService.deleteMenu(storeId,menuId,email);
+        return "showMenuPage";
+    }
+    @PostMapping("/{storeId}/selectMenu/{menuId}/createPicture")
+    public String createPicture(@PathVariable Long storeId,
+                                @PathVariable Long menuId,
+                                @RequestParam("files") List<MultipartFile> file,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        String email = userDetails.getUser().getEmail();
+        menuService.createPicture(storeId,menuId,file,email);
+        return "showMenuPage";
+    }
+    @DeleteMapping("/{storeId}/selectMenu/{menuId}/deletePicture")
+    public String deletePicture(@PathVariable Long storeId,
+                                @PathVariable Long menuId,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String email = userDetails.getUser().getEmail();
+        menuService.deletePicture(storeId,menuId,email);
         return "showMenuPage";
     }
 }

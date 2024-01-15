@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PictureRepository extends JpaRepository<Picture, Long> {
 	List<Picture> findByMenuId(Long menuId);
+
+	Picture findByUuid(String uuid);
 }
