@@ -9,8 +9,8 @@ public class initController {
     @GetMapping("/main")
     public String main(){return "main";}
 
-    @GetMapping("/menu")
-    public String menu(){return "menu";}
+    @GetMapping("/store")
+    public String store(){return "store";}
 
 
 }
