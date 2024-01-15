@@ -6,6 +6,7 @@ import com.example.demae.dto.review.ReviewResponseDto;
 import com.example.demae.entity.Menu;
 import com.example.demae.entity.Order;
 import com.example.demae.entity.Review;
+import com.example.demae.entity.Store;
 import com.example.demae.repository.OrderRepository;
 import com.example.demae.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +39,18 @@ public class ReviewService {
         List<Review> newList = new ArrayList<>(reviewCheck);
         return newList;
     }
+
+    public ReviewResponseDto singleMenu(Long orderId, Long reviewId) {
+        Review checkReview = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
+        return new ReviewResponseDto(checkReview);
+    }
+
+    public void patchReview(Long orderId, Long reviewId,ReviewRequestDto reviewRequestDto,String email) {
+        Order findOder = orderRepository.findByReviewsId(reviewId);
+        Review review = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
+        if(!findOder.getUser().getEmail().equals(email)){
+            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+        }
+        review.update(reviewRequestDto.getPoint(),reviewRequestDto.getContent());
+    }
 }
-//    List<Menu> newList = new ArrayList<>(storeCheck);
-//
-//    List<MenuResponseDto> menuResponseDto = new ArrayList<>();;
-//        for (Menu menu : storeCheck) {
-//                List<String> pictureUrls = awsS3Service.getObjectUrlsForMenu(menu.getId());
-//        menuResponseDto.add(new MenuResponseDto(menu, pictureUrls));
-//        }
-//        return menuResponseDto;

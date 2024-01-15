@@ -1,6 +1,8 @@
 package com.example.demae.controller;
 
+import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.dto.review.ReviewRequestDto;
+import com.example.demae.dto.review.ReviewResponseDto;
 import com.example.demae.entity.Review;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.ReviewService;
@@ -31,14 +33,33 @@ public class ReviewController {
         return "showMenuPage";
     }
 
-    @GetMapping("/{orderId}/review")
-    public String getReview(@PathVariable Long orderId,
+    @GetMapping("/{orderId}/multiReview")
+    public String multiReview(@PathVariable Long orderId,
                             Model model){
         List<Review> review = reviewService.getReview(orderId);
         model.addAttribute("reviewList", review);
         return "showReview";
     }
-//
-//    @PathVariable
-//    @DeleteMapping
+
+    @GetMapping("/{orderId}/singleReview/{reviewId}")
+    public String singleReview(@PathVariable Long orderId,
+                               @PathVariable Long reviewId,
+                               Model model){
+        ReviewResponseDto selectReview = reviewService.singleMenu(orderId,reviewId);
+        model.addAttribute("reviewOne",selectReview);
+        model.addAttribute("orderId", orderId); // orderId를 모델에 추가
+        model.addAttribute("reviewId", reviewId);
+        return "showSingleReview";
+    }
+    @PatchMapping("/{orderId}/patchReview/{reviewId}")
+    public String patchReview(@PathVariable Long orderId,
+                              @PathVariable Long reviewId,
+                              @RequestBody ReviewRequestDto reviewRequestDto,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String email = userDetails.getUser().getEmail();
+        reviewService.patchReview(orderId,reviewId,reviewRequestDto,email);
+        return "showSingleReview";
+    }
+//    @DeleteMapping("/{orderId}/patchReview/{reviewId}")
+//    public
 }

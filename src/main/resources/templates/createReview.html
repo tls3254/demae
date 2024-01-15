@@ -101,7 +101,7 @@
             contentType: 'application/json',
             data: JSON.stringify(reviewData),
             success: function (data) {
-                window.location.href = '/api/stores/'+orderId+'/review';
+                window.location.href = '/api/stores/'+orderId+'/multiReview';
             },
             error: function (error) {
                 console.error('평가 전송 중 오류가 발생했습니다.', error);

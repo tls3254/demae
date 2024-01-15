@@ -41,6 +41,10 @@
         <tr th:each="review : ${reviewList}">
             <td th:text="${review.point}"></td>
             <td th:text="${review.content}"></td>
+            <td>
+                <a class="btn btn-info store-link"
+                   th:href="@{/api/stores/{orderId}/singleReview/{reviewId}(orderId=${review.order.id}, reviewId=${review.id})}">리뷰 정보 보기</a>
+            </td>
         </tr>
         </tbody>
     </table>

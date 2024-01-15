@@ -31,4 +31,9 @@ public class Review {
         this.content = reviewRequestDto.getContent();
         this.order = order;
     }
+
+    public void update(int point, String content) {
+        this.point = point;
+        this.content = content;
+    }
 }
