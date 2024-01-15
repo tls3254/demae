@@ -44,7 +44,7 @@ application:
   bucket:
     name: demo-ec2-lv5-item
 
-server:
-  port: 5000
+#server:
+#  port: 5000
 
 
