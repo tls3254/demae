@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 env:
-  RESOURCE_PATH: ./src/main/resources/application.yml
+  RESOURCE_PATH: ./src/main/resources/application.yml # application.yml 설정 파일
 
 jobs:
    build:
@@ -16,9 +16,9 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 17
-      - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
-      - run: cat ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/application.yml # 해당 경로에 파일 생성
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml # "${{ secrets.APPLICATION }}" 이 부분을 기존 yml파일의 내용을 삭제하고 추가
+      - run: cat ./src/main/resources/application.yml # yml파일 내용 확인
       
        # [0.5]
       - name: Setup Gradle Wrapper
