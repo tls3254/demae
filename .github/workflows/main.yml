@@ -20,7 +20,7 @@ jobs:
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml # "${{ secrets.APPLICATION }}" 이 부분을 기존 yml파일의 내용을 삭제하고 추가
       - run: cat ./src/main/resources/application.yml # yml파일 내용 확인
       
-       # [0.5]
+       # gradle 버전 설정
       - name: Setup Gradle Wrapper
         run: gradle wrapper --gradle-version 8.5
         shell: bash
@@ -28,12 +28,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
-        
-        # [2]
-      - name: Build with Gradle
-        run: ./gradlew clean build
-        shell: bash
 
+        # [2]
+#      - name: Build with Gradle
+#        run: ./gradlew clean build
+#        shell: bash
+
+        # 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
