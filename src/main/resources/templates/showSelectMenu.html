@@ -36,13 +36,18 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
+            <th>image</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="menu : ${menuOne}">
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
-            <!--            <td> <button onclick="editMenu(this)" th:data-menu-id="${menu.id}">Edit</button></td>-->
+            <td>
+                <div th:each="url : ${menu.pictureUrls}">
+                    <img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -55,6 +60,13 @@
     메뉴정보 수정
 </button>
 <button type="button" class="btn btn-danger" onclick="deleteMenu()">메뉴정보 삭제</button>
+
+<form id="menuForm" enctype="multipart/form-data">
+    <label for="files">Select Files:</label>
+    <input type="file" id="files" name="files" multiple><br>
+    <button type="button" onclick="createPicture()">Create Menu</button>
+</form>
+<button type="button" class="btn btn-danger" onclick="deletePicture()">사진 삭제</button>
 
 <!-- Modal for text input -->
 <div class="modal" id="textModal" tabindex="-1" role="dialog">
@@ -129,6 +141,32 @@
                 $('#messageDiv').text('Failed to create menu.');
             }
         });
+    }
+</script>
+
+<script>
+    function createPicture() {
+        var formData = new FormData();
+        formData.append('files', $('#files')[0].files[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/stores/' + storeId + '/selectMenu/'+menuId+'/createPicture',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (message) {
+                window.location.href = '/api/stores/' + storeId + '/allMenu';
+            },
+            error: function () {
+                $('#messageDiv').text('Failed to create menu.');
+            }
+        });
+    }
+</script>
+<script>
+    function deletePicture(){
+
     }
 </script>
 
