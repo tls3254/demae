@@ -57,7 +57,8 @@ public class MenuController {
         return "showMenuPageUser";
     }
     @GetMapping("/{storeId}/selectMenu/{menuId}")
-    public String selectMenu(Model model,@PathVariable Long storeId,
+    public String selectMenu(Model model,
+                             @PathVariable Long storeId,
                              @PathVariable Long menuId,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         MenuResponseDto selectMenu = menuService.selectMenu(storeId,menuId);

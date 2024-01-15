@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.dto.review.ReviewRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class Review {
     private Long id;
 
     @Column
-    private Long point;
+    private int point;
 
     @Column
     private String content;
@@ -24,4 +25,15 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public Review(ReviewRequestDto reviewRequestDto, Order order) {
+        this.point = reviewRequestDto.getPoint();
+        this.content = reviewRequestDto.getContent();
+        this.order = order;
+    }
+
+    public void update(int point, String content) {
+        this.point = point;
+        this.content = content;
+    }
 }
