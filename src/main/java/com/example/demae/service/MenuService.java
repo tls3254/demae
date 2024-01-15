@@ -84,5 +84,13 @@ public class MenuService {
         }
         awsS3Service.uploadFiles(file,menuId);
     }
+
+    public void deletePicture(Long storeId, Long menuId,String email) {
+        Store store = storeRepository.findByMenusId(menuId);
+        if(!store.getUser().getEmail().equals(email)){
+            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+        }
+        awsS3Service.deleteFilesByMenuId(menuId);
+    }
 }
 

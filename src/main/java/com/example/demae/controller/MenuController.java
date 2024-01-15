@@ -86,4 +86,12 @@ public class MenuController {
         menuService.createPicture(storeId,menuId,file,email);
         return "showMenuPage";
     }
+    @DeleteMapping("/{storeId}/selectMenu/{menuId}/deletePicture")
+    public String deletePicture(@PathVariable Long storeId,
+                                @PathVariable Long menuId,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String email = userDetails.getUser().getEmail();
+        menuService.deletePicture(storeId,menuId,email);
+        return "showMenuPage";
+    }
 }
