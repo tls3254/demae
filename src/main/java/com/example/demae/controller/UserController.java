@@ -1,8 +1,10 @@
 package com.example.demae.controller;
 
 import com.example.demae.dto.login.SignupRequestDto;
+import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +35,13 @@ public class UserController {
     }
 
     @GetMapping("/main")
-    public String main(){
-        return "main";
+    public String main(@AuthenticationPrincipal UserDetailsImpl userDetails)
+    {
+
+        if(userDetails.getUser().getRole().name().equals("ADMIN")) {
+            return "adminMain";
+        }else {
+            return "main";
+        }
     }
 }

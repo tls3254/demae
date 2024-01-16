@@ -5,6 +5,7 @@ import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.entity.Store;
 import com.example.demae.entity.User;
 import com.example.demae.repository.StoreRepository;
+import com.example.demae.repository.UserRepository;
 import com.example.demae.security.UserDetailsImpl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreService {
 	private final StoreRepository storeRepository;
-
+	private final UserRepository userRepository;
+	@Transactional
 	public StoreResponseDto createStores(StoreRequestDto storeRequestDto, User user) {
 		if (storeRepository.findByUserId(user.getId()).isPresent()) {
 			throw new IllegalArgumentException("이미 가입된 계정입니다.");
 		}
-		return new StoreResponseDto().success(storeRepository.save(new Store(storeRequestDto, user)));
+		Store saveStore = storeRepository.save(new Store(storeRequestDto, user));
+		User user1 = userRepository.findById(user.getId()).orElseThrow();
+		user1.setStore(saveStore);
+
+		return new StoreResponseDto().success(saveStore);
 	}
 
 	public StoreResponseDto findStore(Long storeId) {
