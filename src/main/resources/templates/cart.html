@@ -30,7 +30,7 @@
 
 <h1>Cart List</h1>
 
-<div th:if="${not #lists.isEmpty(CartList)}">
+<div th:if="${not #lists.isEmpty(cartList)}">
   <table>
     <thead>
     <tr>
@@ -41,7 +41,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="menuDto : ${CartList.menu}">
+    <tr th:each="menuDto : ${cartList.menu}">
       <td th:text="${menuDto.id}"></td>
       <td th:text="${menuDto.name}"></td>
       <td th:text="${menuDto.price}"></td>
@@ -49,9 +49,9 @@
     </tr>
     </tbody>
   </table>
-  <p>Total Price: <span th:text="${CartList.totalPrice}"></span></p>
+  <p>Total Price: <span th:text="${cartList.totalPrice}"></span></p>
 </div>
-<div th:if="${#lists.isEmpty(CartList)}">
+<div th:if="${#lists.isEmpty(cartList)}">
   <p>No menus available in the Cart.</p>
 </div>
 
@@ -60,12 +60,12 @@
 
 
 <script th:inline="javascript">
-  var CartList = /*[[${CartList.menu}]]*/ null;
-  var totalPrice = /*[[${CartList.totalPrice}]]*/ 0;
+  var cartList = /*[[${cartList.menu}]]*/ null;
+  var totalPrice = /*[[${cartList.totalPrice}]]*/ 0;
   function createOrder() {
-    console.log(CartList)
+    console.log(cartList)
     var orderRequest = {
-      CartList: CartList,
+      cartList: cartList,
       totalPrice: totalPrice
     };
 
@@ -91,12 +91,13 @@
     // Ajax 호출
     $.ajax({
       type: 'DELETE',
-      url: '/api/Cart',
+      url: '/api/cart',
       contentType: 'application/json',
-      data: JSON.stringify({}),
       success: function (response) {
-        alert('장바구니정보가 삭제 되었습니다.');
-        window.location.href = '/api/stores';
+        if (response =="ok") {
+          alert('장바구니정보가 삭제 되었습니다.');
+          window.location.href = '/api/stores';
+        }
         console.log(response);
       },
       error: function (error) {

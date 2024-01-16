@@ -82,7 +82,7 @@
 		// Ajax 호출
 		$.ajax({
 			type: 'POST',
-			url: '/api/Cart',
+			url: '/api/cart',
 			contentType: 'application/json',
 			data: JSON.stringify({ menuId: menuId, quantity: quantity, storeId: storeId }),
 			success: function (response) {

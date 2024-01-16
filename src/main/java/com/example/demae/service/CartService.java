@@ -54,6 +54,7 @@ public class CartService {
 			}
 		}
 	}
+	@Transactional
 	public CartListResponseDto getCart(Long userId) {
 		return createCartResponse(cartRepository.findByUserId(userId));
 	}
