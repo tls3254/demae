@@ -76,8 +76,8 @@
       contentType: 'application/json',
       data: JSON.stringify(orderRequest), // menuDto 속성들을 직렬화하여 전송
       success: function (response) {
-        // alert('주문이 완료되었습니다.');
-        // window.location.href = '/api/stores';
+         alert('주문이 완료되었습니다.');
+         window.location.href = '/api/stores';
         console.log(response);
       },
       error: function (error) {
