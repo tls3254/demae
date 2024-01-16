@@ -50,10 +50,16 @@ public class StoreController {
 	}
 
 	@GetMapping("/{storeId}")
-	public String findStore(@PathVariable Long storeId, Model model){
+	public String findStore(@PathVariable Long storeId, Model model,
+							@AuthenticationPrincipal UserDetailsImpl userDetails){
 		model.addAttribute("storeList", storeService.findStore(storeId));
-		return "showStorePage";
+		if (userDetails.getUser().getRole().name().equals("ADMIN") &&
+				userDetails.getUser().getStore().getId() == storeId) {
+			return "showStorePage";
+		}
+		return "showStorePageUser";
 	}
+
 
 	@GetMapping
 	public String findAllStore(@RequestParam(defaultValue = "0") int page,
