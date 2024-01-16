@@ -32,6 +32,10 @@ public class OrderController {
 	@GetMapping
 	public String getAllOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
 							  Model model) {
+		if(userDetails.getUser().getRole().name().equals("USER")) {
+			model.addAttribute("orderAllUser",orderService.getAllOrderInfoUser(userDetails.getUser()));
+			return "orderAllInfoPageUser";
+		}
 		model.addAttribute("orderAll", orderService.getAllOrderInfo(userDetails.getUser()));
 		return "orderAllInfoPage";
 	}

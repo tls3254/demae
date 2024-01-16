@@ -97,4 +97,14 @@ public class OrderService {
 		}
 		return "fail";
 	}
+
+	public List<OrderAllResponseDto> getAllOrderInfoUser(User user) {
+		List<OrderAllResponseDto> orderResponseDto = new ArrayList<>();
+		List<Order> orderList = orderRepository.findByUserId(user.getId());
+		for(Order order:orderList){
+			OrderAllResponseDto orderAllResponseDto = new OrderAllResponseDto(order);
+			orderResponseDto.add(orderAllResponseDto);
+		}
+		return orderResponseDto;
+	}
 }
