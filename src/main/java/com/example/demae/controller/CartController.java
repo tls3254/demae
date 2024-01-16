@@ -1,8 +1,12 @@
 package com.example.demae.controller;
 
+import com.example.demae.dto.cart.CartRequestDto;
 import com.example.demae.security.UserDetailsImpl;
+import com.example.demae.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

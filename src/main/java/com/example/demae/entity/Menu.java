@@ -1,6 +1,5 @@
 package com.example.demae.entity;
 
-import com.example.demae.dto.menu.MenuRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

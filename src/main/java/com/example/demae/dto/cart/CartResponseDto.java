@@ -1,5 +1,6 @@
 package com.example.demae.dto.cart;
 
+import com.example.demae.entity.Menu;
 import lombok.Getter;
 import lombok.Setter;
 
