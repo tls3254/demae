@@ -1,6 +1,7 @@
 package com.example.demae.controller;
 
 import com.example.demae.dto.login.SignupRequestDto;
+import com.example.demae.entity.User;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,31 +18,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
-
     @GetMapping
     public String signUpAdrees(){
         return "signUp";
     }
 
     @PostMapping
-    public String signUpAdrees1(@ModelAttribute SignupRequestDto signupRequestDto, Model model){
-        System.out.println(signupRequestDto.getName());
+    public String signUpAdrees1(@ModelAttribute SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
         return "users";
     }
     @GetMapping("/loginForm")
-    public String AA(){
+    public String loginForm(){
         return "login";
     }
 
     @GetMapping("/main")
-    public String main(@AuthenticationPrincipal UserDetailsImpl userDetails)
-    {
-
-        if(userDetails.getUser().getRole().name().equals("ADMIN")) {
+    public String main(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        User user = userDetails.getUser();
+        if (user.getRole().name().equals("ADMIN") && user.getStore() != null) {
+            model.addAttribute("storeId", user.getStore().getId());
             return "adminMain";
-        }else {
-            return "main";
         }
+        if (user.getRole().name().equals("ADMIN") && user.getStore() == null) {
+            return "adminMain";
+        }
+        return "main";
     }
 }

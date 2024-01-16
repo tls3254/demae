@@ -80,36 +80,34 @@
 <div class="form-box" id="StoreForm">
   <h1>Store Home</h1>
 
-  <button type="button" onclick="goStore()">Store Info</button>
-  <button type="button" onclick="createStore()">Order Info</button>
+  <!-- Store Info 버튼 또는 Create Store 버튼을 동적으로 렌더링 -->
+  <button type="button" th:if="${storeId != null}" onclick="goStore()">Store Info</button>
+  <button type="button" th:if="${storeId != null}" onclick="goOrderInfo()">Order Info</button>
+
+  <button type="button" th:if="${storeId == null}" onclick="goCreateStore()">Create Store</button>
 </div>
 
-<!-- showMenuPage로 이동하는 버튼 -->
-<!--<a th:href="@{/api/stores}" class="btn btn-primary">Show Store Page</a>-->
-
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var storeId = /*[[${storeId}]]*/ null;
+  /*]]>*/
+</script>
 <script>
   function goStore() {
-    var menuData = {
-      name: $('#name').val(),
-      address: $('#address').val(),
-      category: $('#category').val()
-    };
-
-    $.ajax({
-      type: 'POST',
-      url: '/api/stores',
-      contentType: 'application/json',
-      data: JSON.stringify(menuData),
-      success: function (message) {
-        $('#messageDivContent').text('Store created successfully.');
-        window.location.href = '/api/stores';
-      },
-      error: function (xhr, textStatus, errorThrown) {
-        alert('공백 또는 이미 가입된 계정인지 확인하세요');
-      }
-    });
+        window.location.href = '/api/stores/'+ storeId;
   }
 </script>
 
+<script>
+  function goOrderInfo() {
+    window.location.href = '/api/orders';
+  }
+</script>
+
+<script>
+  function goCreateStore() {
+    window.location.href = '/api/stores/home';
+  }
+</script>
 </body>
 </html>
