@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Show Menu</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         table {
@@ -27,33 +28,37 @@
 </head>
 <body>
 
-<h1>Show Menu</h1>
+<h1>Order</h1>
 
-<div th:if="${not #lists.isEmpty(reviewList)}">
+<div th:if="${not #lists.isEmpty(orderAllUser)}">
     <table>
         <thead>
         <tr>
-            <th>point</th>
-            <th>content</th>
+            <th>Name</th>
+            <th>USER</th>
+            <th>ORDER DATE</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="review : ${reviewList}">
-            <td th:text="${review.point}"></td>
-            <td th:text="${review.content}"></td>
+        <tr th:each="menuDto : ${orderAllUser}">
+            <td th:text="${menuDto.storeName}"></td>
+            <td th:text="${menuDto.userId}"></td>
+            <td th:text="${menuDto.date}"></td>
             <td>
-                <a class="btn btn-info store-link"
-                   th:href="@{/api/orders/{orderId}/singleReview/{reviewId}(orderId=${review.order.id}, reviewId=${review.id})}">리뷰 정보 보기</a>
+                <a class="btn btn-info store-link" th:href="@{/api/orders/{orderId}/multiReview(orderId=${menuDto.id})}">리뷰 정보 보기</a>
+
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<div th:if="${#lists.isEmpty(reviewList)}">
-    <p>No menus available.</p>
+<div th:if="${#lists.isEmpty(orderAllUser)}">
+    <p>No menus available in the Cart.</p>
 </div>
 
-<!-- Create Menu 버튼 -->
-<a th:href="@{'/api/orders/' + ${orderId} + '/createreview'}" class="btn btn-primary">Create Menu</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

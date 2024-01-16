@@ -94,11 +94,11 @@
 
         $.ajax({
             type: 'PATCH',
-            url: '/api/stores/'+orderId+'/patchReview/'+reviewId,
+            url: '/api/orders/'+orderId+'/patchReview/'+reviewId,
             contentType: 'application/json',
             data: JSON.stringify(reviewData),  // 객체 이름을 reviewData로 변경
             success: function (message) {
-                window.location.href = '/api/stores/'+orderId+'/multiReview';
+                window.location.href = '/api/orders/'+orderId+'/multiReview';
             },
             error: function () {
                 $('#messageDiv').text('Failed to update review.');  // 실패 시 메시지 변경
@@ -115,11 +115,11 @@
 
         $.ajax({
             type: 'DELETE',
-            url: '/api/stores/'+orderId+'/deleteReview/'+reviewId,
+            url: '/api/orders/'+orderId+'/deleteReview/'+reviewId,
             contentType: 'application/json',
             data: JSON.stringify(menuData),
             success: function (message) {
-                window.location.href = '/api/stores/'+orderId+'/multiReview';
+                window.location.href = '/api/orders/'+orderId+'/multiReview';
             },
             error: function () {
                 $('#messageDiv').text('Failed to create menu.');

@@ -26,7 +26,12 @@ public class ReviewService {
     public void createReview(Long orderId, ReviewRequestDto reviewRequestDto, Long id) {
 
         Order order = orderRepository.findByUserIdAndId(id, orderId);
-
+        List<Review> review1 = reviewRepository.findByOrderId(orderId);
+        for(Review review2:review1){
+            if(review2.getOrder().getId().equals(orderId)){
+                throw new IllegalArgumentException("리뷰가 존재합니다.");
+            }
+        }
         if (order == null) {
             throw new IllegalArgumentException("주문이 존재하지 않습니다.");
         }

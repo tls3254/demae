@@ -97,11 +97,11 @@
         // AJAX 요청을 이용하여 서버로 데이터 전송
         $.ajax({
             type: 'POST',
-            url: '/api/stores/' + orderId + '/review',
+            url: '/api/orders/' + orderId + '/review',
             contentType: 'application/json',
             data: JSON.stringify(reviewData),
             success: function (data) {
-                window.location.href = '/api/stores/'+orderId+'/multiReview';
+                window.location.href = '/api/orders/'+orderId+'/multiReview';
             },
             error: function (error) {
                 console.error('평가 전송 중 오류가 발생했습니다.', error);
