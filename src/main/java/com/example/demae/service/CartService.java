@@ -1,12 +1,19 @@
 package com.example.demae.service;
 
+import com.example.demae.dto.cart.CartListResponseDto;
+import com.example.demae.dto.cart.CartRequestDto;
+import com.example.demae.dto.cart.CartResponseDto;
+import com.example.demae.entity.Cart;
 import com.example.demae.entity.Menu;
 import com.example.demae.entity.Store;
+import com.example.demae.entity.User;
+import com.example.demae.repository.CartRepository;
 import com.example.demae.repository.MenuRepository;
 import com.example.demae.repository.StoreRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
