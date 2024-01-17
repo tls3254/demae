@@ -29,40 +29,31 @@
 
 <h1>Show Menu</h1>
 
-<div th:if="${not #lists.isEmpty(menuList)}">
+<div th:if="${not #lists.isEmpty(reviewList)}">
     <table>
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>image</th>
-            <th>infor</th>
+            <th>point</th>
+            <th>content</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="menu : ${menuList}">
-            <td th:text="${menu.name}"></td>
-            <td th:text="${menu.price}"></td>
+        <tr th:each="review : ${reviewList}">
+            <td th:text="${review.point}"></td>
+            <td th:text="${review.content}"></td>
             <td>
-                <div th:each="url : ${menu.pictureUrls}">
-                    <img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
-                </div>
-            </td>
-            <td>
-                <a class="btn btn-info store-link" th:href="@{/api/stores/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">메뉴 정보 보기</a>
-
+                <a class="btn btn-info store-link"
+                   th:href="@{/api/orders/{orderId}/singleReview/{reviewId}(orderId=${review.order.id}, reviewId=${review.id})}">리뷰 정보 보기</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<div th:if="${#lists.isEmpty(menuList)}">
+<div th:if="${#lists.isEmpty(reviewList)}">
     <p>No menus available.</p>
 </div>
 
 <!-- Create Menu 버튼 -->
-<a th:href="@{'/api/stores/' + ${storeId} + '/menu'}" class="btn btn-primary">Create Menu</a>
-<a th:href="@{'/api/stores'}" class="btn btn-primary">Store</a>
-<a th:href="@{'/'}" class="btn btn-primary">Start</a>
+<a th:href="@{'/api/orders/' + ${orderId} + '/createreview'}" class="btn btn-primary">Create review</a>
 </body>
 </html>

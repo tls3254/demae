@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Show Menu</title>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+      table {
+          border-spacing: 0;
+          width: 80%;
+          margin: 20px 0; /* 위아래 여백을 조절하세요 */
+      }
+
+      th, td {
+          padding: 10px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
+      }
+
+      .table-container {
+          overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
+      }
+	</style>
+</head>
+<body>
+
+<h1>Order</h1>
+
+<div th:if="${not #lists.isEmpty(order)}">
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Quantity</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="menuDto : ${order.orderList}">
+			<td th:text="${menuDto.name}"></td>
+			<td th:text="${menuDto.price}"></td>
+			<td th:text="${menuDto.quantity}"></td>
+		</tr>
+		</tbody>
+	</table>
+	<p>Total Price: <span th:text="${order.totalPrice}"></span></p>
+</div>
+<div th:if="${#lists.isEmpty(order)}">
+	<p>No menus available in the Cart.</p>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

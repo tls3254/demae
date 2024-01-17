@@ -59,6 +59,13 @@
 <div th:if="${#lists.isEmpty(menuList)}">
 	<p>No menus available.</p>
 </div>
-
+<a th:href="@{'/'}" class="btn btn-primary">Start</a>
+<script>
+	function toCart() {
+		window.location.href = '/api/cart';
+	}
+</script>
+<button type="button" class="btn btn-info" onclick="toCart()">장바구니</button>
+<button type="button" class="btn btn-info" onclick="toMenu()">장바구니 상품 주문하기</button>
 </body>
 </html>
