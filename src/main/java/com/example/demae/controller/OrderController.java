@@ -62,16 +62,17 @@ public class OrderController {
 		return userDetails.getUser().getId();
 	}
 
-	@GetMapping(value = "/connect/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public SseEmitter connect(String id,@PathVariable String userId) {
+	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		// 유저가 SSE 연결을 요청할 때 사용
+		String id = String.valueOf(userDetails.getUser().getId());
 		if(userEmitters.containsKey(String.valueOf(id))) {
 			SseEmitter sseEmitter = userEmitters.get(id);
 			userEmitters.remove(sseEmitter);
 		}
 
 		SseEmitter emitter = new SseEmitter();
-		userEmitters.put(userId, emitter);
+		userEmitters.put(id, emitter);
 		emitter.onCompletion(() -> userEmitters.remove(id, emitter));
 		emitter.onTimeout(() -> userEmitters.remove(id, emitter));
 

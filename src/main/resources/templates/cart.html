@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Show Menu</title>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="common-sse.js"></script>
+  <script src="/common-sse.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     table {
@@ -110,7 +110,7 @@
         alert('주문이 완료되었습니다.');
         // window.location.href = '/api/stores';
         // 주문 처리가 완료되면 SSE 연결 설정
-        setupSSE(response);
+        setupSSE();
       },
       error: function (error) {
         console.error(error);
@@ -121,8 +121,8 @@
   }
 
   // SSE 연결을 설정하는 함수
-  function setupSSE(order) {
-    const eventSource = new EventSource('/api/orders/connect/'+order);
+  function setupSSE() {
+    const eventSource = new EventSource('/api/orders/connect');
 
     eventSource.onmessage = function (event) {
       console.log("cart : " + event.data);
