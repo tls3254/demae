@@ -103,14 +103,14 @@
 <script th:inline="javascript">
   function confirmOrderWithSSE(orderId) {
     // SSE 연결을 생성
-    const eventSource = new EventSource('/sse/confirm/' + orderId);
+    const eventSource = new EventSource('/api/orders/sse/' + orderId);
 
     // SSE 이벤트 수신
     eventSource.onmessage = function (event) {
       const response = JSON.parse(event.data);
       if (response.status === 'ok') {
         alert('주문확인 처리되었습니다.');
-        window.location.reload();
+        location.reload();
       } else {
         alert('주문확인 처리에 실패했습니다.');
       }

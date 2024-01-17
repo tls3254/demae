@@ -52,22 +52,31 @@ public class OrderController {
 		return orderService.createOrder(orderRequestDto, userDetails.getUser());
 	}
 
-	@PostMapping("/{orderId}")
-	@ResponseBody
-	public String completeOrder(@PathVariable Long orderId,
-								@RequestBody OrderStateDto orderStateDto,
+	@GetMapping(value ="/sse/{orderId}", produces = "text/event-stream")
+	public SseEmitter completeOrder(@PathVariable Long orderId,
 								@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+
+		SseEmitter emitter = new SseEmitter();
+		emitters.add(emitter);
+
+		// 클라이언트 연결이 종료되면 emitters에서 제거
+		emitter.onCompletion(() -> emitters.remove(emitter));
+		emitter.onTimeout(() -> emitters.remove(emitter));
+
+		// 주문 완료 로직 수행
+		orderService.completeOrder(orderId, userDetails.getUser());
+
 		// SSE 이벤트 전송
-		emitters.forEach(emitter -> {
+		emitters.forEach(e -> {
 			try {
-				emitter.send(SseEmitter.event().data("{\"status\":\"ok\"}", MediaType.APPLICATION_JSON));
-			} catch (IOException e) {
-				e.printStackTrace();
+				e.send(SseEmitter.event().data("{\"status\":\"ok\"}", MediaType.APPLICATION_JSON));
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		});
 
 		// 필요에 따라 emitters를 초기화하거나 관리할 수 있습니다.
-		emitters.clear();
-		return orderService.completeOrder(orderId, orderStateDto.getOrderState(), userDetails.getUser());
+		return emitter;
 	}
 }
