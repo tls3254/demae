@@ -6,7 +6,9 @@ import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
@@ -25,7 +29,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RequestMapping("/api/orders")
 public class OrderController {
 	private final OrderService orderService;
-	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+
+	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
+
+
 
 	@GetMapping("/{orderId}")
 	public String getOrder(@PathVariable Long orderId, Model model,
@@ -49,32 +56,42 @@ public class OrderController {
 	@ResponseBody
 	public String createOrder(@RequestBody OrderRequestDto orderRequestDto,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-		return orderService.createOrder(orderRequestDto, userDetails.getUser());
+		String orderId = orderService.createOrder(orderRequestDto, userDetails.getUser());
+		return orderId;
 	}
 
-	@GetMapping(value ="/sse/{orderId}", produces = "text/event-stream")
-	public SseEmitter completeOrder(@PathVariable Long orderId,
-								@AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-
+	@GetMapping("/connect")
+	public SseEmitter connect() {
+		// 유저가 SSE 연결을 요청할 때 사용
 		SseEmitter emitter = new SseEmitter();
-		emitters.add(emitter);
+		String userId = "6"; // 실제로는 로그인한 유저의 고유 ID로 설정
 
-		// 클라이언트 연결이 종료되면 emitters에서 제거
-		emitter.onCompletion(() -> emitters.remove(emitter));
-		emitter.onTimeout(() -> emitters.remove(emitter));
+		// 유저별로 SSE 연결을 유지
+		userEmitters.put(userId, emitter);
 
-		// 주문 완료 로직 수행
+		emitter.onCompletion(() -> userEmitters.remove(userId, emitter));
+		emitter.onTimeout(() -> userEmitters.remove(userId, emitter));
+
+		return emitter;
+	}
+
+
+	@GetMapping(value = "/sse/{orderId}", produces = "text/event-stream")
+	public SseEmitter completeOrder(@PathVariable Long orderId,
+									@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
 		orderService.completeOrder(orderId, userDetails.getUser());
 
-		// SSE 이벤트 전송
-		emitters.forEach(e -> {
-			try {
-				e.send(SseEmitter.event().data("{\"status\":\"ok\"}", MediaType.APPLICATION_JSON));
-			} catch (IOException ex) {
-				ex.printStackTrace();
+		String userId = "6"; // 주문을 한 유저의 고유 ID
+		SseEmitter emitter = userEmitters.get(userId);
+
+		try {
+			if (emitter != null) {
+				emitter.send("주문이 확인되었습니다.!!", MediaType.TEXT_EVENT_STREAM);
 			}
-		});
+		} catch (IOException e) {
+			// 에러 처리
+		}
 
 		// 필요에 따라 emitters를 초기화하거나 관리할 수 있습니다.
 		return emitter;

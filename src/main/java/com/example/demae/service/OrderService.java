@@ -51,7 +51,7 @@ public class OrderService {
 	//	store.getUser().setPoint(store.getUser().getPoint() + orderRequestDto.getTotalPrice());
 		cartRepository.deleteByUser(findUser);
 		findUser.setPoint(findUser.getPoint() - orderRequestDto.getTotalPrice());
-		return "ok";
+		return String.valueOf(order.getId());
 	}
 
 	public OrderResponseDto getOrder(Long orderId, User user) {

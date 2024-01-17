@@ -58,55 +58,134 @@
 <button type="button" class="btn btn-primary" onclick="createOrder()" style="display: inline-block;">장바구니 상품 주문하기</button>
 <button type="button" class="btn btn-danger" onclick="deleteCart()" style="display: inline-block;">장바구니 삭제</button>
 
+<script th:inline="javascript">
+  function confirmOrderWithSSE(orderId) {
+    // SSE 연결을 생성
+    const eventSource = new EventSource('/api/orders/sse/' + orderId);
 
+    // SSE 이벤트 수신
+    eventSource.onmessage = function (event) {
+      const response = JSON.parse(event.data);
+      if (response.status === 'ok') {
+        alert('주문확인 처리되었습니다.');
+        location.reload();
+      } else {
+        alert('주문확인 처리에 실패했습니다.');
+      }
+
+      // SSE 연결 종료
+      eventSource.close();
+    };
+
+    // SSE 에러 처리
+    eventSource.onerror = function (error) {
+      console.error('Error occurred:', error);
+      eventSource.close();
+    };
+  }
+</script>
 <script th:inline="javascript">
   var cartList = /*[[${cartList.menu}]]*/ null;
   var totalPrice = /*[[${cartList.totalPrice}]]*/ 0;
-  function createOrder() {
-    console.log(cartList)
-    var orderRequest = {
-      cartList: cartList,
-      totalPrice: totalPrice
-    };
+</script>
 
-    // Ajax 호출
+<script>
+  // 주문 버튼을 눌렀을 때의 이벤트 처리
+  function createOrder() {
+    // 주문 처리 AJAX 요청
+    // (이 부분은 실제 주문 처리 로직 및 주문자의 고유 ID를 서버로 전달하는 로직이 들어갑니다.)
+
+      var orderRequest = {
+       cartList: cartList,
+        totalPrice: totalPrice
+      };
+
     $.ajax({
       type: 'POST',
       url: '/api/orders',
       contentType: 'application/json',
       data: JSON.stringify(orderRequest), // menuDto 속성들을 직렬화하여 전송
       success: function (response) {
-         alert('주문이 완료되었습니다.');
-         window.location.href = '/api/stores';
+        alert('주문이 완료되었습니다.');
+        // window.location.href = '/api/stores';
         console.log(response);
       },
       error: function (error) {
         console.error(error);
       }
     });
+
+    // 주문 처리가 완료되면 SSE 연결 설정
+    setupSSE();
+  }
+
+  // SSE 연결을 설정하는 함수
+  function setupSSE() {
+    const eventSource = new EventSource('/api/orders/connect');
+
+    eventSource.onmessage = function (event) {
+      console.log(event.data);
+      // 여기에서 서버에서 받은 메시지를 처리하는 로직을 추가할 수 있습니다.
+    };
+
+    eventSource.onerror = function (error) {
+      console.error('EventSource failed:', error);
+    };
   }
 </script>
-<script>
-  function deleteCart() {
-    // Ajax 호출
-    $.ajax({
-      type: 'DELETE',
-      url: '/api/cart',
-      contentType: 'application/json',
-      success: function (response) {
-        if (response =="ok") {
-          alert('장바구니정보가 삭제 되었습니다.');
-          window.location.href = '/api/stores';
-        }
-        console.log(response);
-      },
-      error: function (error) {
-        // 실패 시 동작
-        console.error(error);
-      }
-    });
-  }
-</script>
+
+<!--<script th:inline="javascript">-->
+<!--  var cartList = /*[[${cartList.menu}]]*/ null;-->
+<!--  var totalPrice = /*[[${cartList.totalPrice}]]*/ 0;-->
+<!--  function createOrder() {-->
+<!--    console.log(cartList)-->
+<!--    var orderRequest = {-->
+<!--      cartList: cartList,-->
+<!--      totalPrice: totalPrice-->
+<!--    };-->
+
+
+<!--    $.ajax({-->
+<!--      type: 'POST',-->
+<!--      url: '/api/orders',-->
+<!--      contentType: 'application/json',-->
+<!--      data: JSON.stringify(orderRequest), // menuDto 속성들을 직렬화하여 전송-->
+<!--      success: function (response) {-->
+<!--         alert('주문이 완료되었습니다.');-->
+<!--         window.location.href = '/api/stores';-->
+<!--        console.log(response);-->
+<!--      },-->
+<!--      error: function (error) {-->
+<!--        console.error(error);-->
+<!--      }-->
+<!--    });-->
+<!--  }-->
+<!--</script>-->
+
+
+
+
+<!--<script>-->
+<!--  function deleteCart() {-->
+<!--    // Ajax 호출-->
+<!--    $.ajax({-->
+<!--      type: 'DELETE',-->
+<!--      url: '/api/cart',-->
+<!--      contentType: 'application/json',-->
+<!--      success: function (response) {-->
+<!--        if (response =="ok") {-->
+<!--          alert('장바구니정보가 삭제 되었습니다.');-->
+<!--          window.location.href = '/api/stores';-->
+<!--        }-->
+<!--        console.log(response);-->
+<!--      },-->
+<!--      error: function (error) {-->
+<!--        // 실패 시 동작-->
+<!--        console.error(error);-->
+<!--      }-->
+<!--    });-->
+<!--  }-->
+<!--</script>-->
 
 
 <script th:inline="javascript">
