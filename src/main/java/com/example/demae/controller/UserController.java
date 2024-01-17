@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUpAdrees1(@ModelAttribute SignupRequestDto signupRequestDto){
+    public String signUpSuccess(@ModelAttribute SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
         return "users";
     }
