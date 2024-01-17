@@ -1,6 +1,5 @@
 package com.example.demae.controller;
 
-import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.dto.review.ReviewRequestDto;
 import com.example.demae.dto.review.ReviewResponseDto;
 import com.example.demae.entity.Review;
@@ -30,7 +29,7 @@ public class ReviewController {
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUser().getId();
         reviewService.createReview(orderId,reviewRequestDto,id);
-        return "showMenuPage";
+        return "showReview";
     }
 
     @GetMapping("/{orderId}/multiReview")
