@@ -83,27 +83,16 @@ public class OrderService {
 		return orderAllResponseDtoList;
 	}
 
-//	@Transactional
-//	public String completeOrder(Long orderId, String status, User user) {
-//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
-//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-//			Order order = orderRepository.findById(orderId).orElseThrow();
-//			order.setState(
-//					"COMPLETE".equals(status) ? OrderState.COMPLETE :
-//							"CONFIRM".equals(status) ? OrderState.CONFIRM :
-//									OrderState.READY
-//			);
-//			return "ok";
-//		}
-//		return "fail";
-//	}
-
 	@Transactional
-	public String completeOrder(Long orderId, User user) {
+	public String completeOrder(Long orderId, String status, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
 			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(OrderState.CONFIRM);
+			order.setState(
+					"COMPLETE".equals(status) ? OrderState.COMPLETE :
+							"CONFIRM".equals(status) ? OrderState.CONFIRM :
+									OrderState.READY
+			);
 			return "ok";
 		}
 		return "fail";

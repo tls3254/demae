@@ -54,7 +54,7 @@
       </td>
       <td>
  <span th:if="${#strings.equals(menuDto.state, 'READY')}">
-    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
+    <button type="button" th:onclick="'cormFormOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
 </span>
         <span th:if="${#strings.equals(menuDto.state, 'CONFIRM')}">
     <button type="button" th:onclick="'completeOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">배달완료 하기</button>
@@ -76,54 +76,27 @@
     window.location.href = url;
   }
 </script>
-<!--<script th:inline="javascript">-->
-<!--  function cormFormOrder(orderId) {-->
-<!--    // Ajax 호출-->
-<!--    $.ajax({-->
-<!--      type: 'POST',-->
-<!--      url: '/api/orders/' + orderId, // 슬래시 추가-->
-<!--      contentType: 'application/json',-->
-<!--      data: JSON.stringify({-->
-<!--        orderState: 'CONFIRM'-->
-<!--      }), // menuDto 속성들을 직렬화하여 전송-->
-<!--      success: function (response) {-->
-<!--        if (response == "ok") {-->
-<!--          alert('주문처리 되었습니다.');-->
-<!--          window.location.reload();-->
-<!--        }-->
-<!--        console.log(response);-->
-<!--      },-->
-<!--      error: function (error) {-->
-<!--        console.error(error);-->
-<!--      }-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->
-
 <script th:inline="javascript">
-  function confirmOrderWithSSE(orderId) {
-    // SSE 연결을 생성
-    const eventSource = new EventSource('/api/orders/sse/' + orderId);
-
-    // SSE 이벤트 수신
-    eventSource.onmessage = function (event) {
-      const response = JSON.parse(event.data);
-      if (response.status === 'ok') {
-        alert('주문확인 처리되었습니다.');
-        location.reload();
-      } else {
-        alert('주문확인 처리에 실패했습니다.');
+  function cormFormOrder(orderId) {
+    // Ajax 호출
+    $.ajax({
+      type: 'POST',
+      url: '/api/orders/' + orderId, // 슬래시 추가
+      contentType: 'application/json',
+      data: JSON.stringify({
+        orderState: 'CONFIRM'
+      }), // menuDto 속성들을 직렬화하여 전송
+      success: function (response) {
+        if (response == "ok") {
+          alert('주문처리 되었습니다.');
+          window.location.reload();
+        }
+        console.log(response);
+      },
+      error: function (error) {
+        console.error(error);
       }
-
-      // SSE 연결 종료
-      eventSource.close();
-    };
-
-    // SSE 에러 처리
-    eventSource.onerror = function (error) {
-      console.error('Error occurred:', error);
-      eventSource.close();
-    };
+    });
   }
 </script>
 
