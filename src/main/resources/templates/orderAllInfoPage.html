@@ -107,6 +107,7 @@
 
     // SSE 이벤트 수신
     eventSource.onmessage = function (event) {
+        console.log("여기 eventSource : " + event.data)
       const response = JSON.parse(event.data);
       if (response.status === 'ok') {
         alert('주문확인 처리되었습니다.');
@@ -116,13 +117,13 @@
       }
 
       // SSE 연결 종료
-      eventSource.close();
+      // eventSource.close();
     };
 
     // SSE 에러 처리
     eventSource.onerror = function (error) {
       console.error('Error occurred:', error);
-      eventSource.close();
+      // eventSource.close();
     };
   }
 </script>

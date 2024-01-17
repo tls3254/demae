@@ -2,6 +2,8 @@ package com.example.demae.controller;
 
 import com.example.demae.dto.order.OrderRequestDto;
 import com.example.demae.dto.order.OrderStateDto;
+import com.example.demae.entity.Order;
+import com.example.demae.repository.UserRepository;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -54,35 +56,36 @@ public class OrderController {
 
 	@PostMapping
 	@ResponseBody
-	public String createOrder(@RequestBody OrderRequestDto orderRequestDto,
+	public Long createOrder(@RequestBody OrderRequestDto orderRequestDto,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-		String orderId = orderService.createOrder(orderRequestDto, userDetails.getUser());
-		return orderId;
+        orderService.createOrder(orderRequestDto, userDetails.getUser());
+		return userDetails.getUser().getId();
 	}
 
-	@GetMapping("/connect")
-	public SseEmitter connect() {
+	@GetMapping(value = "/connect/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public SseEmitter connect(String id,@PathVariable String userId) {
 		// 유저가 SSE 연결을 요청할 때 사용
 		SseEmitter emitter = new SseEmitter();
-		String userId = "6"; // 실제로는 로그인한 유저의 고유 ID로 설정
 
-		// 유저별로 SSE 연결을 유지
+
+        // 유저별로 SSE 연결을 유지
 		userEmitters.put(userId, emitter);
 
-		emitter.onCompletion(() -> userEmitters.remove(userId, emitter));
-		emitter.onTimeout(() -> userEmitters.remove(userId, emitter));
+		emitter.onCompletion(() -> userEmitters.remove(id, emitter));
+		emitter.onTimeout(() -> userEmitters.remove(id, emitter));
 
 		return emitter;
 	}
 
 
-	@GetMapping(value = "/sse/{orderId}", produces = "text/event-stream")
+	@GetMapping(value = "/sse/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter completeOrder(@PathVariable Long orderId,
 									@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-		orderService.completeOrder(orderId, userDetails.getUser());
+		Order order = orderService.completeOrder(orderId, userDetails.getUser());
 
-		String userId = "6"; // 주문을 한 유저의 고유 ID
+
+		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
 		SseEmitter emitter = userEmitters.get(userId);
 
 		try {
