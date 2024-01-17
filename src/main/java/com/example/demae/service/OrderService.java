@@ -35,6 +35,7 @@ public class OrderService {
 	private final UserRepository userRepository;
 	private final OrderListRepository orderListRepository;
 	private final CartRepository cartRepository;
+
 	@Transactional
 	public Order createOrder(OrderRequestDto orderRequestDto, User user) {
 		if (user.getPoint() < orderRequestDto.getTotalPrice()) {
