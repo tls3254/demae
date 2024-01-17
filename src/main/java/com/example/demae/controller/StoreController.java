@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class StoreController {
 	private final StoreService storeService;
 
-	@GetMapping("home")
+	@GetMapping("/home")
 	public String home(){return "store";}
 
 	@PostMapping
