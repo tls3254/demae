@@ -1,6 +1,5 @@
 package com.example.demae.controller;
 
-import com.example.demae.dto.menu.MenuResponseDto;
 import com.example.demae.dto.review.ReviewRequestDto;
 import com.example.demae.dto.review.ReviewResponseDto;
 import com.example.demae.entity.Review;
@@ -22,7 +21,7 @@ public class ReviewController {
     @GetMapping("/{orderId}/createreview")
     public String showCreateReviewPage(Model model,@PathVariable Long orderId){
         model.addAttribute("orderId",orderId);
-        return "createReview";
+        return "/user/review/createReview";
     }
     @PostMapping("/{orderId}/review")
     public String createReview(@PathVariable Long orderId,
@@ -30,7 +29,7 @@ public class ReviewController {
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUser().getId();
         reviewService.createReview(orderId,reviewRequestDto,id);
-        return "showMenuPage";
+        return "/user/review/showReview";
     }
 
     @GetMapping("/{orderId}/multiReview")
@@ -38,7 +37,7 @@ public class ReviewController {
                             Model model){
         List<Review> review = reviewService.getReview(orderId);
         model.addAttribute("reviewList", review);
-        return "showReview";
+        return "/user/review/showReview";
     }
 
     @GetMapping("/{orderId}/singleReview/{reviewId}")
@@ -49,7 +48,7 @@ public class ReviewController {
         model.addAttribute("reviewOne",selectReview);
         model.addAttribute("orderId", orderId); // orderId를 모델에 추가
         model.addAttribute("reviewId", reviewId);
-        return "showSingleReview";
+        return "/user/review/showSingleReview";
     }
     @PatchMapping("/{orderId}/patchReview/{reviewId}")
     public String patchReview(@PathVariable Long orderId,
@@ -58,7 +57,7 @@ public class ReviewController {
                               @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         reviewService.patchReview(orderId,reviewId,reviewRequestDto,email);
-        return "showSingleReview";
+        return "/user/review/showSingleReview";
     }
     @DeleteMapping("/{orderId}/deleteReview/{reviewId}")
     public String deleteReview(@PathVariable Long orderId,
@@ -66,6 +65,6 @@ public class ReviewController {
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         reviewService.deleteReview(orderId,reviewId,email);
-        return "showSingleReview";
+        return "/user/review/showSingleReview";
     }
 }

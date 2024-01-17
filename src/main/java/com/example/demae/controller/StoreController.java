@@ -1,19 +1,15 @@
 package com.example.demae.controller;
 
 import com.example.demae.dto.store.StoreRequestDto;
-import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.StoreService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/api/stores")
 @AllArgsConstructor
@@ -34,19 +28,19 @@ public class StoreController {
 	private final StoreService storeService;
 
 	@GetMapping("home")
-	public String home(){return "store";}
+	public String home(){return "/admin/store/store";}
 
 	@PostMapping
 	@ResponseBody
 	public String createStore(@RequestBody @Validated StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		storeService.createStores(storeRequestDto, userDetails.getUser());
-		return "showStorePage";
+		return "ok";
 	}
 
 	@GetMapping("/category")
 	public String findByCategory(@RequestParam String category, Model model){
 		model.addAttribute("storeList", storeService.findByCategory(category));
-		return "showStorePage";
+		return "/admin/store/showStorePage";
 	}
 
 	@GetMapping("/{storeId}")
@@ -55,9 +49,9 @@ public class StoreController {
 		model.addAttribute("storeList", storeService.findStore(storeId));
 		if (userDetails.getUser().getRole().name().equals("ADMIN") &&
 				userDetails.getUser().getStore().getId() == storeId) {
-			return "showStorePage";
+			return "/admin/store/showStorePage";
 		}
-		return "showStorePageUser";
+		return "/user/store/showStorePageUser";
 	}
 
 
@@ -66,7 +60,7 @@ public class StoreController {
 							   @RequestParam(defaultValue = "10") int size,
 							   Model model){
 		model.addAttribute("storeList", storeService.findAll(page, size));
-		return "showAllStorePage";
+		return "/global/store/showAllStorePage";
 	}
 
 	@PatchMapping("/{storeId}")

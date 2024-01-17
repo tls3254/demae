@@ -26,7 +26,7 @@ public class OrderController {
 	public String getOrder(@PathVariable Long orderId, Model model,
 						   @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		model.addAttribute("order", orderService.getOrder(orderId, userDetails.getUser()));
-		return "orderInfoPage";
+		return "/admin/order/orderInfoPage";
 	}
 
 	@GetMapping
@@ -34,10 +34,10 @@ public class OrderController {
 							  Model model) {
 		if(userDetails.getUser().getRole().name().equals("USER")) {
 			model.addAttribute("orderAllUser",orderService.getAllOrderInfoUser(userDetails.getUser()));
-			return "orderAllInfoPageUser";
+			return "/user/order/orderAllInfoPageUser";
 		}
 		model.addAttribute("orderAll", orderService.getAllOrderInfo(userDetails.getUser()));
-		return "orderAllInfoPage";
+		return "/admin/order/orderAllInfoPage";
 	}
 
 	@PostMapping
@@ -47,6 +47,7 @@ public class OrderController {
 		return orderService.createOrder(orderRequestDto, userDetails.getUser());
 	}
 
+	// 주문완료 컨트롤러
 	@PostMapping("/{orderId}")
 	@ResponseBody
 	public String completeOrder(@PathVariable Long orderId,
