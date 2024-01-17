@@ -27,7 +27,7 @@ public class MenuController {
     @GetMapping("/{storeId}/menu")
     public String home(Model model,@PathVariable Long storeId){
         model.addAttribute("storeId", storeId);
-        return "/admin/menu/menu";
+        return "menu";
     }
     @PostMapping("/{storeId}/createMenu")
     public String createMenu(@RequestParam("name") String name,
@@ -42,7 +42,7 @@ public class MenuController {
             throw new IllegalArgumentException("실패했습니다.");
         }
         model.addAttribute("storeId",storeId);
-        return "/admin/menu/showMenuPage";
+        return "showMenuPage";
     }
     @GetMapping("/{storeId}/allMenu")
     public String AllMenu(Model model,@PathVariable Long storeId,
@@ -51,9 +51,9 @@ public class MenuController {
         model.addAttribute("menuList", allMenu);
         if (userDetails.getUser().getRole().name().equals("ADMIN") &&
                 userDetails.getUser().getStore().getId() == storeId) {
-            return "/admin/menu/showMenuPage";
+            return "showMenuPage";
         }
-        return "/user/menu/showMenuPageUser";
+        return "showMenuPageUser";
     }
     @GetMapping("/{storeId}/selectMenu/{menuId}")
     public String selectMenu(Model model,
@@ -66,9 +66,9 @@ public class MenuController {
         model.addAttribute("menuId", menuId);
         if (userDetails.getUser().getRole().name().equals("ADMIN") &&
                 userDetails.getUser().getStore().getId() == storeId) {
-            return "/admin/menu/showSelectMenu";
+            return "showSelectMenu";
         }
-        return "/user/menu/showSelectMenuUser";
+        return "showSelectMenuUser";
     }
     @PatchMapping("/{storeId}/patchMenu/{menuId}")
     public String patchMemu(@PathVariable Long storeId,
@@ -78,7 +78,7 @@ public class MenuController {
         String email = userDetails.getUser().getEmail();
         menuService.patchMenu(storeId,menuId,menuRequestDto,email);
 
-        return "/admin/menu/showMenuPage";
+        return "showMenuPage";
     }
     @DeleteMapping("/{storeId}/deleteMenu/{menuId}")
     public String deleteMenu(@PathVariable Long storeId,
@@ -86,7 +86,7 @@ public class MenuController {
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         menuService.deleteMenu(storeId,menuId,email);
-        return "/admin/menu/showMenuPage";
+        return "showMenuPage";
     }
     @PostMapping("/{storeId}/selectMenu/{menuId}/createPicture")
     public String createPicture(@PathVariable Long storeId,
@@ -95,7 +95,7 @@ public class MenuController {
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         String email = userDetails.getUser().getEmail();
         menuService.createPicture(storeId,menuId,file,email);
-        return "/admin/menu/showMenuPage";
+        return "showMenuPage";
     }
     @DeleteMapping("/{storeId}/selectMenu/{menuId}/deletePicture")
     public String deletePicture(@PathVariable Long storeId,
@@ -103,6 +103,6 @@ public class MenuController {
                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         menuService.deletePicture(storeId,menuId,email);
-        return "/admin/menu/showMenuPage";
+        return "showMenuPage";
     }
 }

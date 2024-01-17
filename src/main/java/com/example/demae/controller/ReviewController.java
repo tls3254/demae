@@ -21,7 +21,7 @@ public class ReviewController {
     @GetMapping("/{orderId}/createreview")
     public String showCreateReviewPage(Model model,@PathVariable Long orderId){
         model.addAttribute("orderId",orderId);
-        return "/user/review/createReview";
+        return "createReview";
     }
     @PostMapping("/{orderId}/review")
     public String createReview(@PathVariable Long orderId,
@@ -29,7 +29,7 @@ public class ReviewController {
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUser().getId();
         reviewService.createReview(orderId,reviewRequestDto,id);
-        return "/user/review/showReview";
+        return "showReview";
     }
 
     @GetMapping("/{orderId}/multiReview")
@@ -37,7 +37,7 @@ public class ReviewController {
                             Model model){
         List<Review> review = reviewService.getReview(orderId);
         model.addAttribute("reviewList", review);
-        return "/user/review/showReview";
+        return "showReview";
     }
 
     @GetMapping("/{orderId}/singleReview/{reviewId}")
@@ -48,7 +48,7 @@ public class ReviewController {
         model.addAttribute("reviewOne",selectReview);
         model.addAttribute("orderId", orderId); // orderId를 모델에 추가
         model.addAttribute("reviewId", reviewId);
-        return "/user/review/showSingleReview";
+        return "showSingleReview";
     }
     @PatchMapping("/{orderId}/patchReview/{reviewId}")
     public String patchReview(@PathVariable Long orderId,
@@ -57,7 +57,7 @@ public class ReviewController {
                               @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         reviewService.patchReview(orderId,reviewId,reviewRequestDto,email);
-        return "/user/review/showSingleReview";
+        return "showSingleReview";
     }
     @DeleteMapping("/{orderId}/deleteReview/{reviewId}")
     public String deleteReview(@PathVariable Long orderId,
@@ -65,6 +65,6 @@ public class ReviewController {
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         String email = userDetails.getUser().getEmail();
         reviewService.deleteReview(orderId,reviewId,email);
-        return "/user/review/showSingleReview";
+        return "showSingleReview";
     }
 }

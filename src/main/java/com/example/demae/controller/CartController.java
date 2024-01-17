@@ -37,8 +37,7 @@ public class CartController {
 	@GetMapping
 	public String getCart(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 		model.addAttribute("cartList", cartService.getCart(userDetails.getUser().getId()));
-		System.out.println("sf");
-		return "/user/cart/cart";
+		return "cart";
 	}
 
 }

@@ -26,7 +26,7 @@ public class OrderController {
 	public String getOrder(@PathVariable Long orderId, Model model,
 						   @AuthenticationPrincipal UserDetailsImpl userDetails) {
 		model.addAttribute("order", orderService.getOrder(orderId, userDetails.getUser()));
-		return "/admin/order/orderInfoPage";
+		return "orderInfoPage";
 	}
 
 	@GetMapping
@@ -34,10 +34,10 @@ public class OrderController {
 							  Model model) {
 		if(userDetails.getUser().getRole().name().equals("USER")) {
 			model.addAttribute("orderAllUser",orderService.getAllOrderInfoUser(userDetails.getUser()));
-			return "/user/order/orderAllInfoPageUser";
+			return "orderAllInfoPageUser";
 		}
 		model.addAttribute("orderAll", orderService.getAllOrderInfo(userDetails.getUser()));
-		return "/admin/order/orderAllInfoPage";
+		return "orderAllInfoPage";
 	}
 
 	@PostMapping

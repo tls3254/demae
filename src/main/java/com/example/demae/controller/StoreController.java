@@ -28,7 +28,7 @@ public class StoreController {
 	private final StoreService storeService;
 
 	@GetMapping("home")
-	public String home(){return "/admin/store/store";}
+	public String home(){return "store";}
 
 	@PostMapping
 	@ResponseBody
@@ -40,7 +40,7 @@ public class StoreController {
 	@GetMapping("/category")
 	public String findByCategory(@RequestParam String category, Model model){
 		model.addAttribute("storeList", storeService.findByCategory(category));
-		return "/admin/store/showStorePage";
+		return "showStorePage";
 	}
 
 	@GetMapping("/{storeId}")
@@ -49,9 +49,9 @@ public class StoreController {
 		model.addAttribute("storeList", storeService.findStore(storeId));
 		if (userDetails.getUser().getRole().name().equals("ADMIN") &&
 				userDetails.getUser().getStore().getId() == storeId) {
-			return "/admin/store/showStorePage";
+			return "showStorePage";
 		}
-		return "/user/store/showStorePageUser";
+		return "showStorePageUser";
 	}
 
 
@@ -60,7 +60,7 @@ public class StoreController {
 							   @RequestParam(defaultValue = "10") int size,
 							   Model model){
 		model.addAttribute("storeList", storeService.findAll(page, size));
-		return "/global/store/showAllStorePage";
+		return "showAllStorePage";
 	}
 
 	@PatchMapping("/{storeId}")

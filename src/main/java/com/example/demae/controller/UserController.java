@@ -20,17 +20,17 @@ public class UserController {
     private UserService userService;
     @GetMapping
     public String signUpAdrees(){
-        return "/global/login/signUp";
+        return "signUp";
     }
 
     @PostMapping
     public String signUpSuccess(@ModelAttribute SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
-        return "/global/login/login";
+        return "login";
     }
     @GetMapping("/loginForm")
     public String loginForm(){
-        return "/global/login/login";
+        return "login";
     }
 
     @GetMapping("/main")
@@ -38,11 +38,11 @@ public class UserController {
         User user = userDetails.getUser();
         if (user.getRole().name().equals("ADMIN") && user.getStore() != null) {
             model.addAttribute("storeId", user.getStore().getId());
-            return "/main/adminMain";
+            return "adminMain";
         }
         if (user.getRole().name().equals("ADMIN") && user.getStore() == null) {
-            return "/main/adminMain";
+            return "adminMain";
         }
-        return "/main/main";
+        return "main";
     }
 }
