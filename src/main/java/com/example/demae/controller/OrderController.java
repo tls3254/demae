@@ -5,6 +5,7 @@ import com.example.demae.dto.order.OrderStateDto;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
 	private final OrderService orderService;
-
+	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
 	@GetMapping("/{orderId}")
 	public String getOrder(@PathVariable Long orderId, Model model,
@@ -52,6 +57,17 @@ public class OrderController {
 	public String completeOrder(@PathVariable Long orderId,
 								@RequestBody OrderStateDto orderStateDto,
 								@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		// SSE 이벤트 전송
+		emitters.forEach(emitter -> {
+			try {
+				emitter.send(SseEmitter.event().data("{\"status\":\"ok\"}", MediaType.APPLICATION_JSON));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+
+		// 필요에 따라 emitters를 초기화하거나 관리할 수 있습니다.
+		emitters.clear();
 		return orderService.completeOrder(orderId, orderStateDto.getOrderState(), userDetails.getUser());
 	}
 }
