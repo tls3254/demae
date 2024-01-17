@@ -24,9 +24,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUpAdrees1(@ModelAttribute SignupRequestDto signupRequestDto){
+    public String signUpSuccess(@ModelAttribute SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
-        return "users";
+        return "login";
     }
     @GetMapping("/loginForm")
     public String loginForm(){
