@@ -59,6 +59,7 @@
 <div th:if="${#lists.isEmpty(menuList)}">
 	<p>No menus available.</p>
 </div>
+<a th:href="@{'/'}" class="btn btn-primary">Start</a>
 <script>
 	function toCart() {
 		window.location.href = '/api/cart';
