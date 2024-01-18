@@ -57,11 +57,9 @@ public class SseController {
 	public void completeOrder(@PathVariable Long orderId,
 										@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-		Order order = orderService.completeOrder(orderId, userDetails.getUser());
-		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
-		String storeId = String.valueOf(order.getStore().getUser().getId());
-		SseEmitter userEmitter = sseService.getUserEmitters(userId);
-		SseEmitter storeEmitter = sseService.getUserEmitters(storeId);
+		Order order = orderService.completeOrder(orderId, userDetails.getUser());// 주문을 한 유저의 고유 ID
+		SseEmitter userEmitter = sseService.getUserEmitters(String.valueOf(order.getUser().getId()));
+		SseEmitter storeEmitter = sseService.getUserEmitters(String.valueOf(order.getStore().getUser().getId()));
 		List<SseEmitter> emitters = Arrays.asList(userEmitter, storeEmitter);
 
 		try {

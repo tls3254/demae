@@ -5,7 +5,6 @@ eventSource.onmessage = function (event) {
 	console.log(notification.message)
 	alert(notification)
 	window.location.href = '/api/orders';
-
 };
 
 console.log("EventSource created successfully.");
