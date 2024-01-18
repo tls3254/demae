@@ -108,26 +108,21 @@
       data: JSON.stringify(orderRequest), // menuDto 속성들을 직렬화하여 전송
       success: function (response) {
         alert('주문이 완료되었습니다.');
-        // window.location.href = '/api/stores';
-        // 주문 처리가 완료되면 SSE 연결 설정
+        var orderId = response;
+        console.log(orderId)
+        setupSSE(orderId)
       },
       error: function (error) {
         console.error(error);
       }
     });
-
-
   }
 
   // SSE 연결을 설정하는 함수
-  function setupSSE() {
-    const eventSource = new EventSource('/api/sse/connect');
-
+  function setupSSE(orderId) {
+    const eventSource = new EventSource('/api/sse/user/'+ orderId);
     eventSource.onmessage = function (event) {
-      console.log("cart : " + event.data);
-      // 여기에서 서버에서 받은 메시지를 처리하는 로직을 추가할 수 있습니다.
     };
-
     eventSource.onerror = function (error) {
       console.error('EventSource failed:', error);
     };
