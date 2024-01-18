@@ -3,9 +3,7 @@ package com.example.demae.controller;
 import com.example.demae.entity.Order;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
-import com.example.demae.service.SseService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,16 +20,23 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 @RequestMapping("/api/sse")
 public class SseController {
+	private static final long DEFAULT_TIMEOUT = 30 * 60 * 1000;
 	private final OrderService orderService;
 	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
-	private final SseService sseService;
 
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		// 유저가 SSE 연결을 요청할 때 사용
 		String id = String.valueOf(userDetails.getUser().getId());
-		SseEmitter emitter = sseService.createSse(userDetails.getUser().getId());
+		if(userEmitters.containsKey(String.valueOf(id))) {
+			SseEmitter sseEmitter = userEmitters.get(id);
+			userEmitters.remove(sseEmitter);
+		}
+
+		SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
 		userEmitters.put(id, emitter);
+		emitter.onCompletion(() -> userEmitters.remove(id, emitter));
+		emitter.onTimeout(() -> userEmitters.remove(id, emitter));
 		return emitter;
 	}
 
