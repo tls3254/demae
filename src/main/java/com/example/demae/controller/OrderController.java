@@ -1,8 +1,10 @@
 package com.example.demae.controller;
 
 import com.example.demae.dto.order.OrderRequestDto;
+import com.example.demae.entity.Order;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
+import com.example.demae.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/orders")
 public class OrderController {
 	private final OrderService orderService;
-
+	private final SseService sseService;
 	@GetMapping("/{orderId}")
 	public String getOrder(@PathVariable Long orderId, Model model,
 						   @AuthenticationPrincipal UserDetailsImpl userDetails) {
