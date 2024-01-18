@@ -64,9 +64,9 @@ public class SseController {
 		try {
 			for (SseEmitter emitter : emitters) {
 				if (emitter != null) {
+					String jsonData = "{\"message\": \"주문이 확인되었습니다.!!\"}";
 					emitter.send(SseEmitter.event()
-							.name("orderConfirmation")
-							.data("주문이 확인되었습니다.!!", MediaType.TEXT_EVENT_STREAM));
+							.data(jsonData, MediaType.TEXT_EVENT_STREAM));
 					emitter.complete();
 				}
 			}

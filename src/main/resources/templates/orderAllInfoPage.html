@@ -86,12 +86,8 @@
     // SSE 이벤트 수신
     eventSource.onmessage = function (event) {
       const response = JSON.parse(event.data);
-      console.log(response)
-        location.reload();
-      } else {
-        alert('주문확인 처리에 실패했습니다.');
-      }
-
+      alert("주문접수가 완료되었습니다");
+      location.reload();
       // SSE 연결 종료
       // eventSource.close();
     };
