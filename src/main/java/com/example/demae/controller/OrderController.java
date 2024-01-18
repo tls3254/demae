@@ -40,11 +40,21 @@ public class OrderController {
 		return "orderAllInfoPage";
 	}
 
+//	@PostMapping
+//	@ResponseBody
+//	public Long createOrder(@RequestBody OrderRequestDto orderRequestDto,
+//							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//		Order order = orderService.createOrder(orderRequestDto, userDetails.getUser());
+//
+//		return userDetails.getUser().getId();
+//	}
+
 	@PostMapping
 	@ResponseBody
 	public Long createOrder(@RequestBody OrderRequestDto orderRequestDto,
-							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.createOrder(orderRequestDto, userDetails.getUser());
-		return userDetails.getUser().getId();
+							@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		Order order = orderService.createOrder(orderRequestDto, userDetails.getUser());
+
+		return order.getId();
 	}
 }

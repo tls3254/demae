@@ -1,9 +1,13 @@
 package com.example.demae.controller;
 
+import com.example.demae.dto.store.StoreResponseDto;
 import com.example.demae.entity.Order;
+import com.example.demae.entity.Store;
+import com.example.demae.repository.StoreRepository;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
 import com.example.demae.service.SseService;
+import com.example.demae.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -31,7 +35,7 @@ public class SseController {
 	private final OrderService orderService;
 	//	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 	private final SseService sseService;
-
+	private final StoreService storeService;
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		// 유저가 SSE 연결을 요청할 때 사용
@@ -51,8 +55,7 @@ public class SseController {
 
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void completeOrder(@PathVariable Long orderId,
-										@AuthenticationPrincipal UserDetailsImpl userDetails,
-							  HttpServletResponse response) {
+										@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
 		Order order = orderService.completeOrder(orderId, userDetails.getUser());
 		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
@@ -73,7 +76,21 @@ public class SseController {
 		} catch (IOException e) {
 			// 에러 처리
 		}
-//		response.setStatus(HttpServletResponse.SC_OK);
-//		response.setContentType(MediaType.TEXT_EVENT_STREAM_VALUE);
+	}
+
+	@GetMapping(value = "/user/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public void userRequestOrder(@PathVariable Long orderId,
+							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+		Order orderForUser = orderService.getOrderForUser(orderId, userDetails.getUser());
+		Store storeForUser = storeService.findStoreForUser(orderForUser.getStore().getId());
+		SseEmitter emitter = sseService.getUserEmitters(String.valueOf(storeForUser.getUser().getId()));
+		String jsonData = "{\"message\": \"주문이 접수되었습니다.!!\"}";
+		try {
+			emitter.send(SseEmitter.event()
+					.data(jsonData, MediaType.TEXT_EVENT_STREAM));
+			emitter.complete();
+		}catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
