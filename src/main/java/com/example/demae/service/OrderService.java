@@ -35,10 +35,11 @@ public class OrderService {
 	private final UserRepository userRepository;
 	private final OrderListRepository orderListRepository;
 	private final CartRepository cartRepository;
+
 	@Transactional
-	public String createOrder(OrderRequestDto orderRequestDto, User user) {
+	public Order createOrder(OrderRequestDto orderRequestDto, User user) {
 		if (user.getPoint() < orderRequestDto.getTotalPrice()) {
-			return "fail";
+			return null;
 		}
 		Store store = storeRepository.findById(orderRequestDto.getCartList().get(0).getStoreId()).orElseThrow();
 		Order order = orderRepository.save(new Order(user, store));
@@ -47,11 +48,12 @@ public class OrderService {
 			OrderList orderList = new OrderList(order, orderMenuRequestDto);
 			orderListRepository.save(orderList);
 		}
+
 		User findUser = userRepository.findById(user.getId()).orElseThrow();
-	//	store.getUser().setPoint(store.getUser().getPoint() + orderRequestDto.getTotalPrice());
 		cartRepository.deleteByUser(findUser);
+
 		findUser.setPoint(findUser.getPoint() - orderRequestDto.getTotalPrice());
-		return "ok";
+		return order;
 	}
 
 	public OrderResponseDto getOrder(Long orderId, User user) {
@@ -83,19 +85,30 @@ public class OrderService {
 		return orderAllResponseDtoList;
 	}
 
+//	@Transactional
+//	public String completeOrder(Long orderId, String status, User user) {
+//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
+//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
+//			Order order = orderRepository.findById(orderId).orElseThrow();
+//			order.setState(
+//					"COMPLETE".equals(status) ? OrderState.COMPLETE :
+//							"CONFIRM".equals(status) ? OrderState.CONFIRM :
+//									OrderState.READY
+//			);
+//			return "ok";
+//		}
+//		return "fail";
+//	}
+
 	@Transactional
-	public String completeOrder(Long orderId, String status, User user) {
+	public Order completeOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
 			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(
-					"COMPLETE".equals(status) ? OrderState.COMPLETE :
-							"CONFIRM".equals(status) ? OrderState.CONFIRM :
-									OrderState.READY
-			);
-			return "ok";
+			order.setState(OrderState.CONFIRM);
+			return order;
 		}
-		return "fail";
+		return null;
 	}
 
 	public List<OrderAllResponseDto> getAllOrderInfoUser(User user) {
