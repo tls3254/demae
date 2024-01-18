@@ -103,23 +103,22 @@
 <script th:inline="javascript">
   function completeOrder(orderId) {
     // Ajax 호출
-    $.ajax({
-      type: 'POST',
-      url: '/api/orders/' + orderId, // 슬래시 추가
-      contentType: 'application/json',
-      data: JSON.stringify({
-        orderState: 'COMPLETE'}), // menuDto 속성들을 직렬화하여 전송
-      success: function (response) {
-        if (response == "ok") {
-          alert('배달완료처리 되었습니다.');
-          window.location.reload();
-        }
-        console.log(response);
-      },
-      error: function (error) {
-        console.error(error);
-      }
-    });
+      const eventSource = new EventSource('/api/sse/end/' + orderId);
+
+      // SSE 이벤트 수신
+      eventSource.onmessage = function (event) {
+          const response = JSON.parse(event.data);
+          alert("배달이 완료되었습니다");
+          location.reload();
+          // SSE 연결 종료
+          // eventSource.close();
+      };
+
+      // SSE 에러 처리
+      eventSource.onerror = function (error) {
+          console.error('Error occurred:', error);
+          // eventSource.close();
+      };
   }
 </script>
 

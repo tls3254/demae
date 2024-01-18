@@ -1,9 +1,13 @@
 package com.example.demae.service;
 
+import com.example.demae.entity.Order;
+import com.example.demae.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,5 +38,12 @@ public class SseService {
 
 	public void deleteEmitters(SseEmitter emitter) {
 		userEmitters.remove(emitter);
+	}
+	public List<SseEmitter> findUserAndStore(Long orderId, UserDetailsImpl userDetails, Order order){
+		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
+		String storeId = String.valueOf(order.getStore().getUser().getId());
+		SseEmitter userEmitter = getUserEmitters(userId);
+		SseEmitter storeEmitter = getUserEmitters(storeId);
+		return Arrays.asList(userEmitter, storeEmitter);
 	}
 }
