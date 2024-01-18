@@ -86,7 +86,6 @@ public class OrderController {
 
 		Order order = orderService.completeOrder(orderId, userDetails.getUser());
 
-
 		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
 		SseEmitter emitter = userEmitters.get(userId);
 
