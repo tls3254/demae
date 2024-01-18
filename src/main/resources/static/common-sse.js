@@ -1,4 +1,4 @@
-const eventSource = new EventSource("/api/orders/connect");
+const eventSource = new EventSource("/api/sse/connect");
 
 eventSource.onmessage = function (event) {
 	const notification = JSON.parse(event.data);
