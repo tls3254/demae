@@ -36,6 +36,8 @@ public class SseController {
 	//	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 	private final SseService sseService;
 	private final StoreService storeService;
+
+//	SSE 연결 통로 사용
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		// 유저가 SSE 연결을 요청할 때 사용
@@ -53,6 +55,7 @@ public class SseController {
 		return emitter;
 	}
 
+//	사장님이 주문 확인 버튼을 누르면 주문 확인 메시지 나감
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void completeOrder(@PathVariable Long orderId,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -74,6 +77,7 @@ public class SseController {
 		}
 	}
 
+	//유저가 장바 구니 상품 주문 하기 누르면 주문 접수 메시지 나감	
 	@GetMapping(value = "/user/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void userRequestOrder(@PathVariable Long orderId,
 								 @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -89,12 +93,13 @@ public class SseController {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	//사장님이 배달 완료 누르면 메시지 나감  
 	@GetMapping(value = "/end/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void endRequestOrder(@PathVariable Long orderId,
 								@AuthenticationPrincipal UserDetailsImpl userDetails){
 
-		Order order = orderService.endOrder(orderId, userDetails.getUser()); //order 에 주문테이블하고 사장님 아이디를 넘겨주어서
+		Order order = orderService.endOrder(orderId, userDetails.getUser());
 		List<SseEmitter> emitters = sseService.findUserAndStore(orderId,userDetails,order);
 		try{
 			for(SseEmitter emitter:emitters){
