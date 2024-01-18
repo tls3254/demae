@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Show Menu</title>
+  <script src="/common-sse.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -76,29 +77,6 @@
     window.location.href = url;
   }
 </script>
-<!--<script th:inline="javascript">-->
-<!--  function cormFormOrder(orderId) {-->
-<!--    // Ajax 호출-->
-<!--    $.ajax({-->
-<!--      type: 'POST',-->
-<!--      url: '/api/orders/' + orderId, // 슬래시 추가-->
-<!--      contentType: 'application/json',-->
-<!--      data: JSON.stringify({-->
-<!--        orderState: 'CONFIRM'-->
-<!--      }), // menuDto 속성들을 직렬화하여 전송-->
-<!--      success: function (response) {-->
-<!--        if (response == "ok") {-->
-<!--          alert('주문처리 되었습니다.');-->
-<!--          window.location.reload();-->
-<!--        }-->
-<!--        console.log(response);-->
-<!--      },-->
-<!--      error: function (error) {-->
-<!--        console.error(error);-->
-<!--      }-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->
 
 <script th:inline="javascript">
   function confirmOrderWithSSE(orderId) {
@@ -107,10 +85,8 @@
 
     // SSE 이벤트 수신
     eventSource.onmessage = function (event) {
-        console.log("여기 eventSource : " + event.data)
       const response = JSON.parse(event.data);
-      if (response.status === 'ok') {
-        alert('주문확인 처리되었습니다.');
+      console.log(response)
         location.reload();
       } else {
         alert('주문확인 처리에 실패했습니다.');
