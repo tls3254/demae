@@ -103,7 +103,7 @@
 <script th:inline="javascript">
   function confirmOrderWithSSE(orderId) {
     // SSE 연결을 생성
-    const eventSource = new EventSource('/api/orders/sse/' + orderId);
+    const eventSource = new EventSource('/api/sse/' + orderId);
 
     // SSE 이벤트 수신
     eventSource.onmessage = function (event) {
