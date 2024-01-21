@@ -41,16 +41,6 @@ public class SseController {
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		// 유저가 SSE 연결을 요청할 때 사용
-//		String id = String.valueOf(userDetails.getUser().getId());
-//		if(userEmitters.containsKey(String.valueOf(id))) {
-//			SseEmitter sseEmitter = userEmitters.get(id);
-//			userEmitters.remove(sseEmitter);
-//		}
-//
-//		SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-//		userEmitters.put(id, emitter);
-//		emitter.onCompletion(() -> userEmitters.remove(id, emitter));
-//		emitter.onTimeout(() -> userEmitters.remove(id, emitter));
 		SseEmitter emitter = sseService.createConnect(userDetails.getUser().getId());
 		return emitter;
 	}
@@ -81,6 +71,7 @@ public class SseController {
 	@GetMapping(value = "/user/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void userRequestOrder(@PathVariable Long orderId,
 								 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
 		Order orderForUser = orderService.getOrderForUser(orderId, userDetails.getUser());
 		Store storeForUser = storeService.findStoreForUser(orderForUser.getStore().getId());
 		SseEmitter emitter = sseService.getUserEmitters(String.valueOf(storeForUser.getUser().getId()));

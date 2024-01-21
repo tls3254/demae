@@ -21,7 +21,6 @@
     th {
       background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
     }
-
     .table-container {
       overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
     }
@@ -59,32 +58,6 @@
 <button type="button" class="btn btn-primary" onclick="createOrder()" style="display: inline-block;">장바구니 상품 주문하기</button>
 <button type="button" class="btn btn-danger" onclick="deleteCart()" style="display: inline-block;">장바구니 삭제</button>
 
-<!--<script th:inline="javascript">-->
-<!--  function confirmOrderWithSSE(orderId) {-->
-<!--    // SSE 연결을 생성-->
-<!--    const eventSource = new EventSource('/api/orders/sse/' + orderId);-->
-
-<!--    // SSE 이벤트 수신-->
-<!--    eventSource.onmessage = function (event) {-->
-<!--      const response = JSON.parse(event.data);-->
-<!--      if (response.status === 'ok') {-->
-<!--        alert('주문확인 처리되었습니다.');-->
-<!--        location.reload();-->
-<!--      } else {-->
-<!--        alert('주문확인 처리에 실패했습니다.');-->
-<!--      }-->
-
-<!--      // SSE 연결 종료-->
-<!--      eventSource.close();-->
-<!--    };-->
-
-<!--    // SSE 에러 처리-->
-<!--    eventSource.onerror = function (error) {-->
-<!--      console.error('Error occurred:', error);-->
-<!--      eventSource.close();-->
-<!--    };-->
-<!--  }-->
-<!--</script>-->
 <script th:inline="javascript">
   var cartList = /*[[${cartList.menu}]]*/ null;
   var totalPrice = /*[[${cartList.totalPrice}]]*/ 0;
@@ -128,60 +101,6 @@
     };
   }
 </script>
-
-<!--<script th:inline="javascript">-->
-<!--  var cartList = /*[[${cartList.menu}]]*/ null;-->
-<!--  var totalPrice = /*[[${cartList.totalPrice}]]*/ 0;-->
-<!--  function createOrder() {-->
-<!--    console.log(cartList)-->
-<!--    var orderRequest = {-->
-<!--      cartList: cartList,-->
-<!--      totalPrice: totalPrice-->
-<!--    };-->
-
-
-<!--    $.ajax({-->
-<!--      type: 'POST',-->
-<!--      url: '/api/orders',-->
-<!--      contentType: 'application/json',-->
-<!--      data: JSON.stringify(orderRequest), // menuDto 속성들을 직렬화하여 전송-->
-<!--      success: function (response) {-->
-<!--         alert('주문이 완료되었습니다.');-->
-<!--         window.location.href = '/api/stores';-->
-<!--        console.log(response);-->
-<!--      },-->
-<!--      error: function (error) {-->
-<!--        console.error(error);-->
-<!--      }-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->
-
-
-
-
-<!--<script>-->
-<!--  function deleteCart() {-->
-<!--    // Ajax 호출-->
-<!--    $.ajax({-->
-<!--      type: 'DELETE',-->
-<!--      url: '/api/cart',-->
-<!--      contentType: 'application/json',-->
-<!--      success: function (response) {-->
-<!--        if (response =="ok") {-->
-<!--          alert('장바구니정보가 삭제 되었습니다.');-->
-<!--          window.location.href = '/api/stores';-->
-<!--        }-->
-<!--        console.log(response);-->
-<!--      },-->
-<!--      error: function (error) {-->
-<!--        // 실패 시 동작-->
-<!--        console.error(error);-->
-<!--      }-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->
-
 
 <script th:inline="javascript">
   /*<![CDATA[*/

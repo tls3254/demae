@@ -108,13 +108,21 @@ public class OrderService {
 //		return "fail";
 //	}
 
-	@Transactional
+//	@Transactional
+//	public Order completeOrder(Long orderId, User user) {
+//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
+//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
+//			Order order = orderRepository.findById(orderId).orElseThrow();
+//			order.setState(OrderState.CONFIRM);
+//			return order;
+//		}
+//		return null;
+//	}
+
 	public Order completeOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(OrderState.CONFIRM);
-			return order;
+            return orderRepository.findById(orderId).orElseThrow();
 		}
 		return null;
 	}
@@ -122,9 +130,7 @@ public class OrderService {
 	public Order endOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(OrderState.COMPLETE);
-			return order;
+            return orderRepository.findById(orderId).orElseThrow();
 		}
 		return null;
 	}

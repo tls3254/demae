@@ -30,7 +30,7 @@
 <body>
 
 <h1>Order</h1>
-
+<button onclick="asd()">Display Token</button>
 <div th:if="${not #lists.isEmpty(orderAll)}">
   <table>
     <thead>
@@ -78,47 +78,91 @@
   }
 </script>
 
+
 <script th:inline="javascript">
-  function confirmOrderWithSSE(orderId) {
-    // SSE 연결을 생성
-    const eventSource = new EventSource('/api/sse/' + orderId);
+    async function confirmOrderWithSSE(orderId) {
+// SSE 연결을 생성
+        const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;
 
-    // SSE 이벤트 수신
-    eventSource.onmessage = function (event) {
-      const response = JSON.parse(event.data);
-      alert("주문접수가 완료되었습니다");
-      location.reload();
-      // SSE 연결 종료
-      // eventSource.close();
-    };
+        // const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('Authorization'));
+        // const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+        // const token = /*[[${token}]]*/ 'fallback_token';
+      try {
+          const token = 'your_access_token';
+          const response = await fetch(url, {
+              method: "GET",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                  "Content-Type": "application/json",
+                  // "Authorization":  token
+              }
+          });
 
-    // SSE 에러 처리
-    eventSource.onerror = function (error) {
-      console.error('Error occurred:', error);
-      // eventSource.close();
-    };
-  }
+          if (response.ok) {
+              console.log('서버 응답이 성공했습니다.');
+              setupSSE(orderId)
+              // 실제 내용은 response.body 등을 통해 접근할 수 없음
+          } else {
+              console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
+          }
+
+          // 추가 작업 수행
+      } catch (error) {
+          console.error('Fetch 요청 중 에러가 발생했습니다.', error);
+      }
+    function setupSSE(orderId) {
+        const eventSource = new EventSource('/api/sse/'+ orderId);
+        eventSource.onmessage = function (event) {
+            alert("주문이 완료되었습니다");
+            location.reload();
+        };
+        eventSource.onerror = function (error) {
+            console.error('EventSource failed:', error);
+        };
+    }
+}
 </script>
 
 <script th:inline="javascript">
-  function completeOrder(orderId) {
+    async function completeOrder(orderId) {
     // Ajax 호출
-      const eventSource = new EventSource('/api/sse/end/' + orderId);
+      const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;
 
-      // SSE 이벤트 수신
-      eventSource.onmessage = function (event) {
-          const response = JSON.parse(event.data);
-          alert("배달이 완료되었습니다");
-          location.reload();
-          // SSE 연결 종료
-          // eventSource.close();
-      };
+      try {
+          const response = await fetch(url, {
+              method: "GET",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                  "Content-Type": "application/json"
+              }
+          });
 
-      // SSE 에러 처리
-      eventSource.onerror = function (error) {
-          console.error('Error occurred:', error);
-          // eventSource.close();
-      };
+          if (response.ok) {
+              console.log('서버 응답이 성공했습니다.');
+              setupSSE(orderId)
+              // 실제 내용은 response.body 등을 통해 접근할 수 없음
+          } else {
+              console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
+          }
+
+          // 추가 작업 수행
+      } catch (error) {
+          console.error('Fetch 요청 중 에러가 발생했습니다.', error);
+      }
+      function setupSSE(orderId) {
+          const eventSource = new EventSource('/api/sse/end/'+ orderId);
+          eventSource.onmessage = function (event) {
+              alert("주문이 완료되었습니다");
+              location.reload();
+          };
+          eventSource.onerror = function (error) {
+              console.error('EventSource failed:', error);
+          };
+      }
   }
 </script>
 
