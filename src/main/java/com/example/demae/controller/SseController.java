@@ -53,7 +53,7 @@ public class SseController {
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
 		Order order = orderService.completeOrder(orderId, userDetails.getUser());
-		List<SseEmitter> emitters = sseService.findUserAndStore(orderId,userDetails,order);
+		List<SseEmitter> emitters = sseService.findUserAndStore(order);
 		String state = order.getState().toString().equals("CONFIRM") ? "주문이 완료 되었습니다." : "배달이 완료 되었습니다.";
 		try {
 			for (SseEmitter emitter : emitters) {

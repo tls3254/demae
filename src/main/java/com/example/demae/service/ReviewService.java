@@ -50,13 +50,14 @@ public class ReviewService {
     }
 
     @Transactional
-    public void patchReview(Long orderId, Long reviewId,ReviewRequestDto reviewRequestDto,String email) {
+    public ReviewResponseDto patchReview(Long orderId, Long reviewId,ReviewRequestDto reviewRequestDto,String email) {
         Order findOder = orderRepository.findById(orderId).orElseThrow(()-> new IllegalArgumentException("주문이 없습니다."));
         Review review = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
         if(!findOder.getUser().getEmail().equals(email)){
             throw new IllegalArgumentException("본인의 가게가 아닙니다.");
         }
         review.update(reviewRequestDto.getPoint(),reviewRequestDto.getContent());
+        return new ReviewResponseDto(review);
     }
     @Transactional
     public void deleteReview(Long orderId, Long reviewId, String email) {
