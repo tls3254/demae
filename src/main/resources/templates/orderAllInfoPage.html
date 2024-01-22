@@ -84,7 +84,6 @@
         const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;
 
       try {
-          const token = 'your_access_token';
           const response = await fetch(url, {
               method: "GET",
               mode: "cors",
