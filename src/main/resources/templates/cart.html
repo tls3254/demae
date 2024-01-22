@@ -85,6 +85,7 @@
 
 <button type="button" class="btn btn-primary" onclick="createOrder()" style="display: inline-block;">장바구니 상품 주문하기</button>
 <button type="button" class="btn btn-danger" onclick="deleteCart()" style="display: inline-block;">장바구니 삭제</button>
+<a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
 
 <script th:inline="javascript">
   var cartList = /*[[${cartList.menu}]]*/ null;

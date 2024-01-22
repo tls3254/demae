@@ -103,7 +103,7 @@
 <div th:if="${#lists.isEmpty(menuOne)}">
 	<p>No menus available.</p>
 </div>
-
+<a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
 <script th:inline="javascript">
 	/*<![CDATA[*/
 	var storeId = /*[[${menuOne.storeId}]]*/ null; // 동적으로 설정하려는 가게 ID

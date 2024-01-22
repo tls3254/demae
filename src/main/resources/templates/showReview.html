@@ -86,7 +86,7 @@
             <td th:text="${review.content}"></td>
             <td>
                 <a class="btn btn-info store-link"
-                   th:href="@{/api/orders/{orderId}/singleReview/{reviewId}(orderId=${review.order.id}, reviewId=${review.id})}">리뷰 정보 보기</a>
+                   th:href="@{/api/orders/singleReview/{reviewId}(reviewId=${review.id})}">리뷰 정보 보기</a>
             </td>
         </tr>
         </tbody>
@@ -98,5 +98,6 @@
 
 <!-- Create Menu 버튼 -->
 <a th:href="@{'/api/orders/' + ${orderId} + '/createreview'}" class="btn btn-primary">Create review</a>
+<a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
 </body>
 </html>

@@ -86,6 +86,7 @@
   <button type="button" th:if="${storeId != null}" onclick="goOrderInfo()">Order Info</button>
 
   <button type="button" th:if="${storeId == null}" onclick="goCreateStore()">Create Store</button>
+  <a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
 </div>
 
 <script th:inline="javascript">

@@ -44,7 +44,7 @@ public class ReviewService {
         return newList;
     }
 
-    public ReviewResponseDto singleMenu(Long orderId, Long reviewId) {
+    public ReviewResponseDto singleMenu(Long reviewId) {
         Review checkReview = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
         return new ReviewResponseDto(checkReview);
     }

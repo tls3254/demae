@@ -40,11 +40,10 @@ public class ReviewController {
         return "showReview";
     }
 
-    @GetMapping("/{orderId}/singleReview/{reviewId}")
-    public String singleReview(@PathVariable Long orderId,
-                               @PathVariable Long reviewId,
+    @GetMapping("/singleReview/{reviewId}")
+    public String singleReview(@PathVariable Long reviewId,
                                Model model){
-        ReviewResponseDto selectReview = reviewService.singleMenu(orderId,reviewId);
+        ReviewResponseDto selectReview = reviewService.singleMenu(reviewId);
         model.addAttribute("reviewOne",selectReview);
         return "showSingleReview";
     }
