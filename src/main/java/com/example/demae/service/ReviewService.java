@@ -59,13 +59,15 @@ public class ReviewService {
         review.update(reviewRequestDto.getPoint(),reviewRequestDto.getContent());
         return new ReviewResponseDto(review);
     }
-    @Transactional
+
     public void deleteReview(Long orderId, Long reviewId, String email) {
-        Order FindOrder = orderRepository.findById(orderId).orElseThrow(()->new IllegalArgumentException("주문이 없습니다"));
-        Review findReview = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
-        if(!FindOrder.getUser().getEmail().equals(email)){
-            throw new IllegalArgumentException("본인의 가게가 아닙니다.");
-        }
-        reviewRepository.delete(findReview);
+            Order FindOrder = orderRepository.findById(orderId).orElseThrow(()->new IllegalArgumentException("주문이 없습니다"));
+            Review findReview = reviewRepository.findById(reviewId).orElseThrow(()->new IllegalArgumentException("리뷰가 없습니다."));
+            if(!FindOrder.getUser().getEmail().equals(email)){
+                throw new IllegalArgumentException("본인의 가게가 아닙니다.");
+            }
+            reviewRepository.delete(findReview);
+            System.out.println("sds");
+
     }
 }
