@@ -56,10 +56,10 @@
       </td>
       <td>
  <span th:if="${#strings.equals(menuDto.state, 'READY')}">
-    <button type="button" th:onclick="'confirmOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
+    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
 </span>
         <span th:if="${#strings.equals(menuDto.state, 'CONFIRM')}">
-    <button type="button" th:onclick="'completeOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">배달완료 하기</button>
+    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">배달완료 하기</button>
 </span>
         <span th:unless="${#strings.equals(menuDto.state, 'READY') or #strings.equals(menuDto.state, 'CONFIRM')}">
     <span th:text="${menuDto.state}"></span>
@@ -80,7 +80,7 @@
 </script>
 
 <script th:inline="javascript">
-    async function confirmOrder(orderId) {
+    async function confirmOrderWithSSE(orderId) {
         const url = 'https://4j6zo6zdmd.execute-api.ap-northeast-2.amazonaws.com/connect_sb/api/see/user/test?test=' + orderId;
         const jwtToken = document.cookie;
 
@@ -150,49 +150,49 @@
     }
 </script>
 
-<script th:inline="javascript">
-  function confirmOrderWithSSE(orderId) {
-    // SSE 연결을 생성
-    const eventSource = new EventSource('/api/sse/' + orderId);
+<!--<script th:inline="javascript">-->
+<!--  function confirmOrderWithSSE(orderId) {-->
+<!--    // SSE 연결을 생성-->
+<!--    const eventSource = new EventSource('/api/sse/' + orderId);-->
 
-    // SSE 이벤트 수신
-    eventSource.onmessage = function (event) {
-      const response = JSON.parse(event.data);
-      alert("주문접수가 완료되었습니다");
-      location.reload();
-      // SSE 연결 종료
-      // eventSource.close();
-    };
+<!--    // SSE 이벤트 수신-->
+<!--    eventSource.onmessage = function (event) {-->
+<!--      const response = JSON.parse(event.data);-->
+<!--      alert("주문접수가 완료되었습니다");-->
+<!--      location.reload();-->
+<!--      // SSE 연결 종료-->
+<!--      // eventSource.close();-->
+<!--    };-->
 
-    // SSE 에러 처리
-    eventSource.onerror = function (error) {
-      console.error('Error occurred:', error);
-      // eventSource.close();
-    };
-  }
-</script>
+<!--    // SSE 에러 처리-->
+<!--    eventSource.onerror = function (error) {-->
+<!--      console.error('Error occurred:', error);-->
+<!--      // eventSource.close();-->
+<!--    };-->
+<!--  }-->
+<!--</script>-->
 
-<script th:inline="javascript">
-  function completeOrder(orderId) {
-    // Ajax 호출
-      const eventSource = new EventSource('/api/sse/end/' + orderId);
+<!--<script th:inline="javascript">-->
+<!--  function completeOrder(orderId) {-->
+<!--    // Ajax 호출-->
+<!--      const eventSource = new EventSource('/api/sse/end/' + orderId);-->
 
-      // SSE 이벤트 수신
-      eventSource.onmessage = function (event) {
-          const response = JSON.parse(event.data);
-          alert("배달이 완료되었습니다");
-          location.reload();
-          // SSE 연결 종료
-          // eventSource.close();
-      };
+<!--      // SSE 이벤트 수신-->
+<!--      eventSource.onmessage = function (event) {-->
+<!--          const response = JSON.parse(event.data);-->
+<!--          alert("배달이 완료되었습니다");-->
+<!--          location.reload();-->
+<!--          // SSE 연결 종료-->
+<!--          // eventSource.close();-->
+<!--      };-->
 
-      // SSE 에러 처리
-      eventSource.onerror = function (error) {
-          console.error('Error occurred:', error);
-          // eventSource.close();
-      };
-  }
-</script>
+<!--      // SSE 에러 처리-->
+<!--      eventSource.onerror = function (error) {-->
+<!--          console.error('Error occurred:', error);-->
+<!--          // eventSource.close();-->
+<!--      };-->
+<!--  }-->
+<!--</script>-->
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
