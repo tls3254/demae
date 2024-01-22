@@ -30,7 +30,6 @@
 <body>
 
 <h1>Order</h1>
-<button onclick="asd()">Display Token</button>
 <div th:if="${not #lists.isEmpty(orderAll)}">
   <table>
     <thead>
@@ -84,9 +83,6 @@
 // SSE 연결을 생성
         const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;
 
-        // const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('Authorization'));
-        // const token = tokenCookie ? tokenCookie.split('=')[1] : null;
-        // const token = /*[[${token}]]*/ 'fallback_token';
       try {
           const token = 'your_access_token';
           const response = await fetch(url, {
@@ -95,8 +91,7 @@
               cache: "no-cache",
               credentials: "same-origin",
               headers: {
-                  "Content-Type": "application/json",
-                  // "Authorization":  token
+                  "Content-Type": "application/json"
               }
           });
 
