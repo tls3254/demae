@@ -64,6 +64,7 @@ public class OrderService {
 		throw new IllegalStateException("본인 가게 정보만 조회가 가능합니다.");
 	}
 
+
 	public Order getOrderForUser(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (findOrder.getId() == orderId  && findOrder.getUser().getId() == user.getId())  {
@@ -93,20 +94,7 @@ public class OrderService {
 		return orderAllResponseDtoList;
 	}
 
-//	@Transactional
-//	public String completeOrder(Long orderId, String status, User user) {
-//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
-//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-//			Order order = orderRepository.findById(orderId).orElseThrow();
-//			order.setState(
-//					"COMPLETE".equals(status) ? OrderState.COMPLETE :
-//							"CONFIRM".equals(status) ? OrderState.CONFIRM :
-//									OrderState.READY
-//			);
-//			return "ok";
-//		}
-//		return "fail";
-//	}
+
 
 	public Order completeOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
@@ -116,16 +104,7 @@ public class OrderService {
 		return null;
 	}
 
-//	@Transactional
-//	public Order endOrder(Long orderId, User user) {
-//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
-//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-//			Order order = orderRepository.findById(orderId).orElseThrow();
-//			order.setState(OrderState.COMPLETE);
-//			return order;
-//		}
-//		return null;
-//	}
+
 
 	public List<OrderAllResponseDto> getAllOrderInfoUser(User user) {
 		List<OrderAllResponseDto> orderResponseDto = new ArrayList<>();

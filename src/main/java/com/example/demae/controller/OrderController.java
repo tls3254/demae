@@ -2,10 +2,13 @@ package com.example.demae.controller;
 
 import com.example.demae.dto.order.OrderRequestDto;
 import com.example.demae.entity.Order;
+import com.example.demae.jwt.JwtUtil;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.service.OrderService;
 import com.example.demae.service.SseService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.Token;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class OrderController {
 	private final OrderService orderService;
 	private final SseService sseService;
+
 	@GetMapping("/{orderId}")
 	public String getOrder(@PathVariable Long orderId, Model model,
 						   @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -37,6 +41,7 @@ public class OrderController {
 			return "orderAllInfoPageUser";
 		}
 		model.addAttribute("orderAll", orderService.getAllOrderInfo(userDetails.getUser()));
+//    	model.addAttribute("token", token);
 		return "orderAllInfoPage";
 	}
 

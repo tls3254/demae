@@ -36,13 +36,18 @@ public class SseController {
 	//	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 	private final SseService sseService;
 	private final StoreService storeService;
+
+//	SSE 연결 통로 사용
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		// 유저가 SSE 연결을 요청할 때 사용
 		SseEmitter emitter = sseService.createConnect(userDetails.getUser().getId());
 		return emitter;
 	}
 
+
 	//  사장님이 주문 확인 버튼을 누르면 주문 확인 메시지 나감
+
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void completeOrder(@PathVariable Long orderId,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -64,9 +69,11 @@ public class SseController {
 		}
 	}
 
+	//유저가 장바 구니 상품 주문 하기 누르면 주문 접수 메시지 나감	
 	@GetMapping(value = "/user/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void userRequestOrder(@PathVariable Long orderId,
 								 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
 		Order orderForUser = orderService.getOrderForUser(orderId, userDetails.getUser());
 		Store storeForUser = storeService.findStoreForUser(orderForUser.getStore().getId());
 		SseEmitter emitter = sseService.getUserEmitters(String.valueOf(storeForUser.getUser().getId()));
@@ -79,23 +86,4 @@ public class SseController {
 			throw new RuntimeException(e);
 		}
 	}
-
-//	@GetMapping(value = "/end/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//	public void endRequestOrder(@PathVariable Long orderId,
-//								@AuthenticationPrincipal UserDetailsImpl userDetails){
-//
-//		Order order = orderService.endOrder(orderId, userDetails.getUser()); //order 에 주문테이블하고 사장님 아이디를 넘겨주어서
-//		List<SseEmitter> emitters = sseService.findUserAndStore(orderId,userDetails,order);
-//		try{
-//			for(SseEmitter emitter:emitters){
-//				if (emitter != null) {
-//					String jsonData = "{\"message\": \"배달이 완료되었습니다.!!\"}";
-//					emitter.send(SseEmitter.event()
-//							.data(jsonData, MediaType.TEXT_EVENT_STREAM));
-//					emitter.complete();
-//				}
-//			}
-//		}catch (IOException j){
-//		}
-//	}
 }

@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -50,29 +51,53 @@ public class WebSecurityConfig {
         return new JwtAuthorizationFilter(jwtUtil,userDetailsService);
     }
 
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*"); // 허용할 도메인 설정
+        configuration.addAllowedHeader("*"); // 모든 헤더 허용
+        configuration.addAllowedMethod("*"); // 모든 HTTP 메소드 허용
+        configuration.setAllowCredentials(true); // 자격증명 허용
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        return new CorsFilter(corsConfigurationSource());
+    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.
+                csrf(AbstractHttpConfigurer::disable);
 
         http.sessionManagement((sessionManagement)->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
         http.authorizeHttpRequests((authorizeHttpRequests)->
-                        authorizeHttpRequests
-                                .requestMatchers("/api/users/**").permitAll()
-                                .requestMatchers("/test").permitAll()
-                                .requestMatchers("/**").permitAll()
+                authorizeHttpRequests
+                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/test").permitAll()
+                        .requestMatchers("/**").permitAll()
 
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
         );
 
         // UsernamePasswordAuthenticationFilter보다 먼저 실행
+        http.addFilterBefore(corsFilter(), ChannelProcessingFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter(),JwtAuthenticationFilter.class); // 인가 전 인증
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); // 인가전 UserName, Password확인
 
         return http.build();
     }
+
 
 
     @Bean
@@ -86,6 +111,5 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
 }
 

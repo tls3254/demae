@@ -46,8 +46,6 @@ public class ReviewController {
                                Model model){
         ReviewResponseDto selectReview = reviewService.singleMenu(orderId,reviewId);
         model.addAttribute("reviewOne",selectReview);
-        model.addAttribute("orderId", orderId); // orderId를 모델에 추가
-        model.addAttribute("reviewId", reviewId);
         return "showSingleReview";
     }
     @PatchMapping("/{orderId}/patchReview/{reviewId}")
