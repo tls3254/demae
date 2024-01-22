@@ -94,13 +94,17 @@ public class OrderService {
 		return orderAllResponseDtoList;
 	}
 
+
+
 	public Order completeOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-            return orderRepository.findById(orderId).orElseThrow();
+			return orderRepository.findById(orderId).orElseThrow();
 		}
 		return null;
 	}
+
+
 
 	public List<OrderAllResponseDto> getAllOrderInfoUser(User user) {
 		List<OrderAllResponseDto> orderResponseDto = new ArrayList<>();

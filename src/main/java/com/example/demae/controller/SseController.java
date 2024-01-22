@@ -45,7 +45,9 @@ public class SseController {
 		return emitter;
 	}
 
-//	사장님이 주문 확인 버튼을 누르면 주문 확인 메시지 나감
+
+	//  사장님이 주문 확인 버튼을 누르면 주문 확인 메시지 나감
+
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public void completeOrder(@PathVariable Long orderId,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {

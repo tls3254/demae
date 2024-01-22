@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Show Menu</title>
   <script src="/common-sse.js"></script>
+  <script src="/common-sse.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -77,47 +78,53 @@
   }
 </script>
 
-
 <script th:inline="javascript">
     async function confirmOrderWithSSE(orderId) {
-// SSE 연결을 생성
-        const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;
+        const url = 'https://4j6zo6zdmd.execute-api.ap-northeast-2.amazonaws.com/connect_sb/api/see/user/test?test=' + orderId;
+        const jwtToken = document.cookie;
 
-      try {
-          const response = await fetch(url, {
-              method: "GET",
-              mode: "cors",
-              cache: "no-cache",
-              credentials: "same-origin",
-              headers: {
-                  "Content-Type": "application/json"
-              }
-          });
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization" : jwtToken
+                }
+            });
 
-          if (response.ok) {
-              console.log('서버 응답이 성공했습니다.');
-              setupSSE(orderId)
-              // 실제 내용은 response.body 등을 통해 접근할 수 없음
-          } else {
-              console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
-          }
+            if (response.ok) {
+                console.log('서버 응답이 성공했습니다.');
+                alert("서버 응답 성공")
+                setupSSE(orderId)
+                // 실제 내용은 response.body 등을 통해 접근할 수 없음
+            } else {
+                console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
+            }
 
-          // 추가 작업 수행
-      } catch (error) {
-          console.error('Fetch 요청 중 에러가 발생했습니다.', error);
-      }
-    function setupSSE(orderId) {
-        const eventSource = new EventSource('/api/sse/'+ orderId);
-        eventSource.onmessage = function (event) {
-            alert("주문이 완료되었습니다");
-            location.reload();
-        };
-        eventSource.onerror = function (error) {
-            console.error('EventSource failed:', error);
-        };
+            // 추가 작업 수행
+        } catch (error) {
+            console.error('Fetch 요청 중 에러가 발생했습니다.', error);
+        }
+
+        // SSE 연결을 설정하는 함수
+        function setupSSE(orderId) {
+            console.log(orderId)
+            const eventSource = new EventSource('/api/sse/'+ orderId);
+            eventSource.onmessage = function (event) {
+                alert("주문이 완료되었습니다")
+                location.reload();
+            };
+            eventSource.onerror = function (error) {
+                console.error('EventSource failed:', error);
+            };
+        }
     }
-}
+
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

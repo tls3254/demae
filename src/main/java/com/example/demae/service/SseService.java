@@ -39,6 +39,7 @@ public class SseService {
 	public void deleteEmitters(SseEmitter emitter) {
 		userEmitters.remove(emitter);
 	}
+
 	public List<SseEmitter> findUserAndStore(Long orderId, UserDetailsImpl userDetails, Order order){
 		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
 		String storeId = String.valueOf(order.getStore().getUser().getId());
