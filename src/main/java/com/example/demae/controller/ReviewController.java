@@ -52,9 +52,11 @@ public class ReviewController {
     public String patchReview(@PathVariable Long orderId,
                               @PathVariable Long reviewId,
                               @RequestBody ReviewRequestDto reviewRequestDto,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+                              @AuthenticationPrincipal UserDetailsImpl userDetails,
+                              Model model){
         String email = userDetails.getUser().getEmail();
-        reviewService.patchReview(orderId,reviewId,reviewRequestDto,email);
+        ReviewResponseDto reviewResponseDto = reviewService.patchReview(orderId, reviewId, reviewRequestDto, email);
+        model.addAttribute("reviewOne",reviewResponseDto);
         return "showSingleReview";
     }
     @DeleteMapping("/{orderId}/deleteReview/{reviewId}")
