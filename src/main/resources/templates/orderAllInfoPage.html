@@ -113,8 +113,10 @@
         // SSE 연결을 설정하는 함수
         function setupSSE(orderId) {
             console.log(orderId)
-            const eventSource = new EventSource('/api/sse/user/'+ orderId);
+            const eventSource = new EventSource('/api/sse/'+ orderId);
             eventSource.onmessage = function (event) {
+                alert("주문이 완료되었습니다")
+                location.reload();
             };
             eventSource.onerror = function (error) {
                 console.error('EventSource failed:', error);

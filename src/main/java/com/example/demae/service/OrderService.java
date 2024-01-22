@@ -108,26 +108,24 @@ public class OrderService {
 //		return "fail";
 //	}
 
-	@Transactional
 	public Order completeOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(OrderState.CONFIRM);
-			return order;
+			return orderRepository.findById(orderId).orElseThrow();
 		}
 		return null;
 	}
-	@Transactional
-	public Order endOrder(Long orderId, User user) {
-		Order findOrder = orderRepository.findById(orderId).orElseThrow();
-		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-			Order order = orderRepository.findById(orderId).orElseThrow();
-			order.setState(OrderState.COMPLETE);
-			return order;
-		}
-		return null;
-	}
+
+//	@Transactional
+//	public Order endOrder(Long orderId, User user) {
+//		Order findOrder = orderRepository.findById(orderId).orElseThrow();
+//		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
+//			Order order = orderRepository.findById(orderId).orElseThrow();
+//			order.setState(OrderState.COMPLETE);
+//			return order;
+//		}
+//		return null;
+//	}
 
 	public List<OrderAllResponseDto> getAllOrderInfoUser(User user) {
 		List<OrderAllResponseDto> orderResponseDto = new ArrayList<>();
