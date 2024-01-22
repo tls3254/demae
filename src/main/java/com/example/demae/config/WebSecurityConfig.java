@@ -35,53 +35,32 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter()throws Exception{
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
 
     @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter(){
-        return new JwtAuthorizationFilter(jwtUtil,userDetailsService);
-    }
-
-
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // 허용할 도메인 설정
-        configuration.addAllowedHeader("*"); // 모든 헤더 허용
-        configuration.addAllowedMethod("*"); // 모든 HTTP 메소드 허용
-        configuration.setAllowCredentials(true); // 자격증명 허용
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        return new CorsFilter(corsConfigurationSource());
-    }
-
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.
                 csrf(AbstractHttpConfigurer::disable);
 
-        http.sessionManagement((sessionManagement)->
+        http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-        http.authorizeHttpRequests((authorizeHttpRequests)->
+        http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/test").permitAll()
@@ -92,13 +71,11 @@ public class WebSecurityConfig {
 
         // UsernamePasswordAuthenticationFilter보다 먼저 실행
         http.addFilterBefore(corsFilter(), ChannelProcessingFilter.class);
-        http.addFilterBefore(jwtAuthorizationFilter(),JwtAuthenticationFilter.class); // 인가 전 인증
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class); // 인가 전 인증
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); // 인가전 UserName, Password확인
 
         return http.build();
     }
-
-
 
     @Bean
     public CorsFilter corsFilter() {
