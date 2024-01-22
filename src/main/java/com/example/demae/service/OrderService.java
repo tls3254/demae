@@ -64,6 +64,7 @@ public class OrderService {
 		throw new IllegalStateException("본인 가게 정보만 조회가 가능합니다.");
 	}
 
+
 	public Order getOrderForUser(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (findOrder.getId() == orderId  && findOrder.getUser().getId() == user.getId())  {
@@ -120,14 +121,6 @@ public class OrderService {
 //	}
 
 	public Order completeOrder(Long orderId, User user) {
-		Order findOrder = orderRepository.findById(orderId).orElseThrow();
-		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
-            return orderRepository.findById(orderId).orElseThrow();
-		}
-		return null;
-	}
-	@Transactional
-	public Order endOrder(Long orderId, User user) {
 		Order findOrder = orderRepository.findById(orderId).orElseThrow();
 		if (user.getStore() != null && user.getStore().getId().equals(findOrder.getStore().getId()))  {
             return orderRepository.findById(orderId).orElseThrow();
