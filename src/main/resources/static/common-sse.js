@@ -4,7 +4,8 @@ eventSource.onmessage = function (event) {
 	const notification = JSON.stringify(event.data);
 	console.log(notification.message)
 	alert(notification)
-	location.reload()
+	window.location.href ="/api/orders"
+	// location.reload()
 };
 
 console.log("EventSource created successfully.");

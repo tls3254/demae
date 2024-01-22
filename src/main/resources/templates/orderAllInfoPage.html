@@ -119,47 +119,6 @@
 }
 </script>
 
-<!--<script th:inline="javascript">-->
-<!--    async function completeOrder(orderId) {-->
-<!--    // Ajax 호출-->
-<!--      const url = 'https://8beiyikfw6.execute-api.ap-southeast-2.amazonaws.com/stay/confirm?orderId=' + orderId;-->
-
-<!--      try {-->
-<!--          const response = await fetch(url, {-->
-<!--              method: "GET",-->
-<!--              mode: "cors",-->
-<!--              cache: "no-cache",-->
-<!--              credentials: "same-origin",-->
-<!--              headers: {-->
-<!--                  "Content-Type": "application/json"-->
-<!--              }-->
-<!--          });-->
-
-<!--          if (response.ok) {-->
-<!--              console.log('서버 응답이 성공했습니다.');-->
-<!--              setupSSE(orderId)-->
-<!--              // 실제 내용은 response.body 등을 통해 접근할 수 없음-->
-<!--          } else {-->
-<!--              console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);-->
-<!--          }-->
-
-<!--          // 추가 작업 수행-->
-<!--      } catch (error) {-->
-<!--          console.error('Fetch 요청 중 에러가 발생했습니다.', error);-->
-<!--      }-->
-<!--      function setupSSE(orderId) {-->
-<!--          const eventSource = new EventSource('/api/sse/end/'+ orderId);-->
-<!--          eventSource.onmessage = function (event) {-->
-<!--              alert("주문이 완료되었습니다");-->
-<!--              location.reload();-->
-<!--          };-->
-<!--          eventSource.onerror = function (error) {-->
-<!--              console.error('EventSource failed:', error);-->
-<!--          };-->
-<!--      }-->
-<!--  }-->
-<!--</script>-->
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
