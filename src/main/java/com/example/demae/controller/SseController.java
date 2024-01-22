@@ -43,6 +43,7 @@ public class SseController {
 	}
 
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	// @ResponseBody
 	public void completeOrder(@PathVariable Long orderId,
 							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
 

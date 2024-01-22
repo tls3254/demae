@@ -56,7 +56,7 @@
       </td>
       <td>
  <span th:if="${#strings.equals(menuDto.state, 'READY')}">
-    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
+    <button type="button" th:onclick="'confirmOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
 </span>
         <span th:if="${#strings.equals(menuDto.state, 'CONFIRM')}">
     <button type="button" th:onclick="'completeOrder(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">배달완료 하기</button>
@@ -77,6 +77,75 @@
     var url = '/api/orders/' + orderId;
     window.location.href = url;
   }
+</script>
+
+<script th:inline="javascript">
+    async function confirmOrder(orderId) {
+        const url = 'https://4j6zo6zdmd.execute-api.ap-northeast-2.amazonaws.com/connect_sb/api/see/user/test?test=' + orderId;
+        const jwtToken = document.cookie;
+
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization" : jwtToken
+                }
+            });
+
+            if (response.ok) {
+                console.log('서버 응답이 성공했습니다.');
+                alert("서버 응답 성공")
+                setupSSE(orderId)
+                // 실제 내용은 response.body 등을 통해 접근할 수 없음
+            } else {
+                console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
+            }
+
+            // 추가 작업 수행
+        } catch (error) {
+            console.error('Fetch 요청 중 에러가 발생했습니다.', error);
+        }
+
+        // SSE 연결을 설정하는 함수
+        function setupSSE(orderId) {
+            console.log(orderId)
+            const eventSource = new EventSource('/api/sse/user/'+ orderId);
+            eventSource.onmessage = function (event) {
+            };
+            eventSource.onerror = function (error) {
+                console.error('EventSource failed:', error);
+            };
+        }
+
+
+
+        // function confirmOrder(orderId) {
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: 'https://4j6zo6zdmd.execute-api.ap-northeast-2.amazonaws.com/connect_sb/api/see/user/test?test=' + orderId,
+        //         contentType: 'application/json',
+        //         success: function () {
+        //             alert('주문이 확인되었습니다.');
+        //             //setupSSE(orderId)
+        //         },
+        //         error: function (error) {
+        //             console.error(error);
+        //         }
+        //     });
+
+        //   function setupSSE(orderId) {
+        //     const eventSource = new EventSource('https://7z5jgi6dk3.execute-api.us-east-1.amazonaws.com/jdbc/jdbc?orderId='+ orderId);
+        //     eventSource.onmessage = function (event) {
+        //     };
+        //     eventSource.onerror = function (error) {
+        //       console.error('EventSource failed:', error);
+        //     };
+        //   }
+    }
 </script>
 
 <script th:inline="javascript">
