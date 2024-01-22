@@ -7,24 +7,58 @@
 	<!-- Link to Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<style>
-      table {
-          border-spacing: 0;
-          width: 80%;
-          margin: 20px 0; /* 위아래 여백을 조절하세요 */
-      }
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f8f9fa; /* Bootstrap default background color */
+			padding: 20px;
+		}
 
-      th, td {
-          padding: 10px;
-          text-align: left;
-      }
+		h1 {
+			color: #007bff; /* Bootstrap primary color */
+			margin-bottom: 20px;
+		}
 
-      th {
-          background-color: #f2f2f2; /* 헤더 배경색을 설정하세요 */
-      }
+		table {
+			border-spacing: 0;
+			width: 80%;
+			margin: 20px 0;
+			border: 1px solid #dee2e6; /* Bootstrap table border color */
+		}
 
-      .table-container {
-          overflow-x: auto; /* 가로 스크롤이 필요한 경우 자동으로 스크롤이 생성되도록 함 */
-      }
+		th, td {
+			padding: 15px;
+			text-align: left;
+			border-bottom: 1px solid #dee2e6; /* Bootstrap table border color */
+		}
+
+		th {
+			background-color: #007bff; /* Bootstrap primary color */
+			color: #fff; /* Bootstrap text color on primary background */
+		}
+
+		tbody tr:hover {
+			background-color: #f8f9fa; /* Bootstrap default background color for hovered rows */
+		}
+
+		.no-store {
+			margin-top: 20px;
+			color: #6c757d; /* Bootstrap text-muted color */
+		}
+
+		.alert-danger {
+			background-color: #f8d7da; /* Bootstrap alert-danger background color */
+			border-color: #f5c6cb; /* Bootstrap alert-danger border color */
+			color: #721c24; /* Bootstrap text color on alert-danger background */
+		}
+
+		.btn-info {
+			background-color: #17a2b8; /* Bootstrap info color */
+			color: #fff; /* Bootstrap text color on info background */
+		}
+
+		.btn-info:hover {
+			background-color: #138496; /* Bootstrap darker shade for hovered state */
+		}
 	</style>
 </head>
 <body>
