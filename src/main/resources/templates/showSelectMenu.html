@@ -67,6 +67,7 @@
 
         .btn-danger {
             background-color: #dc3545;
+            margin-top: 10px;
             color: #ffffff;
             border: none;
             padding: 10px 15px;
@@ -79,6 +80,12 @@
         p {
             margin-bottom: 20px;
             color: #007bff;
+        }
+        .custom-btn {
+            display: inline-block;
+            width: 150px;  /* 원하는 크기로 조절 */
+            height: 40px; /* 원하는 크기로 조절 */
+            margin-bottom: 10px;  /* 버튼 간 간격 조절 */
         }
     </style>
 
@@ -113,17 +120,18 @@
     <p>No menus available.</p>
 </div>
 
-<button type="button" class="btn btn-primary " data-toggle="modal" data-target="#textModal">
+<button type="button" class="btn btn-primary custom-btn" data-toggle="modal" data-target="#textModal">
     메뉴정보 수정
 </button>
-<button type="button" class="btn btn-danger" onclick="deleteMenu()">메뉴정보 삭제</button>
-
-<form id="menuForm" enctype="multipart/form-data">
-    <label for="files">Select Files:</label>
-    <input type="file" id="files" name="files" multiple><br>
-    <button type="button" onclick="createPicture()">Create Menu</button>
+<button type="button" class="btn btn-danger custom-btn" onclick="deleteMenu()">메뉴정보 삭제</button>
+<form id="menuForm" enctype="multipart/form-data" style="align-items: center; display: inline-block;">
+    <label for="files" class="btn btn-primary custom-btn" style="">
+        사진 업로드
+    </label>
+    <input type="file" id="files" name="files" multiple style="display: none; vertical-align: middle;">
+    <button type="button" onclick="createPicture()" class="btn btn-primary custom-btn">Create Picture</button>
 </form>
-<button type="button" class="btn btn-danger" onclick="deletePicture()">사진 삭제</button>
+<button type="button" class="btn btn-danger custom-btn" onclick="deletePicture()">사진 삭제</button>
 
 <!-- Modal for text input -->
 <div class="modal" id="textModal" tabindex="-1" role="dialog">

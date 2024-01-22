@@ -8,41 +8,37 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<style>
 		body {
-			font-family: 'Arial', sans-serif;
-			background-color: #f8f9fa;
+			background-color: #ffffff; /* White background */
+			color: #000000; /* Black text color */
 			padding: 20px;
 		}
 
 		h1 {
+			color: #007bff; /* Blue header text color */
 			text-align: center;
-			color: #007bff;
-			margin-bottom: 20px;
 		}
 
 		table {
-			border-collapse: collapse;
+			border-spacing: 0;
 			width: 80%;
 			margin: 20px 0;
-			background-color: #fff;
-			border-radius: 8px;
-			overflow: hidden;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			background-color: #ffffff; /* White table background */
+			border-radius: 10px; /* Rounded corners for the table */
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
 		}
 
 		th, td {
-			padding: 12px;
+			padding: 10px;
 			text-align: left;
-			border-bottom: 1px solid #dee2e6;
 		}
 
 		th {
-			background-color: #f2f2f2;
-			color: #007bff;
+			background-color: #007bff; /* Blue header background */
+			color: #ffffff; /* White text color for header */
 		}
 
-		img {
-			max-width: 100px;
-			max-height: 100px;
+		tr:nth-child(even) {
+			background-color: #f2f2f2; /* Even row background color */
 		}
 
 		select {
@@ -52,12 +48,19 @@
 		}
 
 		.btn-primary {
+			background-color: #007bff; /* Blue background for primary button */
+			color: #ffffff; /* White text color for primary button */
+			border: none;
+			padding: 10px 15px;
+			border-radius: 5px;
+			text-decoration: none;
 			display: inline-block;
-			margin-top: 10px;
+			margin-right: 10px;
+			cursor: pointer;
 		}
 
-		p {
-			margin-bottom: 20px;
+		.btn-primary:hover {
+			background-color: #0056b3; /* Hover effect for primary button */
 		}
 	</style>
 </head>
