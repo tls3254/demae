@@ -118,19 +118,22 @@
 
 <script th:inline="javascript">
     async function confirmOrderWithSSE(orderId) {
-        const url = 'https://4j6zo6zdmd.execute-api.ap-northeast-2.amazonaws.com/connect_sb/api/see/user/test?test=' + orderId;
+        const url = 'https://b26yyhck34.execute-api.ap-northeast-2.amazonaws.com/connect/';
         const jwtToken = document.cookie;
 
         try {
             const response = await fetch(url, {
-                method: "GET",
+                method: "POST",
                 mode: "cors",
                 cache: "no-cache",
                 credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization" : jwtToken
-                }
+                },
+                body:JSON.stringify({
+                    "orderId":orderId
+                })
             });
 
             if (response.ok) {
