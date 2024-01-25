@@ -10,6 +10,7 @@ import com.example.demae.service.SseService;
 import com.example.demae.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,11 +47,10 @@ public class SseController {
 	}
 
 
-	//  사장님이 주문 확인 버튼을 누르면 주문 확인 메시지 나감
-
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public void completeOrder(@PathVariable Long orderId,
-							  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+	@ResponseBody
+	public ResponseEntity<String> completeOrder(@PathVariable Long orderId,
+												@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
 		Order order = orderService.completeOrder(orderId, userDetails.getUser());
 		List<SseEmitter> emitters = sseService.findUserAndStore(order);
@@ -64,15 +64,17 @@ public class SseController {
 					emitter.complete();
 				}
 			}
+
 		} catch (IOException e) {
-			// 에러 처리
+			e.printStackTrace();
 		}
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
-	//유저가 장바 구니 상품 주문 하기 누르면 주문 접수 메시지 나감	
-	@GetMapping(value = "/user/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public void userRequestOrder(@PathVariable Long orderId,
-								 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+	@GetMapping( "/user/{orderId}")
+	@ResponseBody
+	public ResponseEntity<String> userRequestOrder(@PathVariable Long orderId,
+												   @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
 		Order orderForUser = orderService.getOrderForUser(orderId, userDetails.getUser());
 		Store storeForUser = storeService.findStoreForUser(orderForUser.getStore().getId());
@@ -85,5 +87,6 @@ public class SseController {
 		}catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 }
