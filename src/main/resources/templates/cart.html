@@ -98,10 +98,10 @@
     // 주문 처리 AJAX 요청
     // (이 부분은 실제 주문 처리 로직 및 주문자의 고유 ID를 서버로 전달하는 로직이 들어갑니다.)
 
-      var orderRequest = {
-       cartList: cartList,
-        totalPrice: totalPrice
-      };
+    var orderRequest = {
+      cartList: cartList,
+      totalPrice: totalPrice
+    };
 
     $.ajax({
       type: 'POST',
@@ -112,7 +112,8 @@
         alert('주문이 완료되었습니다.');
         var orderId = response;
         console.log(orderId)
-        setupSSE(orderId)
+        setupAjax(orderId)
+        location.href
       },
       error: function (error) {
         console.error(error);
@@ -121,13 +122,19 @@
   }
 
   // SSE 연결을 설정하는 함수
-  function setupSSE(orderId) {
-    const eventSource = new EventSource('/api/sse/user/'+ orderId);
-    eventSource.onmessage = function (event) {
-    };
-    eventSource.onerror = function (error) {
-      console.error('EventSource failed:', error);
-    };
+  function setupAjax(orderId) {
+    $.ajax({
+      type: "GET",
+      url: '/api/sse/user/' + orderId,
+      success: function (data) {
+        // 성공 시 처리
+        // data에는 서버에서 받은 데이터가 들어있습니다.
+      },
+      error: function (error) {
+        // 에러 시 처리
+        console.error('Error:', error);
+      }
+    });
   }
 </script>
 
