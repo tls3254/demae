@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

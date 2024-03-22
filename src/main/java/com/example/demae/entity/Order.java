@@ -1,5 +1,6 @@
 package com.example.demae.entity;
 
+import com.example.demae.domain.user.entity.User;
 import com.example.demae.enums.OrderState;
 import com.example.demae.enums.Timestamped;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.ToOne;
 
 import java.util.ArrayList;
 import java.util.List;

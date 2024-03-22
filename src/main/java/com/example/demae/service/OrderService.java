@@ -1,31 +1,25 @@
 package com.example.demae.service;
 
-import com.example.demae.dto.cart.CartListResponseDto;
-import com.example.demae.dto.cart.CartResponseDto;
 import com.example.demae.dto.order.OrderAllResponseDto;
 import com.example.demae.dto.order.OrderMenuRequestDto;
 import com.example.demae.dto.order.OrderMenuResponseDto;
 import com.example.demae.dto.order.OrderRequestDto;
 import com.example.demae.dto.order.OrderResponseDto;
-import com.example.demae.entity.Cart;
-import com.example.demae.entity.Menu;
 import com.example.demae.entity.Order;
 import com.example.demae.entity.OrderList;
 import com.example.demae.entity.Store;
-import com.example.demae.entity.User;
-import com.example.demae.enums.OrderState;
+import com.example.demae.domain.user.entity.User;
 import com.example.demae.repository.CartRepository;
 import com.example.demae.repository.OrderListRepository;
 import com.example.demae.repository.OrderRepository;
 import com.example.demae.repository.StoreRepository;
-import com.example.demae.repository.UserRepository;
+import com.example.demae.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

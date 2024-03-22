@@ -1,9 +1,9 @@
-package com.example.demae.controller;
+package com.example.demae.domain.user.controller;
 
-import com.example.demae.dto.login.SignupRequestDto;
-import com.example.demae.entity.User;
+import com.example.demae.domain.user.dto.SignupRequestDto;
+import com.example.demae.domain.user.entity.User;
 import com.example.demae.security.UserDetailsImpl;
-import com.example.demae.service.UserService;
+import com.example.demae.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.example.demae.dto.login;
+package com.example.demae.domain.user.dto;
 
 
 import jakarta.validation.constraints.Email;

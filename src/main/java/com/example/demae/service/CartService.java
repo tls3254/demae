@@ -6,7 +6,7 @@ import com.example.demae.dto.cart.CartResponseDto;
 import com.example.demae.entity.Cart;
 import com.example.demae.entity.Menu;
 import com.example.demae.entity.Store;
-import com.example.demae.entity.User;
+import com.example.demae.domain.user.entity.User;
 import com.example.demae.repository.CartRepository;
 import com.example.demae.repository.MenuRepository;
 import com.example.demae.repository.StoreRepository;

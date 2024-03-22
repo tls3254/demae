@@ -1,8 +1,8 @@
-package com.example.demae.entity;
+package com.example.demae.domain.user.entity;
 
-import com.example.demae.dto.login.SignupRequestDto;
+import com.example.demae.domain.user.dto.SignupRequestDto;
+import com.example.demae.entity.Store;
 import com.example.demae.enums.Timestamped;
-import com.example.demae.enums.UserRoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;

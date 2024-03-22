@@ -1,4 +1,4 @@
-package com.example.demae.enums;
+package com.example.demae.domain.user.entity;
 
 public enum UserRoleEnum {
 

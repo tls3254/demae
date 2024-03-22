@@ -1,8 +1,8 @@
 package com.example.demae.security;
 
 
-import com.example.demae.entity.User;
-import com.example.demae.enums.UserRoleEnum;
+import com.example.demae.domain.user.entity.User;
+import com.example.demae.domain.user.entity.UserRoleEnum;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

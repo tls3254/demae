@@ -2,10 +2,8 @@ package com.example.demae.security;
 
 
 import com.example.demae.config.UserConfig;
-import com.example.demae.entity.User;
-import com.example.demae.repository.UserRepository;
+import com.example.demae.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

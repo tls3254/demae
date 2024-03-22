@@ -1,9 +1,9 @@
 package com.example.demae.config;
 
-import com.example.demae.dto.login.SignupRequestDto;
-import com.example.demae.entity.User;
-import com.example.demae.enums.UserRoleEnum;
-import com.example.demae.repository.UserRepository;
+import com.example.demae.domain.user.dto.SignupRequestDto;
+import com.example.demae.domain.user.entity.User;
+import com.example.demae.domain.user.entity.UserRoleEnum;
+import com.example.demae.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

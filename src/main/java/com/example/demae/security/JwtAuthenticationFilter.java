@@ -1,13 +1,11 @@
 package com.example.demae.security;
 
-import com.example.demae.dto.login.LoginRequestDto;
-import com.example.demae.enums.UserRoleEnum;
+import com.example.demae.domain.user.dto.LoginRequestDto;
+import com.example.demae.domain.user.entity.UserRoleEnum;
 import com.example.demae.jwt.JwtUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
