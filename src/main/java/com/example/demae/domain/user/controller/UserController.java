@@ -5,46 +5,23 @@ import com.example.demae.domain.user.entity.User;
 import com.example.demae.security.UserDetailsImpl;
 import com.example.demae.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
-    private UserService userService;
-    @GetMapping
-    public String signUpAdrees(){
-        return "signUp";
-    }
+
+    private final UserService userService;
 
     @PostMapping
-    public String signUpSuccess(@ModelAttribute SignupRequestDto signupRequestDto){
+    public ResponseEntity<String> signUpSuccess(@ModelAttribute SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
-        return "login";
+        return ResponseEntity.ok("성공");
     }
-    @GetMapping("/loginForm")
-    public String loginForm(){
-        return "login";
-    }
-
-    @GetMapping("/main")
-    public String main(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        User user = userDetails.getUser();
-
-        if (user.getRole().name().equals("ADMIN") && user.getStore() != null) {
-            model.addAttribute("storeId", user.getStore().getId());
-            return "adminMain";
-        }
-        if (user.getRole().name().equals("ADMIN") && user.getStore() == null) {
-            return "adminMain";
-        }
-        return "main";
-    }
-
 }
