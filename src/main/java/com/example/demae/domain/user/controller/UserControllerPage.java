@@ -1,7 +1,6 @@
 package com.example.demae.domain.user.controller;
 
 import com.example.demae.domain.user.entity.User;
-import com.example.demae.domain.user.service.UserService;
 import com.example.demae.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,17 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserControllerPage {
 
     @GetMapping
-    public String signUpAdrees(){
+    public String signUpPage(){
         return "user/signUp";
     }
 
-    @GetMapping("/loginForm")
-    public String loginForm(){
+    @GetMapping("/login")
+    public String loginFormPage(){
         return "user/login";
     }
 
     @GetMapping("/main")
-    public String main(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+    public String mainPage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         User user = userDetails.getUser();
 
         if (user.getRole().name().equals("ADMIN") && user.getStore() != null) {
