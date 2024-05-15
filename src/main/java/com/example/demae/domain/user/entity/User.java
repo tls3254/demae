@@ -1,7 +1,7 @@
 package com.example.demae.domain.user.entity;
 
 import com.example.demae.domain.user.dto.SignupRequestDto;
-import com.example.demae.entity.Store;
+import com.example.demae.domain.store.entity.Store;
 import com.example.demae.global.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

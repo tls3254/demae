@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserControllerPage {
 
     private final UserService userService;
+    
     @GetMapping("/join")
     public String signUpPage(){
         return "user/signUp";

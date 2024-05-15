@@ -25,6 +25,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public void signUp(SignupRequestDto requestDto) {
+
         String password = passwordEncoder.encode(requestDto.getUserPassword());
 
         UserRoleEnum role = UserRoleEnum.USER;
