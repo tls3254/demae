@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Store Form</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/common-sse.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+<div class="form-box" id="StoreForm">
+
+  <div class="main-header">
+  <h1>Store Home</h1>
+  </div>
+
+  <a th:href="@{/api/stores/{storeId}(storeId=${storeId})}" class="btn">상점 입장</a>
+  <a th:href="@{/api/orders}" class="btn">주문 조회</a>
+  <a th:href="@{/api/stores/home}" class="btn">상점 생성</a>
+  <a th:href="@{/main}" class="btn">메인 페이지</a>
+
+</div>
+</body>
+</html>
