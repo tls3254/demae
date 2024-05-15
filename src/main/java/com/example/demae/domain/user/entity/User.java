@@ -2,58 +2,62 @@ package com.example.demae.domain.user.entity;
 
 import com.example.demae.domain.user.dto.SignupRequestDto;
 import com.example.demae.entity.Store;
-import com.example.demae.enums.Timestamped;
+import com.example.demae.global.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
-public class User extends Timestamped {
+public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(nullable = false)
-    private String email;
+    private String userEmail;
 
     @Column(nullable = false)
-    private String password;
+    private String userPassword;
 
     @Column(nullable = false)
-    private String phone;
+    private String userPhone;
 
     @Column(nullable = false)
-    private String name;
+    private String userName;
 
     @Column(nullable = false)
-    private String address;
+    private String userAddress;
 
     @Column(nullable = false)
-    private Long point;
+    private Long userPoint;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private UserRoleEnum userRole;
+
+    private String refreshToken;
 
     @OneToOne
     @JoinColumn(name ="store_id")
     @JsonIgnore
     private Store store;
 
-
     public User(SignupRequestDto requestDto, UserRoleEnum role, String password) {
-        this.email = requestDto.getEmail();
-        this.name = requestDto.getName();
-        this.address = requestDto.getAddress();
-        this.point = 1000000L;
-        this.role = role;
-        this.phone = requestDto.getPhone();
-        this.password = password;
+        this.userEmail = requestDto.getUserEmail();
+        this.userName = requestDto.getUserName();
+        this.userAddress = requestDto.getUserAddress();
+        this.userPhone = requestDto.getUserPhone();
+        this.userPassword = password;
+        this.userPoint = 1000000L;
+        this.userRole = role;
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
     }
 }

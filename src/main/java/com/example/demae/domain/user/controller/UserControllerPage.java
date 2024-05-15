@@ -1,18 +1,22 @@
 package com.example.demae.domain.user.controller;
 
 import com.example.demae.domain.user.entity.User;
-import com.example.demae.security.UserDetailsImpl;
+import com.example.demae.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserControllerPage {
 
-    @GetMapping
+    private final UserService userService;
+    @GetMapping("/join")
     public String signUpPage(){
         return "user/signUp";
     }
@@ -23,16 +27,16 @@ public class UserControllerPage {
     }
 
     @GetMapping("/main")
-    public String mainPage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        User user = userDetails.getUser();
+    public String mainPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userService.checkRole(userDetails.getUsername());
 
-        if (user.getRole().name().equals("ADMIN") && user.getStore() != null) {
+        if (user.getUserRole().name().equals("STORE") && user.getStore() != null) {
             model.addAttribute("storeId", user.getStore().getId());
-            return "user/adminMain";
+            return "root/storeMain";
         }
-        if (user.getRole().name().equals("ADMIN") && user.getStore() == null) {
-            return "user/adminMain";
+        if (user.getUserRole().name().equals("STORE")) {
+            return "root/storeMain";
         }
-        return "user/main";
+        return "root/main";
     }
 }
