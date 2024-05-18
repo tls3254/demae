@@ -21,8 +21,8 @@ public class LoginService implements UserDetailsService {
 
         return User.builder()
                 .username(user.getUserEmail())
-                .password(user.getPassword())
-                .roles(user.getRole().name())
+                .password(user.getUserPassword())
+                .authorities(user.getUserRole().getAuthority())
                 .build();
     }
 }

@@ -63,6 +63,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             log.info(NONE_ACCESS_TOKEN);
         }
     }
+
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken, HttpServletRequest request, FilterChain filterChain) throws ServletException, IOException{
 
         User user = userRepository.findByRefreshToken(TOKEN_HEADER + refreshToken).orElseThrow();
@@ -71,14 +72,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         String realToken = jwtService.substringToken(newAccessToken);
         if (realToken != null && jwtService.isTokenValid(realToken)) {
-            jwtService.extractEmail(realToken)
-                    .ifPresent(email -> userRepository.findByUserEmail(email)
-                            .ifPresent(this::saveAuthentication));
+            jwtService.extractEmail(realToken).flatMap(userRepository::findByUserEmail).ifPresent(this::saveAuthentication);
         }
 
         filterChain.doFilter(request, response);
     }
-
 
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
@@ -95,28 +93,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         accessToken = jwtService.substringToken(accessToken);
         if (accessToken != null && jwtService.isTokenValid(accessToken)) {
-            jwtService.extractEmail(accessToken)
-                    .ifPresent(email -> userRepository.findByUserEmail(email)
-                            .ifPresent(this::saveAuthentication));
+            jwtService.extractEmail(accessToken).flatMap(userRepository::findByUserEmail).ifPresent(this::saveAuthentication);
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String reIssueRefreshToken(User user) {
-        String reIssuedRefreshToken = jwtService.createRefreshToken();
-        user.updateRefreshToken(reIssuedRefreshToken);
-        userRepository.saveAndFlush(user);
-        return reIssuedRefreshToken;
-    }
-
     public void saveAuthentication(User myMember) {
-        String password = myMember.getPassword();
+        String password = myMember.getUserPassword();
 
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
                 .username(myMember.getUserEmail())
                 .password(password)
-                .roles(myMember.getRole().name())
+                .roles(myMember.getUserRole().name())
                 .build();
 
         Authentication authentication =

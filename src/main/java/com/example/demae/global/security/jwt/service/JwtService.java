@@ -22,16 +22,13 @@ import java.util.Optional;
 @Getter
 @Slf4j
 public class JwtService {
+
     @Value("${jwt.secretKey}")
     private String secretKey;
     @Value("${jwt.access.expiration}")
     private int accessTokenExpirationPeriod;
     @Value("${jwt.refresh.expiration}")
     private int refreshTokenExpirationPeriod;
-    @Value("${jwt.access.header}")
-    private String accessHeader;
-    @Value("${jwt.refresh.header}")
-    private String refreshHeader;
 
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";

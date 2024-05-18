@@ -1,4 +1,4 @@
-package com.example.demae.config;
+package com.example.demae.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
