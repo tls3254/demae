@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상점 생성</title>
+  <script src="/static/js/common-sse.js"></script>
+  <link rel="stylesheet" href="/static/css/store.css">
+  <script src="/static/js/store.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<div class="form-box" id="StoreForm">
+  <h1>Store Add Form</h1>
+
+  <label for="name">상점 이름:</label>
+  <input type="text" id="name" name="name" required><br>
+
+  <label for="address">상점 주소:</label>
+  <input type="text" id="address" name="address" required><br>
+
+  <label for="category">상점 품목:</label>
+  <input type="text" id="category" name="category" required><br><br>
+
+  <button type="button" onclick="store()" class="btn">상점 생성</button>
+</div>
+
+<br>
+<a th:href="@{/stores}" class="btn btn-primary">상점 페이지</a>
+<a th:href="@{/users/main}" class="btn btn-primary">메인 페이지</a>
+
+</body>
+</html>

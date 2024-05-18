@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<script src="/static/js/common-sse.js"></script>
+	<title>Store Page</title>
+	<link rel="stylesheet" href="/static/css/store.css">
+
+</head>
+<body>
+<h1>Store</h1>
+<div th:if="${not #lists.isEmpty(store)}">
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Address</th>
+			<th>Category</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="store : ${store}">
+			<td th:text="${store.storeName}"></td>
+			<td th:text="${store.storeAddress}"></td>
+			<td th:text="${store.storeCategory}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div th:if="${#lists.isEmpty(store)}">
+	<p>no store.</p>
+</div>
+
+<a  th:href="@{/stores/{storeId}/allMenu(storeId=${storeId})}" type="button" class="btn btn-primary">가게 메뉴 보기</a>
+<a th:href="@{/user/main}" class="btn btn-primary">메인 페이지</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+</body>
+</html>
