@@ -1,17 +1,13 @@
 package com.example.demae.domain.user.service;
 
-
 import com.example.demae.domain.user.dto.SignupRequestDto;
 import com.example.demae.domain.user.entity.User;
 import com.example.demae.domain.user.entity.UserRoleEnum;
 import com.example.demae.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.startup.UserConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
@@ -36,7 +32,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User checkRole(String userEmail) {
+    public User findUser(String userEmail) {
         return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("이메일이 없습니다."));
     }
 }

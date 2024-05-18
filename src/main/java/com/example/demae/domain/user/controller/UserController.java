@@ -5,7 +5,10 @@ import com.example.demae.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,6 +20,6 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignupRequestDto signupRequestDto){
         userService.signUp(signupRequestDto);
-        return ResponseEntity.ok("회원 가입 성공");
+        return ResponseEntity.ok("성공");
     }
 }

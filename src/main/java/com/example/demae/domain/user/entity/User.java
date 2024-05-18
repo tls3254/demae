@@ -1,7 +1,7 @@
 package com.example.demae.domain.user.entity;
 
-import com.example.demae.domain.user.dto.SignupRequestDto;
 import com.example.demae.domain.store.entity.Store;
+import com.example.demae.domain.user.dto.SignupRequestDto;
 import com.example.demae.global.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user")
 public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +41,7 @@ public class User extends Auditable {
 
     private String refreshToken;
 
-    @OneToOne
-    @JoinColumn(name ="store_id")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private Store store;
 

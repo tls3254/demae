@@ -28,11 +28,12 @@ public class UserControllerPage {
     }
 
     @GetMapping("/main")
-    public String mainPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        User user = userService.checkRole(userDetails.getUsername());
+    public String mainPage(@AuthenticationPrincipal UserDetails userDetails,
+                           Model model) {
+        User user = userService.findUser(userDetails.getUsername());
 
         if (user.getUserRole().name().equals("STORE") && user.getStore() != null) {
-            model.addAttribute("storeId", user.getStore().getId());
+            model.addAttribute("storeId", user.getStore().getStoreId());
             return "root/storeMain";
         }
         if (user.getUserRole().name().equals("STORE")) {
