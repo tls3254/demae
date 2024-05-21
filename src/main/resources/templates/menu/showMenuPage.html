@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/common-sse.js"></script>
+    <title>Show Menu</title>
+    <link rel="stylesheet" href="/static/css/menu.css">
+</head>
+<body>
+
+<h1>Show Menu</h1>
+
+<div th:if="${not #lists.isEmpty(menuList)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>inform</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menu : ${menuList}">
+            <td th:text="${menu.menuName}"></td>
+            <td th:text="${menu.menuPrice}"></td>
+            <td>
+                <a class="btn btn-info store-link" th:href="@{/api/stores/{storeId}/selectMenu/{menuId}(storeId=${menu.storeId}, menuId=${menu.id})}">메뉴 정보 보기</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<a th:href="@{'/api/stores/' + ${storeId} + '/menus/join'}" class="btn btn-primary">메뉴 생성 페이지</a>
+<a th:href="@{'/api/stores'}" class="btn btn-primary">상점 페이지</a>
+<a th:href="@{'/users/main'}" class="btn btn-primary">메인 페이지</a>
+</body>
+</html>

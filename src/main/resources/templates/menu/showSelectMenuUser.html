@@ -1,68 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
 	<meta charset="UTF-8">
 	<title>Show Menu</title>
-	<script src="/common-sse.js"></script>
+	<script src="/js/common-sse.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<style>
-		body {
-			background-color: #ffffff; /* White background */
-			color: #000000; /* Black text color */
-			padding: 20px;
-		}
-
-		h1 {
-			color: #007bff; /* Blue header text color */
-			text-align: center;
-		}
-
-		table {
-			border-spacing: 0;
-			width: 80%;
-			margin: 20px 0;
-			background-color: #ffffff; /* White table background */
-			border-radius: 10px; /* Rounded corners for the table */
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-		}
-
-		th, td {
-			padding: 10px;
-			text-align: left;
-		}
-
-		th {
-			background-color: #007bff; /* Blue header background */
-			color: #ffffff; /* White text color for header */
-		}
-
-		tr:nth-child(even) {
-			background-color: #f2f2f2; /* Even row background color */
-		}
-
-		select {
-			width: 70px;
-			padding: 8px;
-			border-radius: 4px;
-		}
-
-		.btn-primary {
-			background-color: #007bff; /* Blue background for primary button */
-			color: #ffffff; /* White text color for primary button */
-			border: none;
-			padding: 10px 15px;
-			border-radius: 5px;
-			text-decoration: none;
-			display: inline-block;
-			margin-right: 10px;
-			cursor: pointer;
-		}
-
-		.btn-primary:hover {
-			background-color: #0056b3; /* Hover effect for primary button */
-		}
-	</style>
+	<link rel="stylesheet" href="/static/css/menu.css">
 </head>
 <body>
 
@@ -74,7 +17,6 @@
 		<tr>
 			<th>Name</th>
 			<th>Price</th>
-			<th>image</th>
 			<th>quantity</th>
 		</tr>
 		</thead>
@@ -82,11 +24,6 @@
 		<tr th:each="menu : ${menuOne}">
 			<td th:text="${menu.name}"></td>
 			<td th:text="${menu.price}"></td>
-			<td>
-				<div th:each="url : ${menu.pictureUrls}">
-					<img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
-				</div>
-			</td>
 			<td>
 				<select name="quantity" id="quantity">
 					<option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}"></option>
@@ -100,9 +37,8 @@
 		장바구니 담기
 	</button>
 </div>
-<div th:if="${#lists.isEmpty(menuOne)}">
-	<p>No menus available.</p>
-</div>
+<br>
+
 <a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
 <script th:inline="javascript">
 	/*<![CDATA[*/
@@ -127,7 +63,7 @@
 				if (response === 'ok') {
 					alert('장바구니에 등록 되었습니다.');
 					window.location.href = '/api/stores/' + storeId + "/allMenu";
-				} else if(response == 'fail'){
+				} else if(response === 'fail'){
 					alert('다른 가게 메뉴를 담기전 장바구니를 비워주세요.');
 				} else {
 					alert('장바구니는 최대 10개만 담을 수 있습니다.');
@@ -135,7 +71,6 @@
 				console.log(response);
 			},
 			error: function (error) {
-				// 실패 시 동작
 				console.error(error);
 			}
 		});

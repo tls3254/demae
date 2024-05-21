@@ -1,94 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Show Menu</title>
-    <script src="/common-sse.js"></script>
+    <script src="/js/common-sse.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px 0;
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-            color: #007bff;
-        }
-
-        th {
-            background-color: #007bff;
-            color: #ffffff;
-        }
-
-        img {
-            max-width: 100px;
-            max-height: 100px;
-        }
-
-        select {
-            width: 70px;
-            padding: 8px;
-            border-radius: 4px;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            margin-top: 10px;
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-            color: #007bff;
-        }
-        .custom-btn {
-            display: inline-block;
-            width: 150px;  /* 원하는 크기로 조절 */
-            height: 40px; /* 원하는 크기로 조절 */
-            margin-bottom: 10px;  /* 버튼 간 간격 조절 */
-        }
-    </style>
-
+    <link rel="stylesheet" href="/static/css/menu.css">
 </head>
 <body>
 
@@ -107,11 +24,6 @@
         <tr th:each="menu : ${menuOne}">
             <td th:text="${menu.name}"></td>
             <td th:text="${menu.price}"></td>
-            <td>
-                <div th:each="url : ${menu.pictureUrls}">
-                    <img th:src="${url}" alt="Menu Image" style="max-width: 100px; max-height: 100px;"/>
-                </div>
-            </td>
         </tr>
         </tbody>
     </table>
