@@ -3,7 +3,7 @@ package com.example.demae.domain.store.entity;
 import com.example.demae.domain.store.dto.StoreRequestDto;
 import com.example.demae.domain.store.dto.StoreUpdateRequestDto;
 import com.example.demae.domain.user.entity.User;
-import com.example.demae.entity.Menu;
+import com.example.demae.domain.menu.entity.Menu;
 import com.example.demae.global.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
