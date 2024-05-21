@@ -1,11 +1,14 @@
-package com.example.demae.repository;
+package com.example.demae.domain.menu.repository;
 
-import com.example.demae.entity.Menu;
+import com.example.demae.domain.menu.entity.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MenuRepository extends JpaRepository<Menu,Long> {
     List<Menu> findByStoreId(Long storeId);
+
+    Optional<Menu> findByIdAndStoreId(Long menuId, Long storeId);
 }
 
