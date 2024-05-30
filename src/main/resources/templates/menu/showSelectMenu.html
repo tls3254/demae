@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Menu</title>
+    <script src="/js/common-sse.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="/static/css/menu.css">
+</head>
+<body>
+
+<h1>Show Menu</h1>
+
+<div th:if="${not #lists.isEmpty(menuOne)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menu : ${menuOne}">
+            <td th:text="${menu.name}"></td>
+            <td th:text="${menu.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${#lists.isEmpty(menuOne)}">
+    <p>No menus available.</p>
+</div>
+
+<button type="button" class="btn btn-primary custom-btn" data-toggle="modal" data-target="#textModal">
+    메뉴정보 수정
+</button>
+<button type="button" class="btn btn-danger custom-btn" onclick="deleteMenu()">메뉴정보 삭제</button>
+<form id="menuForm" enctype="multipart/form-data" style="align-items: center; display: inline-block;">
+    <label for="files" class="btn btn-primary custom-btn" style="">
+        사진 업로드
+    </label>
+    <input type="file" id="files" name="files" multiple style="display: none; vertical-align: middle;">
+    <button type="button" onclick="createPicture()" class="btn btn-primary custom-btn">Create Picture</button>
+</form>
+<button type="button" class="btn btn-danger custom-btn" onclick="deletePicture()">사진 삭제</button>
+<a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
+
+<!-- Modal for text input -->
+<div class="modal" id="textModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">메뉴 정보 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Input fields for text -->
+                <label for="name">메뉴명 변경:</label>
+                <input type="text" id="name" name="name" class="form-control"/>
+
+                <label for="price">메뉴 가격 변경:</label>
+                <input type="number" id="price" name="price" class="form-control"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <!-- "수정하기" 버튼 추가 -->
+                <button type="button" class="btn btn-primary" onclick="updateData()">수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var storeId = /*[[${menuOne.storeId}]]*/ null; // 동적으로 설정하려는 가게 ID
+    var menuId = /*[[${menuOne.id}]]*/ null;  // 동적으로 설정하려는 메뉴 ID
+    /*]]>*/
+</script>
+<script>
+    function updateData() {
+        var menuData = {
+            name: $('#name').val(),
+            price: $('#price').val()
+        };
+
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/stores/'+storeId+'/patchMenu/'+menuId,
+            contentType: 'application/json',
+            data: JSON.stringify(menuData),
+            success: function (message) {
+                window.location.href = '/api/stores/'+storeId+'/allMenu';
+            },
+            error: function () {
+                $('#messageDiv').text('Failed to create menu.');
+            }
+        });
+    }
+</script>
+
+<script>
+    function deleteMenu() {
+        var menuData = {
+            name: $('#name').val(),
+            price: $('#price').val()
+        };
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/stores/'+storeId+'/deleteMenu/'+menuId,
+            contentType: 'application/json',
+            data: JSON.stringify(menuData),
+            success: function (message) {
+                window.location.href = '/api/stores/'+storeId+'/allMenu';
+            },
+            error: function () {
+                $('#messageDiv').text('Failed to create menu.');
+            }
+        });
+    }
+</script>
+
+<script>
+    function createPicture() {
+        var formData = new FormData();
+        formData.append('files', $('#files')[0].files[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/stores/' + storeId + '/selectMenu/'+menuId+'/createPicture',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (message) {
+                window.location.href = '/api/stores/' + storeId + '/allMenu';
+            },
+            error: function () {
+                $('#messageDiv').text('Failed to create menu.');
+            }
+        });
+    }
+</script>
+<script>
+    function deletePicture(imageUrl) {
+
+        var confirmDelete = confirm("이 사진을 삭제하시겠습니까?");
+        if (confirmDelete) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/stores/' + storeId + '/selectMenu/' + menuId +'/deletePicture',
+                data: { imageUrl: imageUrl },
+                success: function (message) {
+                    window.location.reload();
+                },
+                error: function () {
+                    $('#messageDiv').text('Failed to delete picture.');
+                }
+            });
+        }
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

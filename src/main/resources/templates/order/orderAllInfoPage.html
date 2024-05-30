@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Show Menu</title>
+  <script src="/js/common-sse.js"></script>
+  <script src="/js/common-sse.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        table {
+            border-spacing: 0;
+            width: 80%;
+            margin: 20px 0; /* 위아래 여백을 조절하세요 */
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-spacing: 0;
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .btn-action {
+            margin-right: 10px;
+        }
+
+        .order-details-btn, .confirm-btn, .complete-btn {
+            padding: 5px 10px;
+            color: #ffffff; /* 버튼의 글자색을 흰색으로 설정하세요 */
+            border: none;
+            cursor: pointer;
+        }
+
+        .order-details-btn {
+            background-color: #007bff;
+        }
+
+        .confirm-btn, .complete-btn {
+            background-color: #28a745;
+        }
+
+        .complete-btn {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Order</h1>
+<div th:if="${not #lists.isEmpty(orderAll)}">
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>USER</th>
+      <th>ORDER DATE</th>
+      <th>ORDER Details</th>
+      <th>ORDER STATE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="menuDto : ${orderAll}">
+      <td th:text="${menuDto.storeName}"></td>
+      <td th:text="${menuDto.userId}"></td>
+      <td th:text="${menuDto.date}"></td>
+      <td>
+        <!-- 상세정보보기 버튼 -->
+        <button type="button" class="btn btn-primary" th:attr="onclick='redirectToOrderDetails(\'' + ${menuDto.id} + '\')'">
+          주문 상세정보
+        </button>
+      </td>
+      <td>
+ <span th:if="${#strings.equals(menuDto.state, 'READY')}">
+    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">주문확인 하기</button>
+</span>
+        <span th:if="${#strings.equals(menuDto.state, 'CONFIRM')}">
+    <button type="button" th:onclick="'confirmOrderWithSSE(\'' + ${menuDto.id} + '\')'" class="btn btn-primary">배달완료 하기</button>
+</span>
+        <span th:unless="${#strings.equals(menuDto.state, 'READY') or #strings.equals(menuDto.state, 'CONFIRM')}">
+    <span th:text="${menuDto.state}"></span>
+</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<a th:href="@{'/'}" class="btn btn-primary">메인 페이지</a>
+<div th:if="${#lists.isEmpty(orderAll)}">
+  <p>No menus available in the Cart.</p>
+</div>
+<script th:inline="javascript">
+  function redirectToOrderDetails(orderId) {
+    var url = '/api/orders/' + orderId;
+    window.location.href = url;
+  }
+</script>
+
+<script th:inline="javascript">
+    async function confirmOrderWithSSE(orderId) {
+        const url = 'https://b26yyhck34.execute-api.ap-northeast-2.amazonaws.com/connect/';
+        const jwtToken = document.cookie;
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization" : jwtToken
+                },
+                body:JSON.stringify({
+                    "orderId":orderId
+                })
+            });
+
+            if (response.ok) {
+                console.log('서버 응답이 성공했습니다.');
+                alert("서버 응답 성공")
+                setupSSE(orderId)
+                // 실제 내용은 response.body 등을 통해 접근할 수 없음
+            } else {
+                console.error('서버 응답이 실패했습니다. 응답 상태 코드:', response.status);
+            }
+
+            // 추가 작업 수행
+        } catch (error) {
+            console.error('Fetch 요청 중 에러가 발생했습니다.', error);
+        }
+
+        // SSE 연결을 설정하는 함수
+        function setupSSE(orderId) {
+            const eventSource = new EventSource('/api/sse/'+ orderId);
+            eventSource.onmessage = function (event) {
+                alert("주문이 완료되었습니다")
+                location.reload();
+            };
+            eventSource.onerror = function (error) {
+                console.error('EventSource failed:', error);
+            };
+        }
+    }
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

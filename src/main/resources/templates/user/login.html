@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+  <link rel="stylesheet" href="/static/css/login.css">
+</head>
+
+<body>
+
+<div class="main-header">
+  <h2>로그인</h2>
+</div>
+
+<form action="/api/logins" method="post" class="form-container" enctype="application/json">
+  <label for="email" class="form-label">이메일:</label>
+  <input type="email" id="email" name="email" class="form-input" required>
+
+  <label for="password" class="form-label">비밀번호:</label>
+  <input type="password" id="password" name="password" class="form-input" required>
+
+  <button type="submit" class="btn">로그인</button>
+  <a class="btn" href="/main">메인 페이지</a>
+</form>
+</body>
+</html>
