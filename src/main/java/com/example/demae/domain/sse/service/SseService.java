@@ -1,7 +1,8 @@
-package com.example.demae.service;
+package com.example.demae.domain.sse.service;
 
-import com.example.demae.entity.Order;
-import com.example.demae.security.UserDetailsImpl;
+import com.example.demae.domain.cart.entity.Cart;
+import com.example.demae.domain.user.entity.User;
+import com.example.demae.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -16,9 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SseService {
 	private static final long DEFAULT_TIMEOUT = 30 * 60 * 1000;
 	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
+	private final UserService userService;
 
-	public SseEmitter createConnect(Long userId) {
-		String id = String.valueOf(userId);
+	public SseEmitter createConnect(String username) {
+		User user = userService.findUser(username);
+		String id = String.valueOf(user.getUserId());
 		if(userEmitters.containsKey(String.valueOf(id))) {
 			SseEmitter sseEmitter = userEmitters.get(id);
 			userEmitters.remove(sseEmitter);
@@ -40,11 +43,11 @@ public class SseService {
 		userEmitters.remove(emitter);
 	}
 
-	public List<SseEmitter> findUserAndStore(Order order){
-		String userId = String.valueOf(order.getUser().getId()); // 주문을 한 유저의 고유 ID
-		String storeId = String.valueOf(order.getStore().getUser().getId());
+	public List<SseEmitter> findUserAndStore(Cart cart){
+		String userId = String.valueOf(cart.getUser().getUserId()); // 주문을 한 유저의 고유 ID
+		String storeUserId = String.valueOf(cart.getOrderItems().get(0).getStore().getUser().getUserId());
 		SseEmitter userEmitter = getUserEmitters(userId);
-		SseEmitter storeEmitter = getUserEmitters(storeId);
+		SseEmitter storeEmitter = getUserEmitters(storeUserId);
 		return Arrays.asList(userEmitter, storeEmitter);
 	}
 }
