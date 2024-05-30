@@ -1,4 +1,4 @@
-package com.example.demae.enums;
+package com.example.demae.domain.cart.entity;
 
 public enum StatusRoleEnum {
     WAIT(OrderStatus.WAIT),
