@@ -1,4 +1,4 @@
-package com.example.demae.dto.review;
+package com.example.demae.domain.review.dto;
 
 import lombok.Getter;
 import lombok.Setter;
