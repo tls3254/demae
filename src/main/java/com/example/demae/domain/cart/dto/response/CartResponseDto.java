@@ -1,6 +1,6 @@
-package com.example.demae.dto.cart;
+package com.example.demae.domain.cart.dto.response;
 
-import com.example.demae.entity.Menu;
+import com.example.demae.domain.menu.entity.Menu;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +15,10 @@ public class CartResponseDto {
 	private Long userId;
 
 	public CartResponseDto(Menu menu, int quantity,Long userId){
-		this.id = menu.getId();
-		this.name =menu.getName();
-		this.price = menu.getPrice();
-		this.storeId = menu.getStore().getId();
+		this.id = menu.getMenuId();
+		this.name =menu.getMenuName();
+		this.price = menu.getMenuPrice();
+		this.storeId = menu.getStore().getStoreId();
 		this.quantity = quantity;
 		this.userId =userId;
 	}

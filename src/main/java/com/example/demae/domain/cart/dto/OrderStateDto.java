@@ -1,4 +1,4 @@
-package com.example.demae.dto.order;
+package com.example.demae.domain.cart.dto;
 
 import lombok.Getter;
 import lombok.Setter;
