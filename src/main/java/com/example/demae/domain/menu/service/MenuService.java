@@ -44,7 +44,7 @@ public class MenuService {
 
     @Transactional(readOnly = true)
     public List<MenuResponseDto> findMenus(Long storeId) {
-        List<Menu> menuCheck = menuRepository.findByStoreId(storeId);
+        List<Menu> menuCheck = menuRepository.findByStore_StoreId(storeId);
         List<MenuResponseDto> menuResponseDto = new ArrayList<>();
         for (Menu menu : menuCheck) {
             menuResponseDto.add(new MenuResponseDto(menu));
@@ -53,14 +53,19 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public MenuResponseDto findMenu(Long storeId,Long menuId) {
+    public MenuResponseDto findMenuStore(Long storeId,Long menuId) {
         Menu menu = findMenuAndStore(storeId,menuId);
         return new MenuResponseDto(menu);
     }
 
     @Transactional(readOnly = true)
     public Menu findMenuAndStore(Long storeId, Long menuId){
-        return menuRepository.findByIdAndStoreId(menuId, storeId).orElseThrow(() -> new IllegalArgumentException("가게와 일치하는 메뉴가 없습니다."));
+        return menuRepository.findByMenuIdAndStore_StoreId(menuId, storeId).orElseThrow(() -> new IllegalArgumentException("가게와 일치하는 메뉴가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public Menu findMenu(Long menuId){
+        return menuRepository.findById(menuId).orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
     }
 
     private void checkStoreOwner(Store store, String email) {
