@@ -48,7 +48,7 @@ public class MenuControllerPage {
                            @AuthenticationPrincipal UserDetails userDetails,
                            Model model){
         User user = userService.findUser(userDetails.getUsername());
-        MenuResponseDto findMenu = menuService.findMenu(storeId,menuId);
+        MenuResponseDto findMenu = menuService.findMenuStore(storeId,menuId);
         model.addAttribute("menuOne", findMenu);
         if (user.getUserRole().name().equals("STORE") && user.getStore().getStoreId().equals(storeId)) {
             return "menu/showSelectMenu";
