@@ -25,7 +25,7 @@ public class StoreService {
 
 	public void createStores(StoreRequestDto storeRequestDto, String userEmail) {
 		User user = userService.findUser(userEmail);
-		if (storeRepository.findByUserId(user.getUserId()).isPresent()) {
+		if (storeRepository.findByUser_UserId(user.getUserId()).isPresent()) {
 			throw new IllegalArgumentException("이미 상점이 등록되어 있습니다.");
 		}
 		Store store = new Store(storeRequestDto ,user);
@@ -52,7 +52,7 @@ public class StoreService {
 
 	@Transactional(readOnly = true)
 	public List<StoreResponseDto> findByCategory(String category) {
-		List<Store> stores = storeRepository.findByCategory(category);
+		List<Store> stores = storeRepository.findByStoreCategory(category);
 		return stores.stream().map(StoreResponseDto::new).toList();
 	}
 

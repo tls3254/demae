@@ -10,9 +10,7 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-	Optional<Store> findByUserId(Long userId);
-	List<Store> findByCategory(String category);
+	Optional<Store> findByUser_UserId(Long userId);
+	List<Store> findByStoreCategory(String category);
 	Page<Store> findAll(Pageable pageable);
-  	Store findByMenusId(Long menuId);
-
 }
