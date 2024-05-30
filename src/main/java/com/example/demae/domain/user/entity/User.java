@@ -33,7 +33,7 @@ public class User extends Auditable {
     private String userAddress;
 
     @Column(nullable = false)
-    private Long userPoint;
+    private int userPoint;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -51,11 +51,15 @@ public class User extends Auditable {
         this.userAddress = requestDto.getUserAddress();
         this.userPhone = requestDto.getUserPhone();
         this.userPassword = password;
-        this.userPoint = 1000000L;
+        this.userPoint = 1000000;
         this.userRole = role;
     }
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
+    }
+
+    public void updatePoint(int point) {
+        this.userPoint = point;
     }
 }
