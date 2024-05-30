@@ -1,60 +1,50 @@
-package com.example.demae.controller;
+package com.example.demae.domain.sse.controller;
 
-import com.example.demae.dto.store.StoreResponseDto;
-import com.example.demae.entity.Order;
-import com.example.demae.entity.Store;
-import com.example.demae.repository.StoreRepository;
-import com.example.demae.security.UserDetailsImpl;
-import com.example.demae.service.OrderService;
-import com.example.demae.service.SseService;
-import com.example.demae.service.StoreService;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.demae.domain.cart.entity.Cart;
+import com.example.demae.domain.store.entity.Store;
+import com.example.demae.domain.cart.service.CartService;
+import com.example.demae.domain.sse.service.SseService;
+import com.example.demae.domain.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/sse")
 public class SseController {
 	private static final long DEFAULT_TIMEOUT = 30 * 60 * 1000;
-	private final OrderService orderService;
+	private final CartService cartService;
 	//	private final Map<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
 	private final SseService sseService;
 	private final StoreService storeService;
 
-//	SSE 연결 통로 사용
 	@GetMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public SseEmitter connect(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		// 유저가 SSE 연결을 요청할 때 사용
-		SseEmitter emitter = sseService.createConnect(userDetails.getUser().getId());
-		return emitter;
+	public SseEmitter connect(@AuthenticationPrincipal UserDetails userDetails) {
+		return sseService.createConnect(userDetails.getUsername());
 	}
 
 
 	@GetMapping(value = "/{orderId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> completeOrder(@PathVariable Long orderId,
-												@AuthenticationPrincipal UserDetailsImpl userDetails) {
+												@AuthenticationPrincipal UserDetails userDetails) {
 
-		Order order = orderService.completeOrder(orderId, userDetails.getUser());
-		List<SseEmitter> emitters = sseService.findUserAndStore(order);
-		String state = order.getState().toString().equals("CONFIRM") ? "주문이 완료 되었습니다." : "배달이 완료 되었습니다.";
+		Cart cart = cartService.completeOrder(orderId, userDetails.getUsername());
+		List<SseEmitter> emitters = sseService.findUserAndStore(cart);
+		String state = cart.getCartState().toString().equals("CONFIRM") ? "주문이 완료 되었습니다." : "배달이 완료 되었습니다.";
 		try {
 			for (SseEmitter emitter : emitters) {
 				if (emitter != null) {
@@ -74,11 +64,11 @@ public class SseController {
 	@GetMapping( "/user/{orderId}")
 	@ResponseBody
 	public ResponseEntity<String> userRequestOrder(@PathVariable Long orderId,
-												   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+												   @AuthenticationPrincipal UserDetails userDetails) {
 
-		Order orderForUser = orderService.getOrderForUser(orderId, userDetails.getUser());
-		Store storeForUser = storeService.findStoreForUser(orderForUser.getStore().getId());
-		SseEmitter emitter = sseService.getUserEmitters(String.valueOf(storeForUser.getUser().getId()));
+		Cart orderForUser = cartService.getOrderForUser(orderId, userDetails.getUsername());
+		Store storeForUser = storeService.findStore(orderForUser.getOrderItems().get(0).getStore().getStoreId());
+		SseEmitter emitter = sseService.getUserEmitters(String.valueOf(storeForUser.getUser().getUserId()));
 		String jsonData = "{\"message\": \"주문이 접수되었습니다.!!\"}";
 		try {
 			emitter.send(SseEmitter.event()
